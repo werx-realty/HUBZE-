@@ -869,9 +869,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
           <div class="light-card">
             <table class="data-table light" style="width:100%">
               <thead><tr>
-                <th>Property</th><th>Address</th><th>Type</th><th>Price</th><th>Status</th><th>Agent</th><th>Date</th>
+                <th>Property</th><th>Address</th><th>Type</th><th>Price</th><th>Status</th><th>Agent</th><th>Date</th><th></th>
               </tr></thead>
-              <tbody><tr><td colspan="7" class="no-data light">No active listings found.</td></tr></tbody>
+              <tbody id="prop-table-body"><tr><td colspan="8" class="no-data light">No active listings found.</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -895,25 +895,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
             <div class="form-row cols-1">
               <div class="form-group">
                 <label class="form-label">MLS Number <span class="req">*</span></label>
-                <input class="form-input"/>
+                <input id="pf-mls" class="form-input" placeholder="e.g. MLS-123456"/>
               </div>
             </div>
             <div class="form-row cols-3">
               <div class="form-group">
                 <label class="form-label">Transaction Type <span class="req">*</span></label>
-                <select class="form-select">
+                <select id="pf-trans-type" class="form-select">
                   <option>Listing</option><option>Buyer</option><option>Lease</option><option>Referral</option>
                 </select>
               </div>
               <div class="form-group">
                 <label class="form-label">Property Type <span class="req">*</span></label>
-                <select class="form-select">
+                <select id="pf-prop-type" class="form-select">
                   <option>Residential</option><option>Commercial</option><option>Land</option><option>Multi-Family</option><option>Condo</option><option>Townhouse</option>
                 </select>
               </div>
               <div class="form-group">
                 <label class="form-label">Property Status <span class="req">*</span></label>
-                <select class="form-select">
+                <select id="pf-status" class="form-select">
                   <option>None</option><option>Active</option><option>Pending</option><option>Closed</option><option>Withdrawn</option><option>Expired</option>
                 </select>
               </div>
@@ -926,7 +926,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
             <div class="form-row cols-1">
               <div class="form-group">
                 <label class="form-label">Street <span class="req">*</span></label>
-                <input class="form-input"/>
+                <input id="pf-street" class="form-input" placeholder="123 Main St"/>
               </div>
             </div>
             <div class="form-row cols-3">
@@ -942,7 +942,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
               </div>
               <div class="form-group">
                 <label class="form-label">Postal Code <span class="req">*</span></label>
-                <input class="form-input"/>
+                <input id="pf-zip" class="form-input" placeholder="12345"/>
               </div>
             </div>
           </div>
@@ -951,52 +951,54 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
           <div class="form-section">
             <div class="form-section-title">Price Information</div>
             <div class="form-row cols-3">
-              <div class="form-group"><label class="form-label">Sales Price <span class="req">*</span></label><input class="form-input" type="number"/></div>
-              <div class="form-group"><label class="form-label">Units <span class="req">*</span></label><input class="form-input" type="number"/></div>
-              <div class="form-group"><label class="form-label">Commission <span class="req">*</span></label><input class="form-input" type="number"/></div>
+              <div class="form-group"><label class="form-label">Sales Price <span class="req">*</span></label><input id="pf-price" class="form-input" type="number" placeholder="0"/></div>
+              <div class="form-group"><label class="form-label">Units <span class="req">*</span></label><input id="pf-units" class="form-input" type="number" placeholder="1"/></div>
+              <div class="form-group"><label class="form-label">Commission <span class="req">*</span></label><input id="pf-commission" class="form-input" type="number" placeholder="0"/></div>
             </div>
             <div class="form-row cols-3">
-              <div class="form-group"><label class="form-label">Bonus <span class="req">*</span></label><input class="form-input" type="number"/></div>
-              <div class="form-group"><label class="form-label">Source <span class="req">*</span></label><input class="form-input"/></div>
-              <div class="form-group"><label class="form-label">Transaction Coordinator Fee <span class="req">*</span></label><input class="form-input" type="number"/></div>
+              <div class="form-group"><label class="form-label">Bonus</label><input id="pf-bonus" class="form-input" type="number" placeholder="0"/></div>
+              <div class="form-group"><label class="form-label">Source</label><input id="pf-source" class="form-input" placeholder="e.g. Zillow"/></div>
+              <div class="form-group"><label class="form-label">Transaction Coordinator Fee</label><input id="pf-tc-fee" class="form-input" type="number" placeholder="0"/></div>
             </div>
             <div class="form-row cols-3">
-              <div class="form-group"><label class="form-label">Split Paid <span class="req">*</span></label><input class="form-input" type="number"/></div>
-              <div class="form-group"><label class="form-label">Office Fees <span class="req">*</span></label><input class="form-input" type="number"/></div>
+              <div class="form-group"><label class="form-label">Split Paid</label><input id="pf-split" class="form-input" type="number" placeholder="0"/></div>
+              <div class="form-group"><label class="form-label">Office Fees</label><input id="pf-office-fees" class="form-input" type="number" placeholder="0"/></div>
               <div class="form-group">
                 <label class="form-label">Agent <span class="req">*</span></label>
-                <select class="form-select"><option>Select Agent</option></select>
+                <input id="pf-agent" class="form-input" placeholder="Agent name"/>
               </div>
             </div>
             <div class="form-row cols-2">
-              <div class="form-group"><label class="form-label">Escrow Company <span class="req">*</span></label><input class="form-input"/></div>
-              <div class="form-group"><label class="form-label">Mortgage Company <span class="req">*</span></label><input class="form-input"/></div>
+              <div class="form-group"><label class="form-label">Escrow Company</label><input id="pf-escrow" class="form-input" placeholder="Company name"/></div>
+              <div class="form-group"><label class="form-label">Mortgage Company</label><input id="pf-mortgage" class="form-input" placeholder="Company name"/></div>
             </div>
           </div>
 
           <!-- Contract Dates -->
           <div class="form-section">
-            <div class="form-section-title">Price Information</div>
+            <div class="form-section-title">Contract Dates</div>
             <div class="form-row cols-2">
-              <div class="form-group"><label class="form-label">Contract Start Date <span class="req">*</span></label><input class="form-input" type="date"/></div>
-              <div class="form-group"><label class="form-label">Contract Expiration Date <span class="req">*</span></label><input class="form-input" type="date"/></div>
+              <div class="form-group"><label class="form-label">Contract Start Date</label><input id="pf-start-date" class="form-input" type="date"/></div>
+              <div class="form-group"><label class="form-label">Contract Expiration Date</label><input id="pf-exp-date" class="form-input" type="date"/></div>
             </div>
             <div class="form-row cols-2">
-              <div class="form-group"><label class="form-label">Open Escrow Date <span class="req">*</span></label><input class="form-input" type="date"/></div>
-              <div class="form-group"><label class="form-label">Closing Date <span class="req">*</span></label><input class="form-input" type="date"/></div>
+              <div class="form-group"><label class="form-label">Open Escrow Date</label><input id="pf-escrow-date" class="form-input" type="date"/></div>
+              <div class="form-group"><label class="form-label">Closing Date</label><input id="pf-close-date" class="form-input" type="date"/></div>
             </div>
             <div class="form-row cols-1">
               <div class="form-group">
-                <label class="form-label">Upload Property Image <span class="req">*</span></label>
-                <div class="upload-area">
+                <label class="form-label">Upload Property Image</label>
+                <div class="upload-area" onclick="document.getElementById('pf-img-input').click()" style="cursor:pointer">
                   <i class="fa-solid fa-cloud-arrow-up"></i>
                   <div class="upload-text"><strong>Click to upload</strong> or drag and drop</div>
                   <div class="upload-sub">PNG, JPG, JPEG supported</div>
+                  <div id="pf-img-name" style="font-size:12px;color:#5563e8;margin-top:4px"></div>
                 </div>
+                <input type="file" id="pf-img-input" accept="image/*" style="display:none" onchange="document.getElementById('pf-img-name').textContent=this.files[0]?.name||''">
               </div>
             </div>
-            <div style="display:flex;justify-content:flex-end;margin-top:8px">
-              <button class="btn-green" onclick="showToast('Property saved!');showView('properties-list')">Save Property</button>
+            <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:8px">
+              <button class="btn-green" onclick="propSaveEntry()">Save Property</button>
             </div>
           </div>
 
@@ -2116,6 +2118,7 @@ function navigate(page) {
   if (page === 'calendar') renderCalendars();
   if (page === 'sales-board') initSalesBoardCharts();
   if (page === 'news-feed') nfInit();
+  if (page === 'properties') propRenderTable();
   if (page === 'dashboard') initDashboardCharts();
   if (page === 'route-maps') initStreetView();
   if (page === 'route-map')  initRouteMap();
@@ -2169,6 +2172,80 @@ function togglePropDrop(dropId, triggerBtn) {
 // TOAST
 // ═══════════════════════════════════════
 let toastT;
+// ═══════════════════════════════
+// ═══════════════════════════════
+// PROPERTIES
+// ═══════════════════════════════
+let propEntries = JSON.parse(localStorage.getItem('hu3ze_props') || '[]');
+
+function propSaveEntry() {
+  const v = id => (document.getElementById(id)?.value || '').trim();
+  const street = v('pf-street');
+  const price  = v('pf-price');
+  if (!street || !price) { showToast('Street and Sales Price are required.'); return; }
+  const entry = {
+    id: Date.now(),
+    mls: v('pf-mls'),
+    transType: document.getElementById('pf-trans-type')?.value || '',
+    propType: document.getElementById('pf-prop-type')?.value || '',
+    status: document.getElementById('pf-status')?.value || '',
+    street,
+    city: document.getElementById('prop-page-city')?.value || '',
+    state: document.getElementById('prop-page-state')?.value || '',
+    zip: v('pf-zip'),
+    price: parseFloat(price) || 0,
+    agent: v('pf-agent'),
+    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+  };
+  propEntries.unshift(entry);
+  localStorage.setItem('hu3ze_props', JSON.stringify(propEntries));
+  propRenderTable();
+  propClearForm();
+  showView('properties-list');
+  showToast('Property saved!');
+}
+
+function propClearForm() {
+  ['pf-mls','pf-street','pf-zip','pf-price','pf-units','pf-commission','pf-bonus','pf-source',
+   'pf-tc-fee','pf-split','pf-office-fees','pf-agent','pf-escrow','pf-mortgage',
+   'pf-start-date','pf-exp-date','pf-escrow-date','pf-close-date'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  const nm = document.getElementById('pf-img-name'); if (nm) nm.textContent = '';
+  const inp = document.getElementById('pf-img-input'); if (inp) inp.value = '';
+}
+
+function propRenderTable() {
+  const tbody = document.getElementById('prop-table-body');
+  if (!tbody) return;
+  if (!propEntries.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="no-data light">No active listings found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = propEntries.map((e, i) => {
+    const statusColor = {Active:'#10b981',Pending:'#f59e0b',Closed:'#6b7280',Withdrawn:'#ef4444',Expired:'#ef4444',None:'#9ca3af'}[e.status] || '#9ca3af';
+    const price = e.price ? '$' + e.price.toLocaleString() : '—';
+    const addr = [e.street, e.city, e.state].filter(Boolean).join(', ');
+    return `<tr>
+      <td style="font-weight:600;color:#1a1a2e">${e.mls || e.propType}</td>
+      <td>${addr}</td>
+      <td>${e.transType}</td>
+      <td style="font-weight:600">${price}</td>
+      <td><span style="background:${statusColor}22;color:${statusColor};border-radius:20px;padding:2px 10px;font-size:12px;font-weight:600">${e.status}</span></td>
+      <td>${e.agent || '—'}</td>
+      <td>${e.date}</td>
+      <td><button onclick="propDelete(${i})" style="background:none;border:none;cursor:pointer;color:#d1d5db;font-size:13px" title="Delete" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#d1d5db'"><i class="fa-solid fa-trash"></i></button></td>
+    </tr>`;
+  }).join('');
+}
+
+function propDelete(i) {
+  if (!confirm('Delete this property?')) return;
+  propEntries.splice(i, 1);
+  localStorage.setItem('hu3ze_props', JSON.stringify(propEntries));
+  propRenderTable();
+}
+
 // ═══════════════════════════════
 // NEWS FEED PAGE
 // ═══════════════════════════════
