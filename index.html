@@ -470,16 +470,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
         <!-- Row 1: Top Agents | Months Chart | Agent Ranking -->
         <div style="display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:14px;align-items:stretch">
 
-          <!-- Top Agents -->
+          <!-- Open Escrows -->
           <div class="dark-card" style="display:flex;flex-direction:column;min-height:520px">
-            <div class="dark-card-title">Top Agents</div>
+            <div class="dark-card-title">Open Escrows</div>
             <div class="dark-inner" style="flex:1">
               <div style="font-size:12px;font-weight:700;color:#e0e0f0;margin-bottom:8px">Active</div>
               <table class="data-table" style="width:100%">
                 <thead><tr>
-                  <th>Property</th><th>Address</th><th>Sales</th><th>Closing</th><th>Agent</th>
+                  <th>Property</th><th>Address</th><th>Price</th><th>Agent</th>
                 </tr></thead>
-                <tbody><tr><td colspan="5" class="no-data">No data available</td></tr></tbody>
+                <tbody id="dash-escrow-tbody"><tr><td colspan="4" class="no-data">No data available</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -860,7 +860,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
             <div class="page-header-title">Properties</div>
             <div style="font-size:12px;color:#9ca3af">/properties</div>
           </div>
-          <button class="btn-blue-grad" onclick="showView('properties-form')">
+          <button class="btn-blue-grad" onclick="propEditIndex=-1;propClearForm();document.querySelector('#properties-form .page-header-title').textContent='Add New Property';document.querySelector('#properties-form .btn-green').textContent='Save Property';showView('properties-form')">
             <i class="fa-solid fa-plus"></i> Add New Property
           </button>
         </div>
@@ -2119,6 +2119,7 @@ function navigate(page) {
   if (page === 'sales-board') initSalesBoardCharts();
   if (page === 'news-feed') nfInit();
   if (page === 'properties') propRenderTable();
+  if (page === 'dashboard') propRenderDashEscrow();
   if (page === 'dashboard') initDashboardCharts();
   if (page === 'route-maps') initStreetView();
   if (page === 'route-map')  initRouteMap();
@@ -2184,7 +2185,7 @@ function propSaveEntry() {
   const price  = v('pf-price');
   if (!street || !price) { showToast('Street and Sales Price are required.'); return; }
   const entry = {
-    id: Date.now(),
+    id: propEditIndex >= 0 ? propEntries[propEditIndex].id : Date.now(),
     mls: v('pf-mls'),
     transType: document.getElementById('pf-trans-type')?.value || '',
     propType: document.getElementById('pf-prop-type')?.value || '',
@@ -2195,14 +2196,37 @@ function propSaveEntry() {
     zip: v('pf-zip'),
     price: parseFloat(price) || 0,
     agent: v('pf-agent'),
-    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+    escrow: v('pf-escrow'),
+    mortgage: v('pf-mortgage'),
+    startDate: v('pf-start-date'),
+    expDate: v('pf-exp-date'),
+    escrowDate: v('pf-escrow-date'),
+    closeDate: v('pf-close-date'),
+    units: v('pf-units'),
+    commission: v('pf-commission'),
+    bonus: v('pf-bonus'),
+    source: v('pf-source'),
+    tcFee: v('pf-tc-fee'),
+    split: v('pf-split'),
+    officeFees: v('pf-office-fees'),
+    date: propEditIndex >= 0 ? propEntries[propEditIndex].date : new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
   };
-  propEntries.unshift(entry);
+  if (propEditIndex >= 0) {
+    propEntries[propEditIndex] = entry;
+  } else {
+    propEntries.unshift(entry);
+  }
+  propEditIndex = -1;
   localStorage.setItem('hu3ze_props', JSON.stringify(propEntries));
   propRenderTable();
   propClearForm();
+  // Reset form header & button
+  const title = document.querySelector('#properties-form .page-header-title');
+  if (title) title.textContent = 'Add New Property';
+  const btn = document.querySelector('#properties-form .btn-green');
+  if (btn) btn.textContent = 'Save Property';
   showView('properties-list');
-  showToast('Property saved!');
+  showToast(propEditIndex >= 0 ? 'Property updated!' : 'Property saved!');
 }
 
 function propClearForm() {
@@ -2215,28 +2239,87 @@ function propClearForm() {
   const inp = document.getElementById('pf-img-input'); if (inp) inp.value = '';
 }
 
+let propEditIndex = -1; // -1 = new entry, ≥0 = editing existing
+
 function propRenderTable() {
   const tbody = document.getElementById('prop-table-body');
-  if (!tbody) return;
-  if (!propEntries.length) {
-    tbody.innerHTML = '<tr><td colspan="8" class="no-data light">No active listings found.</td></tr>';
+  if (tbody) {
+    if (!propEntries.length) {
+      tbody.innerHTML = '<tr><td colspan="9" class="no-data light">No active listings found.</td></tr>';
+    } else {
+      tbody.innerHTML = propEntries.map((e, i) => {
+        const statusColor = {Active:'#10b981',Pending:'#f59e0b',Closed:'#6b7280',Withdrawn:'#ef4444',Expired:'#ef4444',None:'#9ca3af'}[e.status] || '#9ca3af';
+        const price = e.price ? '$' + e.price.toLocaleString() : '—';
+        const addr = [e.street, e.city, e.state].filter(Boolean).join(', ');
+        return `<tr style="cursor:pointer" onclick="propOpenEdit(${i})">
+          <td style="font-weight:600;color:#1a1a2e">${e.mls || e.propType}</td>
+          <td>${addr}</td>
+          <td>${e.transType}</td>
+          <td style="font-weight:600">${price}</td>
+          <td><span style="background:${statusColor}22;color:${statusColor};border-radius:20px;padding:2px 10px;font-size:12px;font-weight:600">${e.status}</span></td>
+          <td>${e.agent || '—'}</td>
+          <td>${e.date}</td>
+          <td><button onclick="event.stopPropagation();propDelete(${i})" style="background:none;border:none;cursor:pointer;color:#d1d5db;font-size:13px" title="Delete" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#d1d5db'"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>`;
+      }).join('');
+    }
+  }
+  // Sync Open Escrows dashboard widget
+  propRenderDashEscrow();
+}
+
+function propRenderDashEscrow() {
+  const dash = document.getElementById('dash-escrow-tbody');
+  if (!dash) return;
+  const active = propEntries.filter(e => e.status === 'Active' || e.status === 'Pending' || e.status === 'None');
+  if (!active.length) {
+    dash.innerHTML = '<tr><td colspan="4" class="no-data">No data available</td></tr>';
     return;
   }
-  tbody.innerHTML = propEntries.map((e, i) => {
-    const statusColor = {Active:'#10b981',Pending:'#f59e0b',Closed:'#6b7280',Withdrawn:'#ef4444',Expired:'#ef4444',None:'#9ca3af'}[e.status] || '#9ca3af';
+  dash.innerHTML = active.map(e => {
+    const addr = [e.street, e.city].filter(Boolean).join(', ');
     const price = e.price ? '$' + e.price.toLocaleString() : '—';
-    const addr = [e.street, e.city, e.state].filter(Boolean).join(', ');
     return `<tr>
-      <td style="font-weight:600;color:#1a1a2e">${e.mls || e.propType}</td>
-      <td>${addr}</td>
-      <td>${e.transType}</td>
-      <td style="font-weight:600">${price}</td>
-      <td><span style="background:${statusColor}22;color:${statusColor};border-radius:20px;padding:2px 10px;font-size:12px;font-weight:600">${e.status}</span></td>
-      <td>${e.agent || '—'}</td>
-      <td>${e.date}</td>
-      <td><button onclick="propDelete(${i})" style="background:none;border:none;cursor:pointer;color:#d1d5db;font-size:13px" title="Delete" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#d1d5db'"><i class="fa-solid fa-trash"></i></button></td>
+      <td style="font-size:12px;font-weight:600;color:#e0e0f0">${e.mls || e.propType}</td>
+      <td style="font-size:12px;color:#9898b0">${addr}</td>
+      <td style="font-size:12px;color:#c8c8e0">${price}</td>
+      <td style="font-size:12px;color:#9898b0">${e.agent || '—'}</td>
     </tr>`;
   }).join('');
+}
+
+function propOpenEdit(i) {
+  propEditIndex = i;
+  const e = propEntries[i];
+  // Populate form fields
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+  set('pf-mls', e.mls);
+  set('pf-street', e.street);
+  set('pf-zip', e.zip);
+  set('pf-price', e.price);
+  set('pf-agent', e.agent);
+  set('pf-escrow', e.escrow);
+  set('pf-mortgage', e.mortgage);
+  set('pf-start-date', e.startDate);
+  set('pf-exp-date', e.expDate);
+  set('pf-escrow-date', e.escrowDate);
+  set('pf-close-date', e.closeDate);
+  set('pf-units', e.units);
+  set('pf-commission', e.commission);
+  set('pf-bonus', e.bonus);
+  set('pf-source', e.source);
+  set('pf-tc-fee', e.tcFee);
+  set('pf-split', e.split);
+  set('pf-office-fees', e.officeFees);
+  const ts = document.getElementById('pf-trans-type'); if (ts) ts.value = e.transType || ts.options[0].value;
+  const pt = document.getElementById('pf-prop-type'); if (pt) pt.value = e.propType || pt.options[0].value;
+  const ps = document.getElementById('pf-status'); if (ps) ps.value = e.status || ps.options[0].value;
+  // Update form header and button
+  const title = document.querySelector('#properties-form .page-header-title');
+  if (title) title.textContent = 'Edit Property';
+  const btn = document.querySelector('#properties-form .btn-green');
+  if (btn) btn.textContent = 'Update Property';
+  showView('properties-form');
 }
 
 function propDelete(i) {
