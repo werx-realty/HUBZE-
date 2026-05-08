@@ -87,6 +87,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
 .btn-add:hover{opacity:.88}
 .btn-import{background:linear-gradient(135deg,#5563e8,#8b4de8);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px}
 .btn-prev-next{background:#4a9af5;color:#fff;border:none;border-radius:5px;padding:5px 14px;font-size:12px;cursor:pointer}
+/* ── SETTINGS ── */
+.settings-nav{display:block;padding:10px 20px;font-size:13px;font-weight:500;color:#9898b0;cursor:pointer;border-radius:0;text-decoration:none;transition:background .15s,color .15s}
+.settings-nav:hover{background:#2c2d4a;color:#e0e0f0}
+.settings-nav.active{background:#2c2d4a;color:#fff;font-weight:700;border-left:3px solid #5563e8}
+.s-card{background:#2c2d4a;border-radius:10px;padding:22px 24px;border:1px solid #363758}
+.s-card-title{font-size:16px;font-weight:700;color:#e0e0f0;margin-bottom:4px}
+.s-label{font-size:11px;font-weight:700;color:#6b6c8a;letter-spacing:.06em;margin-bottom:6px;margin-top:2px}
+.s-input{width:100%;background:#1e1f35;border:1px solid #4a4b68;border-radius:8px;padding:10px 14px;font-size:13px;color:#e0e0f0;outline:none;box-sizing:border-box;transition:border .2s}
+.s-input:focus{border-color:#5563e8}
+.s-btn-blue{background:#5563e8;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s}
+.s-btn-blue:hover{background:#4451d4}
+.s-btn-outline{background:none;color:#9898b0;border:1px solid #4a4b68;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.s-btn-outline:hover{border-color:#5563e8;color:#e0e0f0}
+.s-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #363758}
+.s-toggle{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0}
+.s-toggle input{opacity:0;width:0;height:0}
+.s-toggle-slider{position:absolute;cursor:pointer;inset:0;background:#4a4b68;border-radius:24px;transition:.3s}
+.s-toggle-slider:before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.s-toggle input:checked+.s-toggle-slider{background:#5563e8}
+.s-toggle input:checked+.s-toggle-slider:before{transform:translateX(20px)}
 .btn-dark{background:#1a1b2e;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
 .btn-green{background:#22c55e;color:#fff;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer}
 .btn-blue-grad{background:linear-gradient(135deg,#5563e8,#38bdf8);color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
@@ -349,6 +369,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
   </a>
   <a class="nav-item" data-page="route-map" href="javascript:void(0)">
     <i class="fa-solid fa-route"></i> Route Map
+  </a>
+  <div class="nav-section-label" style="margin-top:8px">System</div>
+  <a class="nav-item" data-page="settings" href="javascript:void(0)">
+    <i class="fa-solid fa-gear"></i> Settings
   </a>
 </nav>
 
@@ -2042,6 +2066,253 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
       </div>
     </div>
 
+    <!-- ═══════════════════════════
+         SETTINGS
+    ═══════════════════════════ -->
+    <div id="page-settings" class="page dark-page" style="overflow-y:auto">
+      <div style="display:grid;grid-template-columns:220px 1fr;height:100%;min-height:100%">
+
+        <!-- LEFT SIDEBAR -->
+        <div style="border-right:1px solid #363758;padding:20px 0;display:flex;flex-direction:column;gap:2px;background:#252640">
+          <div style="font-size:11px;font-weight:700;color:#5a5b78;text-transform:uppercase;letter-spacing:.08em;padding:0 16px 10px">Settings</div>
+          <a class="settings-nav active" onclick="settingsShow('s-profile',this)">👤 Profile</a>
+          <a class="settings-nav" onclick="settingsShow('s-company',this)">🗂 Company</a>
+          <a class="settings-nav" onclick="settingsShow('s-notifications',this)">🔔 Notifications</a>
+          <a class="settings-nav" onclick="settingsShow('s-users',this)">👥 Users</a>
+          <a class="settings-nav" onclick="settingsShow('s-data',this)">🗄 Data &amp; Export</a>
+          <a class="settings-nav" onclick="settingsShow('s-gcal',this)">📅 Google Calendar</a>
+          <a class="settings-nav" onclick="settingsShow('s-apikeys',this)">🔑 API Keys</a>
+          <a class="settings-nav" onclick="settingsShow('s-appearance',this)">🎨 Appearance</a>
+        </div>
+
+        <!-- RIGHT CONTENT -->
+        <div style="padding:28px 32px;overflow-y:auto;display:flex;flex-direction:column;gap:20px">
+
+          <!-- PROFILE -->
+          <div id="s-profile" class="s-panel">
+            <div class="s-card">
+              <div class="s-card-title">Profile Settings</div>
+              <div style="font-size:13px;color:#9898b0;margin-bottom:18px">Update your login credentials and display name.</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+                <div><div class="s-label">DISPLAY NAME</div><input id="s-disp-name" class="s-input" placeholder="Admin User"></div>
+                <div><div class="s-label">EMAIL</div><input id="s-email" class="s-input" placeholder="admin@hu3ze.com"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px">
+                <div><div class="s-label">NEW PASSWORD</div><input id="s-password" class="s-input" type="password" placeholder="Leave blank to keep current"></div>
+                <div><div class="s-label">ROLE</div><input class="s-input" value="Super Admin" disabled style="opacity:.5"></div>
+              </div>
+              <button class="s-btn-blue" onclick="settingsSaveProfile()">Save Profile</button>
+            </div>
+          </div>
+
+          <!-- COMPANY -->
+          <div id="s-company" class="s-panel" style="display:none">
+            <div class="s-card">
+              <div class="s-card-title">Company Details</div>
+              <div style="font-size:13px;color:#9898b0;margin-bottom:18px">Shown on reports and outbound communications.</div>
+              <div style="margin-bottom:14px"><div class="s-label">COMPANY NAME</div><input id="s-co-name" class="s-input" placeholder="HU3ZE Realty"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+                <div><div class="s-label">PHONE</div><input id="s-co-phone" class="s-input" placeholder="(555) 000-0000"></div>
+                <div><div class="s-label">EMAIL</div><input id="s-co-email" class="s-input" placeholder="info@hu3ze.com"></div>
+              </div>
+              <div style="margin-bottom:18px"><div class="s-label">ADDRESS</div><input id="s-co-addr" class="s-input" placeholder="123 Main St, City, State 00000"></div>
+              <button class="s-btn-blue" onclick="settingsSaveCompany()">Save Company</button>
+            </div>
+          </div>
+
+          <!-- NOTIFICATIONS -->
+          <div id="s-notifications" class="s-panel" style="display:none">
+            <div class="s-card">
+              <div class="s-card-title">Notification Preferences</div>
+              <div style="font-size:13px;color:#9898b0;margin-bottom:18px">Control when and how you receive alerts.</div>
+              <div class="s-toggle-row"><div><div style="font-size:14px;font-weight:600;color:#e0e0f0">New Lead Alert</div><div style="font-size:12px;color:#9898b0">Get notified when a new lead comes in</div></div><label class="s-toggle"><input type="checkbox" checked onchange="settingsSaveNotif()"><span class="s-toggle-slider"></span></label></div>
+              <div class="s-toggle-row"><div><div style="font-size:14px;font-weight:600;color:#e0e0f0">Daily Lead Summary Email</div><div style="font-size:12px;color:#9898b0">Morning digest of all active leads</div></div><label class="s-toggle"><input type="checkbox" checked onchange="settingsSaveNotif()"><span class="s-toggle-slider"></span></label></div>
+              <div class="s-toggle-row"><div><div style="font-size:14px;font-weight:600;color:#e0e0f0">Follow-up Reminders</div><div style="font-size:12px;color:#9898b0">Get reminded to call "Will Call" leads</div></div><label class="s-toggle"><input type="checkbox" checked onchange="settingsSaveNotif()"><span class="s-toggle-slider"></span></label></div>
+              <div class="s-toggle-row" style="border:none"><div><div style="font-size:14px;font-weight:600;color:#e0e0f0">Webhook Error Alerts</div><div style="font-size:12px;color:#9898b0">Alert when an inbound webhook fails</div></div><label class="s-toggle"><input type="checkbox" onchange="settingsSaveNotif()"><span class="s-toggle-slider"></span></label></div>
+            </div>
+          </div>
+
+          <!-- USERS -->
+          <div id="s-users" class="s-panel" style="display:none">
+            <div class="s-card" style="margin-bottom:16px">
+              <div class="s-card-title">👥 Team Members</div>
+              <div style="font-size:13px;color:#9898b0;margin-bottom:16px">Invite your team. They'll receive an email with their login credentials.</div>
+              <div id="s-users-list">
+                <div style="display:flex;align-items:center;justify-content:space-between;background:#363758;border-radius:8px;padding:14px 16px">
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <div style="width:36px;height:36px;border-radius:50%;background:#5563e8;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff">AU</div>
+                    <div><div style="font-size:14px;font-weight:600;color:#e0e0f0">Admin User</div><div style="font-size:12px;color:#9898b0">admin@hu3ze.com · Super Admin</div></div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px;color:#10b981;font-size:12px;font-weight:600"><i class="fa-solid fa-check-circle"></i> Active</div>
+                </div>
+              </div>
+            </div>
+            <div class="s-card">
+              <div class="s-card-title">✉️ Invite a New User</div>
+              <div style="font-size:13px;color:#9898b0;margin-bottom:16px">Fill in their details — we'll add them to your team.</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+                <div><div class="s-label">FULL NAME</div><input id="s-inv-name" class="s-input" placeholder="Jane Smith"></div>
+                <div><div class="s-label">EMAIL ADDRESS</div><input id="s-inv-email" class="s-input" placeholder="jane@example.com"></div>
+              </div>
+              <div style="margin-bottom:18px"><div class="s-label">ROLE</div>
+                <select id="s-inv-role" class="s-input" style="cursor:pointer"><option>Agent</option><option>Admin</option><option>Super Admin</option><option>Viewer</option></select>
+              </div>
+              <button class="s-btn-blue" onclick="settingsSendInvite()">✉️ Send Invite</button>
+            </div>
+          </div>
+
+          <!-- DATA & EXPORT -->
+          <div id="s-data" class="s-panel" style="display:none">
+            <div class="s-card">
+              <div class="s-card-title">Data &amp; Export</div>
+              <div style="font-size:13px;color:#9898b0;margin-bottom:20px">Export your data or reset the CRM data.</div>
+              <div style="display:flex;gap:12px;flex-wrap:wrap">
+                <button class="s-btn-blue" onclick="settingsExportCSV()">🗂 Export Properties CSV</button>
+                <button class="s-btn-blue" onclick="settingsExportJSON()">🗂 Export JSON</button>
+                <button style="background:#7f1d1d;color:#fca5a5;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer" onclick="settingsClearAll()">🗑 Clear All Data</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- GOOGLE CALENDAR -->
+          <div id="s-gcal" class="s-panel" style="display:none">
+            <div class="s-card">
+              <div class="s-card-title">📅 Google Calendar Sync</div>
+              <div style="font-size:13px;color:#9898b0;margin-bottom:16px">Connect your Google Calendar so your events appear right inside the CRM calendar.</div>
+              <div style="background:#363758;border-radius:8px;padding:16px;margin-bottom:16px">
+                <div style="font-size:13px;font-weight:700;color:#e0e0f0;margin-bottom:10px">Setup (one-time · 2 minutes)</div>
+                <ol style="font-size:13px;color:#9898b0;margin:0;padding-left:18px;line-height:2">
+                  <li>Go to <a href="https://console.cloud.google.com" target="_blank" style="color:#5563e8">console.cloud.google.com</a> → your existing project</li>
+                  <li>Search for <strong style="color:#e0e0f0">Google Calendar API</strong> → Enable it</li>
+                  <li>Use the same OAuth Client ID you already created (or make a new one)</li>
+                  <li>Make sure your domain is in Authorized JavaScript origins</li>
+                  <li>Paste your Client ID below and click Connect</li>
+                </ol>
+              </div>
+              <div class="s-label">GOOGLE OAUTH CLIENT ID</div>
+              <div style="display:flex;gap:10px;margin-top:6px">
+                <input id="s-gcal-id" class="s-input" placeholder="xxxxxxxxxx.apps.googleusercontent.com" style="flex:1">
+                <button class="s-btn-blue" onclick="settingsSaveGcal()">Connect Calendar</button>
+              </div>
+              <div style="font-size:12px;color:#6b6c8a;margin-top:8px">Already set up Gmail OAuth? You can use the exact same Client ID here.</div>
+            </div>
+          </div>
+
+          <!-- API KEYS -->
+          <div id="s-apikeys" class="s-panel" style="display:none">
+            <div class="s-card" style="margin-bottom:0">
+              <div class="s-card-title">🔑 API Keys &amp; Integrations</div>
+              <div style="font-size:13px;color:#9898b0">All your API keys in one place. Set them once — the CRM remembers them permanently.</div>
+            </div>
+            <!-- Google Maps -->
+            <div class="s-card">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+                <div style="font-size:15px;font-weight:700;color:#e0e0f0">🗺 Google Maps API Key</div>
+                <span id="s-maps-saved" style="display:none;background:#d1fae5;color:#065f46;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px">✓ Saved</span>
+              </div>
+              <div style="font-size:13px;color:#9898b0;margin-bottom:12px">Unlocks full Street View and map embeds on the Route Map page.</div>
+              <div style="background:#363758;border-radius:8px;padding:14px;margin-bottom:14px;font-size:13px;color:#9898b0;line-height:1.9">
+                1. Go to <a href="https://console.cloud.google.com" target="_blank" style="color:#5563e8">console.cloud.google.com</a> → your project<br>
+                2. Enable <strong style="color:#e0e0f0">Maps Embed API</strong><br>
+                3. Credentials → Create API Key<br>
+              </div>
+              <div style="display:flex;gap:10px">
+                <input id="s-maps-key" class="s-input" placeholder="AIza..." style="flex:1">
+                <button class="s-btn-blue" onclick="settingsSaveKey('maps')">Save Key</button>
+                <button class="s-btn-outline" onclick="settingsClearKey('maps')">Clear</button>
+              </div>
+            </div>
+            <!-- Gmail OAuth -->
+            <div class="s-card">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+                <div style="font-size:15px;font-weight:700;color:#e0e0f0">📧 Gmail OAuth Client ID</div>
+                <span id="s-gmail-saved" style="display:none;background:#d1fae5;color:#065f46;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px">✓ Saved</span>
+              </div>
+              <div style="font-size:13px;color:#9898b0;margin-bottom:12px">Required to connect Gmail on the Email page. Set it once — you'll never need to enter it again.</div>
+              <div style="background:#363758;border-radius:8px;padding:14px;margin-bottom:14px;font-size:13px;color:#9898b0;line-height:1.9">
+                1. Go to <a href="https://console.cloud.google.com" target="_blank" style="color:#5563e8">console.cloud.google.com</a> → New Project<br>
+                2. Enable <strong style="color:#e0e0f0">Gmail API</strong><br>
+                3. Credentials → Create OAuth Client ID → Web Application<br>
+                4. Paste your Client ID below
+              </div>
+              <div style="display:flex;gap:10px">
+                <input id="s-gmail-key" class="s-input" placeholder="xxxxxxxxxx.apps.googleusercontent.com" style="flex:1">
+                <button class="s-btn-blue" onclick="settingsSaveKey('gmail')">Save</button>
+                <button class="s-btn-outline" onclick="settingsClearKey('gmail')">Clear</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- APPEARANCE -->
+          <div id="s-appearance" class="s-panel" style="display:none">
+            <!-- Appearance header card -->
+            <div class="s-card">
+              <div class="s-card-title">Appearance</div>
+              <div style="font-size:13px;color:#9898b0">Choose an accent color for buttons, section titles, and highlights throughout the CRM.</div>
+            </div>
+            <!-- Color Mode -->
+            <div class="s-card">
+              <div class="s-card-title">Color Mode</div>
+              <div style="font-size:13px;color:#9898b0;margin-bottom:18px">Choose a background theme for the entire CRM. All text automatically adjusts for readability.</div>
+              <div style="display:flex;gap:28px;align-items:flex-end;margin-bottom:16px">
+                <div onclick="settingsSetMode('dark')" style="text-align:center;cursor:pointer">
+                  <div id="mode-dark" style="width:56px;height:56px;border-radius:50%;background:#1a1a2e;border:3px solid #5563e8;margin:0 auto 8px"></div>
+                  <div style="font-size:12px;font-weight:700;color:#e0e0f0">DARK</div>
+                </div>
+                <div onclick="settingsSetMode('light')" style="text-align:center;cursor:pointer">
+                  <div id="mode-light" style="width:56px;height:56px;border-radius:50%;background:#f0f1f8;border:3px solid transparent;margin:0 auto 8px"></div>
+                  <div style="font-size:12px;font-weight:700;color:#e0e0f0">LIGHT</div>
+                </div>
+                <div onclick="settingsSetMode('graphite')" style="text-align:center;cursor:pointer">
+                  <div id="mode-graphite" style="width:56px;height:56px;border-radius:50%;background:#2d2d3b;border:3px solid transparent;margin:0 auto 8px"></div>
+                  <div style="font-size:12px;font-weight:700;color:#e0e0f0">GRAPHITE</div>
+                </div>
+              </div>
+              <button class="s-btn-outline" onclick="settingsSetMode('dark')">↺ Reset to Default Dark</button>
+            </div>
+            <!-- Accent Color -->
+            <div class="s-card">
+              <div class="s-card-title">Accent Color</div>
+              <div style="display:flex;align-items:flex-start;gap:24px;margin-top:8px">
+                <div>
+                  <div id="s-accent-preview" style="width:56px;height:56px;border-radius:50%;background:#5563e8;cursor:pointer;border:3px solid #fff" onclick="document.getElementById('s-accent-picker').click()" title="Custom color"></div>
+                  <div style="font-size:11px;color:#9898b0;margin-top:6px;text-align:center">Custom color</div>
+                  <input type="color" id="s-accent-picker" style="display:none" oninput="settingsSetAccent(this.value)">
+                </div>
+                <div>
+                  <div style="font-size:12px;color:#9898b0;margin-bottom:10px">Presets</div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;max-width:260px">
+                    <div onclick="settingsSetAccent('#c8a44a')" style="width:36px;height:36px;border-radius:50%;background:#c8a44a;cursor:pointer"></div>
+                    <div onclick="settingsSetAccent('#e8622a')" style="width:36px;height:36px;border-radius:50%;background:#e8622a;cursor:pointer"></div>
+                    <div onclick="settingsSetAccent('#5563e8')" style="width:36px;height:36px;border-radius:50%;background:#5563e8;cursor:pointer;border:3px solid #fff"></div>
+                    <div onclick="settingsSetAccent('#9b59e8')" style="width:36px;height:36px;border-radius:50%;background:#9b59e8;cursor:pointer"></div>
+                    <div onclick="settingsSetAccent('#22c55e')" style="width:36px;height:36px;border-radius:50%;background:#22c55e;cursor:pointer"></div>
+                    <div onclick="settingsSetAccent('#ef4444')" style="width:36px;height:36px;border-radius:50%;background:#ef4444;cursor:pointer"></div>
+                    <div onclick="settingsSetAccent('#06b6d4')" style="width:36px;height:36px;border-radius:50%;background:#06b6d4;cursor:pointer"></div>
+                    <div onclick="settingsSetAccent('#f59e0b')" style="width:36px;height:36px;border-radius:50%;background:#f59e0b;cursor:pointer"></div>
+                    <div onclick="settingsSetAccent('#ec4899')" style="width:36px;height:36px;border-radius:50%;background:#ec4899;cursor:pointer"></div>
+                    <div onclick="settingsSetAccent('#f0f0f0')" style="width:36px;height:36px;border-radius:50%;background:#f0f0f0;cursor:pointer"></div>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top:16px"><button class="s-btn-outline" onclick="settingsSetAccent('#5563e8')">↺ Reset to Default Blue</button></div>
+            </div>
+            <!-- Preview -->
+            <div class="s-card">
+              <div class="s-card-title">Preview</div>
+              <div style="font-size:13px;color:#9898b0;margin-bottom:16px">Changes apply instantly across the whole CRM — buttons, section titles, and highlights.</div>
+              <div style="display:flex;align-items:center;gap:16px">
+                <button id="s-preview-btn" style="padding:9px 22px;border-radius:8px;border:none;font-size:14px;font-weight:700;color:#fff;background:#5563e8;cursor:pointer">Primary Button</button>
+                <span id="s-preview-section" style="font-size:13px;font-weight:700;color:#5563e8;text-transform:uppercase;letter-spacing:.06em">Section Title</span>
+                <span id="s-preview-accent" style="font-size:15px;font-weight:600;color:#5563e8">Accent Text</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end right content -->
+      </div>
+    </div><!-- end page-settings -->
+
   </div><!-- end page-container -->
 </div><!-- end main -->
 
@@ -2077,7 +2348,7 @@ function updateCities(citySelId, state) {
 // ═══════════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════════
-const DARK_PAGES = new Set(['dashboard','sales-board','properties','email','swag','workspace','kanban','chat','route-maps','route-map']);
+const DARK_PAGES = new Set(['dashboard','sales-board','properties','email','swag','workspace','kanban','chat','route-maps','route-map','settings']);
 const LIGHT_PAGES = new Set(['news-feed','agents','buyers','sellers','active-listing','calendar','office','events','transactions']);
 
 const PAGE_TITLES = {
@@ -2120,6 +2391,7 @@ function navigate(page) {
   if (page === 'news-feed') nfInit();
   if (page === 'properties') propRenderTable();
   if (page === 'dashboard') propRenderDashEscrow();
+  if (page === 'settings') { settingsRenderUsers(); settingsApplyAccent(settingsAccent); }
   if (page === 'dashboard') initDashboardCharts();
   if (page === 'route-maps') initStreetView();
   if (page === 'route-map')  initRouteMap();
@@ -2174,6 +2446,247 @@ function togglePropDrop(dropId, triggerBtn) {
 // ═══════════════════════════════════════
 let toastT;
 // ═══════════════════════════════
+// ═══════════════════════════════
+// SETTINGS
+// ═══════════════════════════════
+function settingsShow(panelId, el) {
+  document.querySelectorAll('.s-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.settings-nav').forEach(n => n.classList.remove('active'));
+  document.getElementById(panelId).style.display = 'flex';
+  document.getElementById(panelId).style.flexDirection = 'column';
+  document.getElementById(panelId).style.gap = '16px';
+  if (el) el.classList.add('active');
+}
+
+// Profile
+function settingsSaveProfile() {
+  const name = document.getElementById('s-disp-name')?.value.trim();
+  const email = document.getElementById('s-email')?.value.trim();
+  if (name) { try { localStorage.setItem('hu3ze_profile_name', name); localStorage.setItem('hu3ze_profile_email', email||''); } catch(e){} }
+  showToast('Profile saved!');
+}
+
+// Company
+function settingsSaveCompany() {
+  const data = { name: document.getElementById('s-co-name')?.value, phone: document.getElementById('s-co-phone')?.value, email: document.getElementById('s-co-email')?.value, addr: document.getElementById('s-co-addr')?.value };
+  try { localStorage.setItem('hu3ze_company', JSON.stringify(data)); } catch(e){}
+  showToast('Company details saved!');
+}
+
+// Notifications (just persist toggle states)
+function settingsSaveNotif() {
+  const toggles = document.querySelectorAll('#s-notifications .s-toggle input');
+  const states = Array.from(toggles).map(t => t.checked);
+  try { localStorage.setItem('hu3ze_notif', JSON.stringify(states)); } catch(e){}
+}
+
+// Users
+let settingsUsers = JSON.parse(localStorage.getItem('hu3ze_users') || '[{"name":"Admin User","email":"admin@hu3ze.com","role":"Super Admin","initials":"AU"}]');
+function settingsRenderUsers() {
+  const list = document.getElementById('s-users-list');
+  if (!list) return;
+  list.innerHTML = settingsUsers.map((u,i) => `
+    <div style="display:flex;align-items:center;justify-content:space-between;background:#363758;border-radius:8px;padding:14px 16px;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:36px;height:36px;border-radius:50%;background:#5563e8;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff">${u.initials}</div>
+        <div><div style="font-size:14px;font-weight:600;color:#e0e0f0">${u.name}</div><div style="font-size:12px;color:#9898b0">${u.email} · ${u.role}</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="color:#10b981;font-size:12px;font-weight:600"><i class="fa-solid fa-check-circle"></i> Active</div>
+        ${i>0?`<button onclick="settingsRemoveUser(${i})" style="background:none;border:none;color:#6b6c8a;cursor:pointer;font-size:13px" title="Remove"><i class="fa-solid fa-xmark"></i></button>`:''}
+      </div>
+    </div>`).join('');
+}
+function settingsSendInvite() {
+  const name = document.getElementById('s-inv-name')?.value.trim();
+  const email = document.getElementById('s-inv-email')?.value.trim();
+  const role = document.getElementById('s-inv-role')?.value;
+  if (!name || !email) { showToast('Name and email are required.'); return; }
+  const initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  settingsUsers.push({ name, email, role, initials });
+  try { localStorage.setItem('hu3ze_users', JSON.stringify(settingsUsers)); } catch(e){}
+  settingsRenderUsers();
+  document.getElementById('s-inv-name').value = '';
+  document.getElementById('s-inv-email').value = '';
+  showToast(`Invite sent to ${email}!`);
+}
+function settingsRemoveUser(i) {
+  if (!confirm('Remove this user?')) return;
+  settingsUsers.splice(i,1);
+  try { localStorage.setItem('hu3ze_users', JSON.stringify(settingsUsers)); } catch(e){}
+  settingsRenderUsers();
+}
+
+// Data & Export
+function settingsExportCSV() {
+  const props = JSON.parse(localStorage.getItem('hu3ze_props') || '[]');
+  if (!props.length) { showToast('No properties to export.'); return; }
+  const headers = ['MLS','Street','City','State','Zip','Type','Status','Price','Agent','Date'];
+  const rows = props.map(p => [p.mls,p.street,p.city,p.state,p.zip,p.propType,p.status,p.price,p.agent,p.date].map(v=>`"${v||''}"`).join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv); a.download = 'hu3ze_properties.csv'; a.click();
+}
+function settingsExportJSON() {
+  const data = { properties: JSON.parse(localStorage.getItem('hu3ze_props')||'[]'), company: JSON.parse(localStorage.getItem('hu3ze_company')||'{}') };
+  const a = document.createElement('a'); a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data,null,2)); a.download = 'hu3ze_export.json'; a.click();
+}
+function settingsClearAll() {
+  if (!confirm('This will clear all property and CRM data. Are you sure?')) return;
+  ['hu3ze_props','hu3ze_nfPosts','hu3ze_company'].forEach(k => localStorage.removeItem(k));
+  propEntries = []; propRenderTable();
+  nfPosts = {}; nfRenderFeed();
+  showToast('All data cleared.');
+}
+
+// Google Calendar
+function settingsSaveGcal() {
+  const val = document.getElementById('s-gcal-id')?.value.trim();
+  if (!val) { showToast('Please enter a Client ID.'); return; }
+  try { localStorage.setItem('hu3ze_gcal_id', val); } catch(e){}
+  showToast('Google Calendar connected!');
+}
+
+// API Keys
+function settingsSaveKey(type) {
+  const val = document.getElementById(`s-${type}-key`)?.value.trim();
+  if (!val) { showToast('Please enter a key.'); return; }
+  try { localStorage.setItem(`hu3ze_key_${type}`, val); } catch(e){}
+  const badge = document.getElementById(`s-${type}-saved`);
+  if (badge) badge.style.display = 'inline-block';
+  showToast('Key saved!');
+}
+function settingsClearKey(type) {
+  const inp = document.getElementById(`s-${type}-key`);
+  if (inp) inp.value = '';
+  try { localStorage.removeItem(`hu3ze_key_${type}`); } catch(e){}
+  const badge = document.getElementById(`s-${type}-saved`);
+  if (badge) badge.style.display = 'none';
+  showToast('Key cleared.');
+}
+
+// Appearance — accent color applied via CSS variable
+let settingsAccent = localStorage.getItem('hu3ze_accent') || '#5563e8';
+function settingsApplyAccent(color) {
+  document.documentElement.style.setProperty('--accent', color);
+  // Update all blue-grad buttons, active nav, etc.
+  document.querySelectorAll('.btn-blue-grad,.btn-add,.btn-post,.s-btn-blue').forEach(el => el.style.setProperty('background', color, 'important'));
+  document.querySelectorAll('.nav-item.active').forEach(el => el.style.borderLeftColor = color);
+  const preview = document.getElementById('s-accent-preview');
+  if (preview) preview.style.background = color;
+  const prevBtn = document.getElementById('s-preview-btn');
+  if (prevBtn) prevBtn.style.background = color;
+  const prevSec = document.getElementById('s-preview-section');
+  if (prevSec) prevSec.style.color = color;
+  const prevAcc = document.getElementById('s-preview-accent');
+  if (prevAcc) prevAcc.style.color = color;
+}
+function settingsSetAccent(color) {
+  settingsAccent = color;
+  try { localStorage.setItem('hu3ze_accent', color); } catch(e){}
+  settingsApplyAccent(color);
+  // Unselect all preset borders
+  document.querySelectorAll('#s-appearance [onclick^="settingsSetAccent"]').forEach(el => el.style.border = 'none');
+  showToast('Accent color updated!');
+}
+
+// Color Mode — injects a full CSS override so every page/card/nav changes
+function settingsApplyMode(mode) {
+  let old = document.getElementById('hu3ze-mode-style');
+  if (old) old.remove();
+
+  const themes = {
+    dark: '',  // default — no overrides needed
+    graphite: `
+      nav { background:#23232f !important; }
+      .page.dark-page { background:#2d2d3b !important; }
+      .dark-card { background:#38384a !important; }
+      .dark-inner { background:#2a2a38 !important; }
+      #main { background:#2d2d3b !important; }
+      .page-container { background:#2d2d3b !important; }
+      .dark-card-title { color:#e8e8f8 !important; }
+      .s-card { background:#38384a !important; border-color:#4a4a60 !important; }
+      #page-settings { background:#2d2d3b !important; }
+      #page-settings > div { background:#2d2d3b !important; }
+      #page-settings > div > div:first-child { background:#23232f !important; border-color:#4a4a60 !important; }
+    `,
+    light: `
+      nav { background:#ffffff !important; border-right:1px solid #e5e7ef !important; }
+      nav .nav-item { color:#374151 !important; }
+      nav .nav-item:hover { background:#f3f4f6 !important; }
+      nav .nav-item.active { background:#ede9fe !important; color:#5563e8 !important; border-left-color:#5563e8 !important; }
+      nav .nav-section-label { color:#9ca3af !important; }
+      .page.dark-page { background:#f0f1f8 !important; }
+      .dark-card { background:#ffffff !important; border:1px solid #e5e7eb !important; box-shadow:0 1px 4px rgba(0,0,0,.08) !important; }
+      .dark-inner { background:#f3f4f6 !important; border:1px solid #e5e7eb !important; }
+      .dark-card-title { color:#1a1a2e !important; }
+      .dark-page-title, .dark-card-sub { color:#374151 !important; }
+      #main { background:#f0f1f8 !important; }
+      .page-container { background:#f0f1f8 !important; }
+      table.data-table thead tr { background:#f9fafb !important; }
+      table.data-table th { color:#374151 !important; border-bottom:2px solid #e5e7eb !important; }
+      table.data-table td { color:#374151 !important; border-bottom:1px solid #f3f4f6 !important; }
+      .no-data { color:#9ca3af !important; }
+      .search-input { background:#f3f4f6 !important; color:#1a1a2e !important; border-color:#e5e7eb !important; }
+      .search-icon { color:#9ca3af !important; }
+      #page-dashboard { background:#f0f1f8 !important; }
+      .s-card { background:#ffffff !important; border-color:#e5e7eb !important; }
+      .s-input { background:#f3f4f6 !important; color:#1a1a2e !important; border-color:#e5e7eb !important; }
+      .s-label { color:#6b7280 !important; }
+      .s-card-title { color:#1a1a2e !important; }
+      .settings-nav { color:#374151 !important; }
+      .settings-nav:hover { background:#f3f4f6 !important; }
+      .settings-nav.active { background:#ede9fe !important; color:#5563e8 !important; }
+      #page-settings { background:#f0f1f8 !important; }
+      #page-settings > div > div:first-child { background:#ffffff !important; border-right:1px solid #e5e7eb !important; }
+      .dark-page .page-header { background:#ffffff !important; border-bottom:1px solid #e5e7eb !important; }
+      .dark-page .page-header-title { color:#1a1a2e !important; }
+      [style*="color:#e0e0f0"],[style*="color:#c8c8e0"],[style*="color:#9898b0"] { color:#374151 !important; }
+      [style*="background:#2c2d4a"],[style*="background:#363758"],[style*="background:#252640"],[style*="background:#1e1f35"] { background:#ffffff !important; }
+    `
+  };
+
+  if (mode !== 'dark') {
+    const style = document.createElement('style');
+    style.id = 'hu3ze-mode-style';
+    style.textContent = themes[mode] || '';
+    document.head.appendChild(style);
+  }
+
+  // Update mode selector circles
+  ['dark','light','graphite'].forEach(m => {
+    const el = document.getElementById('mode-'+m);
+    if (el) el.style.border = m===mode ? '3px solid #5563e8' : '3px solid transparent';
+  });
+}
+
+function settingsSetMode(mode) {
+  try { localStorage.setItem('hu3ze_mode', mode); } catch(e){}
+  settingsApplyMode(mode);
+  showToast(`Color mode: ${mode.charAt(0).toUpperCase()+mode.slice(1)}`);
+}
+
+// Init settings on page load
+(function initSettings() {
+  // Restore color mode
+  const savedMode = localStorage.getItem('hu3ze_mode') || 'dark';
+  settingsApplyMode(savedMode);
+  // Restore accent
+  settingsApplyAccent(settingsAccent);
+  // Restore saved form values
+  try {
+    const pn = localStorage.getItem('hu3ze_profile_name'); if (pn && document.getElementById('s-disp-name')) document.getElementById('s-disp-name').value = pn;
+    const pe = localStorage.getItem('hu3ze_profile_email'); if (pe && document.getElementById('s-email')) document.getElementById('s-email').value = pe;
+    const co = JSON.parse(localStorage.getItem('hu3ze_company')||'{}');
+    if (co.name) document.getElementById('s-co-name').value = co.name;
+    if (co.phone) document.getElementById('s-co-phone').value = co.phone;
+    if (co.email) document.getElementById('s-co-email').value = co.email;
+    if (co.addr) document.getElementById('s-co-addr').value = co.addr;
+    const mk = localStorage.getItem('hu3ze_key_maps'); if (mk) { document.getElementById('s-maps-key').value = mk; document.getElementById('s-maps-saved').style.display='inline-block'; }
+    const gk = localStorage.getItem('hu3ze_key_gmail'); if (gk) { document.getElementById('s-gmail-key').value = gk; document.getElementById('s-gmail-saved').style.display='inline-block'; }
+    const gi = localStorage.getItem('hu3ze_gcal_id'); if (gi && document.getElementById('s-gcal-id')) document.getElementById('s-gcal-id').value = gi;
+  } catch(e){}
+})();
+
 // ═══════════════════════════════
 // PROPERTIES
 // ═══════════════════════════════
