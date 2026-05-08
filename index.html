@@ -345,7 +345,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
     <i class="fa-regular fa-calendar"></i> Calendar
   </a>
   <a class="nav-item" data-page="route-maps" href="javascript:void(0)">
-    <i class="fa-solid fa-route"></i> Route Maps
+    <i class="fa-solid fa-street-view"></i> Street View
+  </a>
+  <a class="nav-item" data-page="route-map" href="javascript:void(0)">
+    <i class="fa-solid fa-route"></i> Route Map
   </a>
 </nav>
 
@@ -1677,112 +1680,189 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
     <!-- ═══════════════════════════
          ROUTE MAPS
     ═══════════════════════════ -->
-    <div id="page-route-maps" class="page dark-page" style="overflow:hidden;display:flex;flex-direction:column">
+    <!-- ═══════════════════════════
+         STREET VIEW EXPLORER
+    ═══════════════════════════ -->
+    <div id="page-route-maps" class="page dark-page" style="overflow:hidden;display:flex;flex-direction:column;height:100%">
 
-      <!-- Top Header Bar -->
-      <div style="background:#1e1f35;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid #2a2b40">
-        <div style="font-size:20px;font-weight:800;color:#fff;letter-spacing:.5px">
-          Route <span style="color:#5563e8">Map</span>
+      <!-- Page title header -->
+      <div style="background:#1e1f35;padding:16px 22px;flex-shrink:0;border-bottom:1px solid #2e2f50">
+        <div style="font-size:22px;font-weight:800;letter-spacing:.3px">
+          <span style="color:#fff">Street </span><span style="color:#3b82f6">View Explorer</span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex:1;overflow:hidden">
+
+        <!-- ── Left Panel ── -->
+        <div style="width:300px;min-width:300px;background:#1e1f35;display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid #2e2f50">
+
+          <!-- Search Address -->
+          <div style="padding:20px 18px 16px">
+            <div style="font-size:10px;font-weight:700;color:#9898b0;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+              <div style="height:1px;flex:1;background:#2e2f50"></div>
+              SEARCH ADDRESS
+              <div style="height:1px;flex:1;background:#2e2f50"></div>
+            </div>
+            <div style="font-size:10px;font-weight:600;color:#6b6c8a;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px">PROPERTY ADDRESS</div>
+            <input id="sv-addr-input" placeholder="2240 Ming Ave, Bakersfield CA 93304"
+              style="width:100%;background:#252640;border:1px solid #3a3b55;border-radius:8px;padding:10px 13px;font-size:13px;color:#e0e0f0;outline:none;box-sizing:border-box;margin-bottom:12px"
+              onkeydown="if(event.key==='Enter') svSearch()"/>
+            <button onclick="svSearch()"
+              style="width:100%;background:linear-gradient(135deg,#3b82f6,#4a6cf7);color:#fff;border:none;border-radius:8px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+              <i class="fa-solid fa-street-view"></i> Open Street View
+            </button>
+          </div>
+
+          <!-- Lead Addresses -->
+          <div style="padding:0 18px 20px">
+            <div style="font-size:10px;font-weight:700;color:#9898b0;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+              <div style="height:1px;flex:1;background:#2e2f50"></div>
+              QUICK — LEAD ADDRESSES
+              <div style="height:1px;flex:1;background:#2e2f50"></div>
+            </div>
+            <div id="sv-leads-list" style="display:flex;flex-direction:column;gap:1px;border-radius:8px;overflow:hidden;border:1px solid #2e2f50">
+              <!-- populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Right Panel ── -->
+        <div style="flex:1;display:flex;flex-direction:column;background:#181929;overflow:hidden">
+
+          <!-- Address bar -->
+          <div style="background:#1e1f35;border-bottom:1px solid #2e2f50;padding:10px 18px;display:flex;align-items:center;gap:12px">
+            <i class="fa-solid fa-map-pin" style="color:#ef4444;font-size:16px;flex-shrink:0"></i>
+            <span id="sv-addr-label" style="font-size:14px;font-weight:600;color:#e0e0f0;flex:1">Enter an address to explore</span>
+            <div style="display:flex;gap:0;border:1px solid #3a3b55;border-radius:7px;overflow:hidden">
+              <button id="sv-btn-map" onclick="svSetView('map')"
+                style="padding:7px 18px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:#4a6cf7;color:#fff;display:flex;align-items:center;gap:6px">
+                <i class="fa-solid fa-map"></i> Map
+              </button>
+              <button id="sv-btn-sv" onclick="svSetView('streetview')"
+                style="padding:7px 18px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:#252640;color:#9898b0;display:flex;align-items:center;gap:6px">
+                <i class="fa-solid fa-street-view" style="color:#f59e0b"></i> Street View
+              </button>
+            </div>
+          </div>
+
+          <!-- Map / iframe area -->
+          <div style="flex:1;position:relative;overflow:hidden">
+            <div id="sv-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#1e1f35">
+              <i class="fa-solid fa-street-view" style="font-size:60px;color:#3a3b55"></i>
+              <div style="font-size:16px;font-weight:600;color:#5a5b78">Enter an address or click a lead to view the map</div>
+            </div>
+            <iframe id="sv-map-iframe" src="" style="width:100%;height:100%;border:none;display:none" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         ROUTE MAP
+    ═══════════════════════════ -->
+    <div id="page-route-map" class="page dark-page" style="overflow:hidden;display:flex;flex-direction:column;height:100%">
+
+      <!-- Top header -->
+      <div style="background:#1e1f35;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid #2a2b40">
+        <div style="font-size:22px;font-weight:800;letter-spacing:.3px">
+          <span style="color:#fff">Route </span><span style="color:#4a6cf7">Map</span>
         </div>
         <div style="display:flex;gap:10px">
-          <button onclick="showRoutePanel('addresses')" id="rm-btn-addr" style="background:#1e1f35;border:1px solid #4a4b68;color:#fff;border-radius:7px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .15s">
+          <button onclick="rmShowPanel('addresses')" id="rmp-btn-addr"
+            style="background:#4a6cf7;border:1px solid #4a6cf7;color:#fff;border-radius:7px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px">
             📍 Addresses
           </button>
-          <button onclick="showRoutePanel('saved')" id="rm-btn-saved" style="background:#1e1f35;border:1px solid #4a4b68;color:#9898b0;border-radius:7px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .15s">
+          <button onclick="rmShowPanel('saved')" id="rmp-btn-saved"
+            style="background:#252640;border:1px solid #4a4b68;color:#9898b0;border-radius:7px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px">
             🗺️ Saved Routes
           </button>
         </div>
       </div>
 
-      <!-- Body: left panel + map -->
-      <div style="display:grid;grid-template-columns:350px 1fr;flex:1;overflow:hidden">
+      <!-- Body -->
+      <div style="display:flex;flex:1;overflow:hidden">
 
         <!-- LEFT PANEL -->
-        <div style="background:#252640;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px">
+        <div style="width:345px;min-width:345px;background:#252640;overflow-y:auto;padding:16px 14px;display:flex;flex-direction:column;gap:10px;border-right:1px solid #2a2b40">
 
-          <!-- Addresses Panel -->
-          <div id="rm-panel-addresses">
+          <!-- Addresses panel -->
+          <div id="rmp-panel-addresses">
 
             <!-- Start Address -->
-            <div style="background:#2c2d4a;border:1px solid #363758;border-radius:8px;padding:14px 16px;margin-bottom:12px">
-              <div style="font-size:11px;font-weight:700;color:#5563e8;letter-spacing:.1em;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+            <div style="background:#1e1f35;border:1px solid #363758;border-radius:10px;padding:14px 16px;margin-bottom:10px">
+              <div style="font-size:10px;font-weight:700;color:#4a6cf7;letter-spacing:.12em;margin-bottom:10px;display:flex;align-items:center;gap:8px">
                 START ADDRESS <div style="flex:1;height:1px;background:#363758"></div>
               </div>
-              <input id="rm-start" class="form-input" style="background:#363758;border-color:#3a3b55;color:#e0e0f0;width:100%" placeholder="Your starting location..."/>
+              <input id="rmp-start" placeholder="Your starting location..."
+                style="width:100%;background:#252640;border:1px solid #3a3b55;border-radius:8px;padding:10px 13px;font-size:13px;color:#e0e0f0;outline:none;box-sizing:border-box"/>
             </div>
 
             <!-- Stops -->
-            <div style="background:#2c2d4a;border:1px solid #363758;border-radius:8px;padding:14px 16px;margin-bottom:12px">
-              <div style="font-size:11px;font-weight:700;color:#5563e8;letter-spacing:.1em;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+            <div style="background:#1e1f35;border:1px solid #363758;border-radius:10px;padding:14px 16px;margin-bottom:10px">
+              <div style="font-size:10px;font-weight:700;color:#4a6cf7;letter-spacing:.12em;margin-bottom:10px;display:flex;align-items:center;gap:8px">
                 STOPS <div style="flex:1;height:1px;background:#363758"></div>
               </div>
-              <div id="rm-stops-list" style="display:flex;flex-direction:column;gap:8px">
-                <div class="rm-stop-row" style="display:flex;align-items:center;gap:8px">
-                  <div style="width:22px;height:22px;background:#363758;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#9898b0;flex-shrink:0">1</div>
-                  <input class="rm-stop-input form-input" style="flex:1;background:#363758;border-color:#3a3b55;color:#e0e0f0" placeholder="Address stop 1..."/>
-                  <button onclick="removeStop(this)" style="background:none;border:none;color:#6b6c8a;font-size:16px;cursor:pointer;padding:2px 4px;line-height:1">&times;</button>
+              <div id="rmp-stops-list" style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="width:24px;height:24px;background:#363758;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#9898b0;flex-shrink:0">1</span>
+                  <input class="rmp-stop-inp" placeholder="Address stop 1..."
+                    style="flex:1;background:#252640;border:1px solid #3a3b55;border-radius:7px;padding:9px 12px;font-size:13px;color:#e0e0f0;outline:none"/>
+                  <button onclick="rmpRemoveStop(this)" style="background:none;border:none;color:#6b6c8a;font-size:18px;cursor:pointer;padding:2px 4px;line-height:1">&times;</button>
                 </div>
               </div>
-              <button onclick="addStop()" style="width:100%;margin-top:10px;background:#363758;border:1px solid #3a3b55;border-radius:6px;padding:8px;color:#9898b0;font-size:13px;cursor:pointer;text-align:center">+ Add Stop</button>
+              <button onclick="rmpAddStop()" style="width:100%;margin-top:10px;background:#252640;border:1px solid #3a3b55;border-radius:7px;padding:9px;color:#9898b0;font-size:13px;cursor:pointer;text-align:center;transition:background .15s"
+                onmouseenter="this.style.background='#2e2f50'" onmouseleave="this.style.background='#252640'">+ Add Stop</button>
             </div>
 
             <!-- Lead Addresses -->
-            <div style="background:#2c2d4a;border:1px solid #363758;border-radius:8px;padding:14px 16px;margin-bottom:12px">
-              <div style="font-size:11px;font-weight:700;color:#5563e8;letter-spacing:.1em;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+            <div style="background:#1e1f35;border:1px solid #363758;border-radius:10px;padding:14px 16px;margin-bottom:10px">
+              <div style="font-size:10px;font-weight:700;color:#4a6cf7;letter-spacing:.12em;margin-bottom:10px;display:flex;align-items:center;gap:8px">
                 LEAD ADDRESSES <div style="flex:1;height:1px;background:#363758"></div>
               </div>
-              <div style="display:flex;flex-direction:column;gap:2px;max-height:200px;overflow-y:auto" id="rm-leads">
-                <div class="rm-lead-item" onclick="addLeadAsStop(this)" data-addr="1428 Oak St" style="background:#363758;border-radius:6px;padding:10px 12px;cursor:pointer;transition:background .15s;border:1px solid transparent">
-                  <div style="font-size:13px;font-weight:600;color:#e0e0f0">Maria Garcia</div>
-                  <div style="font-size:11px;color:#9898b0;margin-top:2px">1428 Oak St</div>
-                </div>
-                <div class="rm-lead-item" onclick="addLeadAsStop(this)" data-addr="3311 Rosedale Hwy" style="background:#363758;border-radius:6px;padding:10px 12px;cursor:pointer;transition:background .15s;border:1px solid transparent">
-                  <div style="font-size:13px;font-weight:600;color:#e0e0f0">James Turner</div>
-                  <div style="font-size:11px;color:#9898b0;margin-top:2px">3311 Rosedale Hwy</div>
-                </div>
-                <div class="rm-lead-item" onclick="addLeadAsStop(this)" data-addr="815 Niles St" style="background:#363758;border-radius:6px;padding:10px 12px;cursor:pointer;transition:background .15s;border:1px solid transparent">
-                  <div style="font-size:13px;font-weight:600;color:#e0e0f0">Sandra Lopez</div>
-                  <div style="font-size:11px;color:#9898b0;margin-top:2px">815 Niles St</div>
-                </div>
-                <div class="rm-lead-item" onclick="addLeadAsStop(this)" data-addr="2240 Ming Ave" style="background:#363758;border-radius:6px;padding:10px 12px;cursor:pointer;transition:background .15s;border:1px solid transparent">
-                  <div style="font-size:13px;font-weight:600;color:#e0e0f0">Derek Morrison</div>
-                  <div style="font-size:11px;color:#9898b0;margin-top:2px">2240 Ming Ave</div>
-                </div>
+              <div id="rmp-leads" style="display:flex;flex-direction:column;gap:2px;max-height:220px;overflow-y:auto">
+                <!-- populated by JS -->
               </div>
             </div>
 
             <!-- Action buttons -->
-            <button onclick="generateRoute()" style="width:100%;background:linear-gradient(135deg,#4a6cf7,#5563e8);color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px">
+            <button onclick="rmpGenerate()"
+              style="width:100%;background:linear-gradient(135deg,#4a6cf7,#5563e8);color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px">
               🗺️ Generate Best Route
             </button>
-            <button onclick="saveRoute()" style="width:100%;background:#2c2d4a;color:#c8c8e0;border:1px solid #363758;border-radius:8px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:7px">
+            <button onclick="rmpSave()"
+              style="width:100%;background:#1e1f35;color:#c8c8e0;border:1px solid #363758;border-radius:8px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:7px">
               💾 Save This Route
             </button>
-            <button onclick="clearRoute()" style="width:100%;background:#2c2d4a;color:#9898b0;border:1px solid #363758;border-radius:8px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px">
+            <button onclick="rmpClear()"
+              style="width:100%;background:#1e1f35;color:#9898b0;border:1px solid #363758;border-radius:8px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px">
               ✕ Clear All
             </button>
           </div>
 
-          <!-- Saved Routes Panel (hidden by default) -->
-          <div id="rm-panel-saved" style="display:none">
-            <div style="background:#2c2d4a;border:1px solid #363758;border-radius:8px;padding:20px;text-align:center;color:#9898b0;font-size:13px">
-              <div style="font-size:28px;margin-bottom:10px">🗺️</div>
-              No saved routes yet.<br/>Generate and save a route to see it here.
+          <!-- Saved Routes panel -->
+          <div id="rmp-panel-saved" style="display:none">
+            <div id="rmp-saved-list" style="display:flex;flex-direction:column;gap:8px">
+              <div style="background:#1e1f35;border:1px solid #363758;border-radius:10px;padding:24px;text-align:center;color:#9898b0;font-size:13px">
+                <div style="font-size:30px;margin-bottom:10px">🗺️</div>
+                No saved routes yet.<br/>Generate and save a route to see it here.
+              </div>
             </div>
           </div>
 
         </div>
 
-        <!-- RIGHT: Map -->
-        <div style="position:relative;background:#2c2d4a;overflow:hidden">
-          <!-- Placeholder shown before route is generated -->
-          <div id="rm-map-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:1;background:#2c2d4a;pointer-events:none">
+        <!-- RIGHT: Google Maps -->
+        <div style="flex:1;position:relative;background:#252640;overflow:hidden;margin:14px;border-radius:10px;border:1px solid #363758">
+          <!-- Placeholder -->
+          <div id="rmp-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#252640;border-radius:10px">
             <div style="font-size:52px">🛣️</div>
-            <div style="font-size:16px;font-weight:700;color:#e0e0f0">Route Map</div>
-            <div style="font-size:13px;color:#9898b0;text-align:center;line-height:1.6;max-width:260px">Enter a start address and stops, then hit<br/>Generate Best Route.</div>
+            <div style="font-size:17px;font-weight:700;color:#e0e0f0">Route Map</div>
+            <div style="font-size:13px;color:#9898b0;text-align:center;line-height:1.7;max-width:280px">Enter a start address and stops, then hit<br/>Generate Best Route.</div>
           </div>
-          <!-- Google Maps iframe (hidden until route generated) -->
-          <iframe id="rm-gmap" src="" style="width:100%;height:100%;border:none;display:none" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <!-- Google Maps iframe — fills the box when route is generated -->
+          <iframe id="rmp-gmap" src="" style="position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:10px;display:none" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
 
       </div>
@@ -1823,7 +1903,7 @@ function updateCities(citySelId, state) {
 // ═══════════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════════
-const DARK_PAGES = new Set(['dashboard','sales-board','properties','email','swag','workspace','kanban','chat','route-maps']);
+const DARK_PAGES = new Set(['dashboard','sales-board','properties','email','swag','workspace','kanban','chat','route-maps','route-map']);
 const LIGHT_PAGES = new Set(['news-feed','agents','buyers','sellers','active-listing','calendar','office','events','transactions']);
 
 const PAGE_TITLES = {
@@ -1831,7 +1911,7 @@ const PAGE_TITLES = {
   'email':'Email','transactions':'Transactions','news-feed':'News Feed',
   'office':'Office','swag':'SWAG','events':'Events','agents':'Agents',
   'workspace':'Workspace','buyers':'Buyers','sellers':'Sellers','kanban':'Kanban',
-  'active-listing':'Active Listing','chat':'Chat','calendar':'Calendar','route-maps':'Route Maps'
+  'active-listing':'Active Listing','chat':'Chat','calendar':'Calendar','route-maps':'Street View','route-map':'Route Map'
 };
 
 function navigate(page) {
@@ -1857,7 +1937,8 @@ function navigate(page) {
   if (page === 'calendar') renderCalendars();
   if (page === 'sales-board') initSalesBoardCharts();
   if (page === 'dashboard') initDashboardCharts();
-  if (page === 'route-maps') initRouteMap();
+  if (page === 'route-maps') initStreetView();
+  if (page === 'route-map')  initRouteMap();
 }
 
 document.querySelectorAll('.nav-item[data-page]').forEach(item => {
@@ -2046,21 +2127,6 @@ function initSalesBoardCharts() {
       } catch(e) { mapEl.innerHTML = '<div style="background:#363758;height:100%;display:flex;align-items:center;justify-content:center;color:#9898b0;font-size:13px">Map unavailable</div>'; }
     }
   }
-}
-
-// ═══════════════════════════════════════
-// ROUTE MAP
-// ═══════════════════════════════════════
-let routeMapInited = false;
-function initRouteMap() {
-  if (routeMapInited) return;
-  const el = document.getElementById('routeMap');
-  if (!el) return;
-  try {
-    const map = L.map('routeMap').setView([34.05,-118.24], 10);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
-    routeMapInited = true;
-  } catch(e) {}
 }
 
 // ═══════════════════════════════════════
@@ -2324,7 +2390,7 @@ function sendChat() {
 }
 
 // ═══════════════════════════════════════
-// ROUTE MAPS FUNCTIONS
+// ROUTE MAP (stub — kept for any rm-* element refs)
 // ═══════════════════════════════════════
 function showRoutePanel(panel) {
   const addrPanel = document.getElementById('rm-panel-addresses');
@@ -2499,6 +2565,272 @@ function clearRoute() {
   const iframe      = document.getElementById('rm-gmap');
   if (placeholder) placeholder.style.display = 'flex';
   if (iframe) { iframe.style.display = 'none'; iframe.src = ''; }
+}
+
+// ═══════════════════════════════════════
+// ROUTE MAP
+// ═══════════════════════════════════════
+let rmpInited = false;
+let rmpStopCount = 1;
+
+function initRouteMap() {
+  if (rmpInited) return;
+  rmpInited = true;
+  rmpRenderLeads();
+}
+
+function rmpRenderLeads() {
+  const list = document.getElementById('rmp-leads');
+  if (!list) return;
+  list.innerHTML = SV_LEADS.map(lead => `
+    <div onclick="rmpAddLeadAsStop(this)" data-addr="${lead.addr}"
+      style="background:#252640;border-radius:7px;padding:10px 13px;cursor:pointer;border:1px solid transparent;transition:all .15s;margin-bottom:2px"
+      onmouseenter="this.style.background='#2e2f55';this.style.borderColor='#4a6cf7'"
+      onmouseleave="this.style.background='#252640';this.style.borderColor='transparent'">
+      <div style="font-size:13px;font-weight:600;color:#e0e0f0">${lead.name}</div>
+      <div style="font-size:11px;color:#9898b0;margin-top:2px">${lead.addr.split(',')[0]}</div>
+    </div>`).join('');
+}
+
+function rmpAddStop() {
+  rmpStopCount++;
+  const list = document.getElementById('rmp-stops-list');
+  if (!list) return;
+  const row = document.createElement('div');
+  row.style.cssText = 'display:flex;align-items:center;gap:8px';
+  row.innerHTML = `
+    <span style="width:24px;height:24px;background:#363758;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#9898b0;flex-shrink:0">${rmpStopCount}</span>
+    <input class="rmp-stop-inp" placeholder="Address stop ${rmpStopCount}..."
+      style="flex:1;background:#252640;border:1px solid #3a3b55;border-radius:7px;padding:9px 12px;font-size:13px;color:#e0e0f0;outline:none"/>
+    <button onclick="rmpRemoveStop(this)" style="background:none;border:none;color:#6b6c8a;font-size:18px;cursor:pointer;padding:2px 4px;line-height:1">&times;</button>`;
+  list.appendChild(row);
+  rmpRenum();
+}
+
+function rmpRemoveStop(btn) {
+  const list = document.getElementById('rmp-stops-list');
+  if (list && list.children.length <= 1) {
+    const inp = btn.parentElement.querySelector('input');
+    if (inp) inp.value = '';
+    return;
+  }
+  btn.parentElement.remove();
+  rmpRenum();
+}
+
+function rmpRenum() {
+  const rows = document.querySelectorAll('#rmp-stops-list > div');
+  rows.forEach((row, i) => {
+    const badge = row.querySelector('span');
+    const inp   = row.querySelector('input');
+    if (badge) badge.textContent = i + 1;
+    if (inp)   inp.placeholder   = `Address stop ${i + 1}...`;
+  });
+  rmpStopCount = rows.length;
+}
+
+function rmpAddLeadAsStop(el) {
+  const addr = el.getAttribute('data-addr').split(',')[0].trim();
+  const list  = document.getElementById('rmp-stops-list');
+  if (!list) return;
+  const inputs = list.querySelectorAll('input');
+  for (let inp of inputs) {
+    if (!inp.value.trim()) { inp.value = addr; return; }
+  }
+  rmpAddStop();
+  const all = list.querySelectorAll('input');
+  all[all.length - 1].value = addr;
+}
+
+function rmpGenerate() {
+  const start = (document.getElementById('rmp-start')?.value || '').trim();
+  if (!start) { alert('Please enter a starting address.'); return; }
+  const stopInputs = document.querySelectorAll('#rmp-stops-list input');
+  const stops = Array.from(stopInputs).map(i => i.value.trim()).filter(Boolean);
+
+  // Google Maps embed uses + for spaces, not %20
+  const gEnc = s => encodeURIComponent(s).replace(/%20/g, '+');
+
+  let url;
+  if (!stops.length) {
+    // no stops — just show start location
+    url = `https://maps.google.com/maps?q=${gEnc(start)}&output=embed&z=15`;
+  } else {
+    // multi-stop directions: saddr -> daddr with +to: between stops
+    const daddr = stops.map((s, i) => (i === 0 ? gEnc(s) : 'to:' + gEnc(s))).join('+');
+    url = `https://maps.google.com/maps?saddr=${gEnc(start)}&daddr=${daddr}&output=embed`;
+  }
+
+  const placeholder = document.getElementById('rmp-placeholder');
+  const iframe      = document.getElementById('rmp-gmap');
+  if (placeholder) placeholder.style.display = 'none';
+  if (iframe) { iframe.src = ''; iframe.style.display = 'block'; setTimeout(() => { iframe.src = url; }, 50); }
+}
+
+function rmpSave() {
+  const start = (document.getElementById('rmp-start')?.value || '').trim();
+  if (!start) { alert('No route to save.'); return; }
+  const name = prompt('Name this route:', `Route from ${start}`) || '';
+  if (!name) return;
+  const stopInputs = document.querySelectorAll('#rmp-stops-list input');
+  const stops = Array.from(stopInputs).map(i => i.value.trim()).filter(Boolean);
+  const savedList = document.getElementById('rmp-saved-list');
+  if (savedList) {
+    // clear empty state
+    const empty = savedList.querySelector('div[style*="text-align:center"]');
+    if (empty) empty.remove();
+    const item = document.createElement('div');
+    item.style.cssText = 'background:#1e1f35;border:1px solid #363758;border-radius:9px;padding:13px 15px;display:flex;align-items:center;gap:10px';
+    item.innerHTML = `
+      <i class="fa-solid fa-route" style="color:#4a6cf7;font-size:15px"></i>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600;color:#e0e0f0">${name}</div>
+        <div style="font-size:11px;color:#9898b0;margin-top:2px">${stops.length + 1} stop${stops.length !== 0 ? 's' : ''}</div>
+      </div>
+      <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#6b6c8a;font-size:15px;cursor:pointer">&times;</button>`;
+    savedList.prepend(item);
+  }
+  rmShowPanel('saved');
+  const toast = document.createElement('div');
+  toast.textContent = '✓ Route saved!';
+  toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1a5c38;color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;z-index:99999;box-shadow:0 4px 16px rgba(0,0,0,.4)';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+
+function rmpClear() {
+  const startInp = document.getElementById('rmp-start');
+  if (startInp) startInp.value = '';
+  const list = document.getElementById('rmp-stops-list');
+  if (list) {
+    list.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="width:24px;height:24px;background:#363758;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#9898b0;flex-shrink:0">1</span>
+        <input class="rmp-stop-inp" placeholder="Address stop 1..."
+          style="flex:1;background:#252640;border:1px solid #3a3b55;border-radius:7px;padding:9px 12px;font-size:13px;color:#e0e0f0;outline:none"/>
+        <button onclick="rmpRemoveStop(this)" style="background:none;border:none;color:#6b6c8a;font-size:18px;cursor:pointer;padding:2px 4px;line-height:1">&times;</button>
+      </div>`;
+    rmpStopCount = 1;
+  }
+  const placeholder = document.getElementById('rmp-placeholder');
+  const iframe      = document.getElementById('rmp-gmap');
+  if (placeholder) placeholder.style.display = 'flex';
+  if (iframe)      { iframe.style.display = 'none'; iframe.src = ''; }
+}
+
+function rmShowPanel(panel) {
+  const addrPanel  = document.getElementById('rmp-panel-addresses');
+  const savedPanel = document.getElementById('rmp-panel-saved');
+  const btnAddr    = document.getElementById('rmp-btn-addr');
+  const btnSaved   = document.getElementById('rmp-btn-saved');
+  if (!addrPanel) return;
+  if (panel === 'addresses') {
+    addrPanel.style.display  = 'block';
+    savedPanel.style.display = 'none';
+    if (btnAddr)  { btnAddr.style.background  = '#4a6cf7'; btnAddr.style.color  = '#fff'; btnAddr.style.borderColor  = '#4a6cf7'; }
+    if (btnSaved) { btnSaved.style.background = '#252640'; btnSaved.style.color = '#9898b0'; btnSaved.style.borderColor = '#4a4b68'; }
+  } else {
+    addrPanel.style.display  = 'none';
+    savedPanel.style.display = 'block';
+    if (btnAddr)  { btnAddr.style.background  = '#252640'; btnAddr.style.color  = '#9898b0'; btnAddr.style.borderColor  = '#4a4b68'; }
+    if (btnSaved) { btnSaved.style.background = '#4a6cf7'; btnSaved.style.color = '#fff'; btnSaved.style.borderColor = '#4a6cf7'; }
+  }
+}
+
+// ═══════════════════════════════════════
+// STREET VIEW
+// ═══════════════════════════════════════
+
+// Shared lead data – single source of truth
+const SV_LEADS = [
+  { name: 'Maria Garcia',   addr: '1428 Oak St, Bakersfield, CA 93304' },
+  { name: 'James Turner',   addr: '3311 Rosedale Hwy, Bakersfield, CA 93308' },
+  { name: 'Sandra Lopez',   addr: '815 Niles St, Bakersfield, CA 93305' },
+  { name: 'Derek Morrison', addr: '2240 Ming Ave, Bakersfield, CA 93304' },
+  { name: 'Patricia Wells', addr: '5619 Stockdale Hwy, Bakersfield, CA 93309' },
+  { name: 'Robert Kim',     addr: '1800 Chester Ave, Bakersfield, CA 93301' },
+];
+
+let svCurrentView = 'map'; // 'map' | 'streetview'
+let svCurrentAddr = '';
+let svInited = false;
+
+function initStreetView() {
+  if (svInited) return;
+  svInited = true;
+  svRenderLeads();
+}
+
+function svRenderLeads() {
+  const list = document.getElementById('sv-leads-list');
+  if (!list) return;
+  list.innerHTML = SV_LEADS.map((lead, i) => `
+    <div onclick="svLoadAddr('${lead.addr.replace(/'/g, "\\'")}', this)"
+      style="padding:13px 16px;cursor:pointer;background:#252640;border-bottom:1px solid #2e2f50;transition:background .15s"
+      onmouseenter="this.style.background='#2e2f55'" onmouseleave="this.style.background=this.dataset.active==='1'?'#1e3a5f':'#252640'"
+      data-addr="${lead.addr}" data-active="0">
+      <div style="font-size:13px;font-weight:600;color:#e0e0f0">${lead.name}</div>
+      <div style="font-size:11px;color:#9898b0;margin-top:3px">${lead.addr.split(',')[0]}</div>
+    </div>`).join('');
+}
+
+function svLoadAddr(addr, rowEl) {
+  // highlight selected lead row
+  document.querySelectorAll('#sv-leads-list > div').forEach(r => {
+    r.style.background = '#252640';
+    r.dataset.active = '0';
+  });
+  if (rowEl) { rowEl.style.background = '#1e3a5f'; rowEl.dataset.active = '1'; }
+
+  // fill input
+  const inp = document.getElementById('sv-addr-input');
+  if (inp) inp.value = addr;
+
+  svCurrentAddr = addr;
+  svShowMap(addr, svCurrentView);
+}
+
+function svSearch() {
+  const addr = (document.getElementById('sv-addr-input')?.value || '').trim();
+  if (!addr) return;
+  svCurrentAddr = addr;
+  svShowMap(addr, svCurrentView);
+}
+
+function svSetView(mode) {
+  svCurrentView = mode;
+  // update button styles
+  const btnMap = document.getElementById('sv-btn-map');
+  const btnSv  = document.getElementById('sv-btn-sv');
+  if (btnMap) {
+    btnMap.style.background = mode === 'map'        ? '#4a6cf7' : '#252640';
+    btnMap.style.color      = mode === 'map'        ? '#fff'    : '#9898b0';
+  }
+  if (btnSv) {
+    btnSv.style.background  = mode === 'streetview' ? '#4a6cf7' : '#252640';
+    btnSv.style.color       = mode === 'streetview' ? '#fff'    : '#9898b0';
+  }
+  if (svCurrentAddr) svShowMap(svCurrentAddr, mode);
+}
+
+function svShowMap(addr, mode) {
+  const label       = document.getElementById('sv-addr-label');
+  const placeholder = document.getElementById('sv-placeholder');
+  const iframe      = document.getElementById('sv-map-iframe');
+  if (!iframe) return;
+
+  if (label) label.textContent = addr;
+
+  let url;
+  if (mode === 'streetview') {
+    url = `https://www.google.com/maps/embed/v1/streetview?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&location=${encodeURIComponent(addr)}&heading=210&pitch=10&fov=90`;
+  } else {
+    url = `https://maps.google.com/maps?q=${encodeURIComponent(addr)}&output=embed&z=16`;
+  }
+
+  if (placeholder) placeholder.style.display = 'none';
+  iframe.style.display = 'block';
+  iframe.src = url;
 }
 
 // ═══════════════════════════════════════
