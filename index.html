@@ -468,10 +468,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
         </div>
 
         <!-- Row 1: Top Agents | Months Chart | Agent Ranking -->
-        <div style="display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:14px">
+        <div style="display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:14px;align-items:stretch">
 
           <!-- Top Agents -->
-          <div class="dark-card" style="display:flex;flex-direction:column">
+          <div class="dark-card" style="display:flex;flex-direction:column;min-height:520px">
             <div class="dark-card-title">Top Agents</div>
             <div class="dark-inner" style="flex:1">
               <div style="font-size:12px;font-weight:700;color:#e0e0f0;margin-bottom:8px">Active</div>
@@ -481,7 +481,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
                 </tr></thead>
                 <tbody><tr><td colspan="5" class="no-data">No data available</td></tr></tbody>
               </table>
-              <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
             </div>
           </div>
 
@@ -502,20 +501,67 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
                 </tr></thead>
                 <tbody><tr><td colspan="5" class="no-data">No data available</td></tr></tbody>
               </table>
-              <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
             </div>
           </div>
 
-          <!-- Agent Ranking -->
-          <div class="dark-card">
-            <div class="dark-card-title">Agent Ranking</div>
-            <table class="data-table" style="width:100%">
-              <thead><tr>
-                <th>Name</th><th>Closed</th><th>Volume</th><th>Profile</th>
-              </tr></thead>
-              <tbody><tr><td colspan="4" class="no-data">No data at the moment.</td></tr></tbody>
-            </table>
-            <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
+          <!-- Agent Ranking (with Top Rainmakers on top) -->
+          <div class="dark-card" style="display:flex;flex-direction:column;gap:0;min-height:520px">
+
+            <!-- ── Top Rainmakers ── -->
+            <div style="padding-bottom:24px;border-bottom:1px solid #2e2f50;margin-bottom:20px">
+              <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:2px">Top Rainmakers</div>
+              <div style="font-size:11px;color:#9898b0;margin-bottom:18px">Current month</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center">
+
+                <!-- #1 Anna Cole -->
+                <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+                  <div style="position:relative">
+                    <div style="width:90px;height:90px;border-radius:50%;border:3px solid #f59e0b;overflow:hidden;background:#2c2d4a;flex-shrink:0">
+                      <img src="https://i.pravatar.cc/150?img=47" style="width:100%;height:100%;object-fit:cover"/>
+                    </div>
+                    <div style="position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);background:#f59e0b;color:#1a1a2e;font-size:11px;font-weight:800;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #1e1f35">1</div>
+                  </div>
+                  <div style="font-size:12px;font-weight:600;color:#e0e0f0">Anna Cole</div>
+                  <div style="font-size:14px;font-weight:700;color:#fff">$267,287</div>
+                </div>
+
+                <!-- #2 Susan Anderson -->
+                <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+                  <div style="position:relative">
+                    <div style="width:90px;height:90px;border-radius:50%;border:3px solid #9ca3af;overflow:hidden;background:#2c2d4a;flex-shrink:0">
+                      <img src="https://i.pravatar.cc/150?img=5" style="width:100%;height:100%;object-fit:cover"/>
+                    </div>
+                    <div style="position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);background:#9ca3af;color:#1a1a2e;font-size:11px;font-weight:800;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #1e1f35">2</div>
+                  </div>
+                  <div style="font-size:12px;font-weight:600;color:#e0e0f0">Susan Anderson</div>
+                  <div style="font-size:14px;font-weight:700;color:#fff">$250,631</div>
+                </div>
+
+                <!-- #3 Kyle Daniels -->
+                <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+                  <div style="position:relative">
+                    <div style="width:90px;height:90px;border-radius:50%;border:3px solid #cd7c2f;overflow:hidden;background:#2c2d4a;flex-shrink:0">
+                      <img src="https://i.pravatar.cc/150?img=12" style="width:100%;height:100%;object-fit:cover"/>
+                    </div>
+                    <div style="position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);background:#cd7c2f;color:#fff;font-size:11px;font-weight:800;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #1e1f35">3</div>
+                  </div>
+                  <div style="font-size:12px;font-weight:600;color:#e0e0f0">Kyle Daniels</div>
+                  <div style="font-size:14px;font-weight:700;color:#fff">$211,450</div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- ── Agent Ranking table ── -->
+            <div>
+              <div class="dark-card-title">Agent Ranking</div>
+              <table class="data-table" style="width:100%">
+                <thead><tr>
+                  <th>Name</th><th>Closed</th><th>Volume</th><th>Profile</th>
+                </tr></thead>
+                <tbody><tr><td colspan="4" class="no-data">No data at the moment.</td></tr></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -527,48 +573,62 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
     <div id="page-sales-board" class="page dark-page">
       <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
 
-        <!-- Row -1: Agent Profile Panel (3 columns) -->
-        <div style="display:grid;grid-template-columns:300px 1fr 1fr;gap:0;background:#2c2d4a;border-radius:8px;overflow:hidden">
+        <!-- Row -1: Agent Profile Panel (2 columns — left half avatar, right half info) -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;background:#2c2d4a;border-radius:8px;overflow:hidden">
 
-          <!-- Col 1: Avatar + name + HU3ZE logo -->
-          <div style="padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid #363758;min-height:220px">
-            <div style="display:flex;align-items:center;gap:18px">
-              <div style="width:100px;height:100px;border-radius:50%;background:#4a4b68;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden">
-                <svg viewBox="0 0 80 80" style="width:70px;height:70px;fill:#6b6c8a"><circle cx="40" cy="28" r="18"/><ellipse cx="40" cy="70" rx="30" ry="18"/></svg>
+          <!-- Col 1 (LEFT HALF): Big Avatar + Agent name + HU3ZE logo -->
+          <div style="padding:32px 36px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid #363758;min-height:260px">
+            <div style="display:flex;align-items:center;gap:28px">
+              <div style="width:160px;height:160px;border-radius:50%;background:#4a4b68;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;border:3px solid #5563e8">
+                <svg viewBox="0 0 80 80" style="width:110px;height:110px;fill:#6b6c8a"><circle cx="40" cy="28" r="18"/><ellipse cx="40" cy="70" rx="30" ry="18"/></svg>
               </div>
-              <div style="font-size:20px;font-weight:700;color:#fff">Agent</div>
+              <div>
+                <div style="font-size:24px;font-weight:700;color:#fff;margin-bottom:4px">Agent Name</div>
+                <div style="font-size:13px;color:#9898b0">Real Estate Agent</div>
+              </div>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;margin-top:20px">
+            <div style="display:flex;align-items:center;gap:8px;margin-top:24px">
               <span style="font-size:22px">🤖</span>
               <span style="font-size:20px;font-weight:900;letter-spacing:2px"><span style="color:#e0e0ff">&#72;</span><span style="background:linear-gradient(135deg,#5563e8,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">U3ZE</span></span>
             </div>
           </div>
 
-          <!-- Col 2 (MIDDLE): Listing -->
-          <div style="padding:20px 24px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid #363758">
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
-              <span style="font-size:13px;font-weight:600;color:#e0e0f0">Listing</span>
-              <span style="font-size:11px;color:#5563e8;cursor:pointer">See all</span>
-            </div>
-            <div style="background:#363758;border-radius:6px;display:grid;grid-template-columns:1fr 1fr 1fr;padding:14px 16px">
-              <div style="font-size:13px;color:#c8c8e0">Active</div>
-              <div style="font-size:13px;color:#c8c8e0;text-align:center">Closed</div>
-              <div style="font-size:13px;color:#c8c8e0;text-align:right">Terminated</div>
-            </div>
-          </div>
+          <!-- Col 2 (RIGHT HALF): Contact Info → Listing → Transactions stacked -->
+          <div style="padding:24px 28px;display:flex;flex-direction:column;gap:16px;justify-content:center">
 
-          <!-- Col 3 (RIGHT): Contact Info + Transactions -->
-          <div style="padding:20px 24px;display:flex;flex-direction:column;gap:14px">
             <!-- Contact Information -->
             <div>
-              <div style="font-size:13px;font-weight:600;color:#e0e0f0;margin-bottom:8px">Contact information</div>
-              <div style="background:#363758;border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
-                <div style="display:flex;align-items:center;gap:12px;color:#6b6c8a;font-size:13px"><i class="fa-solid fa-phone" style="width:14px"></i><span></span></div>
-                <div style="display:flex;align-items:center;gap:12px;color:#6b6c8a;font-size:13px"><i class="fa-regular fa-id-card" style="width:14px"></i><span></span></div>
-                <div style="display:flex;align-items:center;gap:12px;color:#6b6c8a;font-size:13px"><i class="fa-regular fa-envelope" style="width:14px"></i><span></span></div>
-                <div style="display:flex;align-items:center;gap:12px;color:#6b6c8a;font-size:13px"><i class="fa-solid fa-location-dot" style="width:14px"></i><span></span></div>
+              <div style="font-size:13px;font-weight:600;color:#e0e0f0;margin-bottom:8px">Contact Information</div>
+              <div style="background:#363758;border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:11px">
+                <div style="display:flex;align-items:center;gap:12px;color:#6b6c8a;font-size:13px"><i class="fa-solid fa-phone" style="width:14px"></i><span>—</span></div>
+                <div style="display:flex;align-items:center;gap:12px;color:#6b6c8a;font-size:13px"><i class="fa-regular fa-id-card" style="width:14px"></i><span>—</span></div>
+                <div style="display:flex;align-items:center;gap:12px;color:#6b6c8a;font-size:13px"><i class="fa-regular fa-envelope" style="width:14px"></i><span>—</span></div>
+                <div style="display:flex;align-items:center;gap:12px;color:#6b6c8a;font-size:13px"><i class="fa-solid fa-location-dot" style="width:14px"></i><span>—</span></div>
               </div>
             </div>
+
+            <!-- Listing -->
+            <div>
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+                <span style="font-size:13px;font-weight:600;color:#e0e0f0">Listing</span>
+                <span style="font-size:11px;color:#5563e8;cursor:pointer">See all</span>
+              </div>
+              <div style="background:#363758;border-radius:6px;display:grid;grid-template-columns:1fr 1fr 1fr;padding:12px 16px">
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <span style="font-size:15px;font-weight:700;color:#fff">0</span>
+                  <span style="font-size:12px;color:#9898b0">Active</span>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+                  <span style="font-size:15px;font-weight:700;color:#fff">0</span>
+                  <span style="font-size:12px;color:#9898b0">Closed</span>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+                  <span style="font-size:15px;font-weight:700;color:#fff">0</span>
+                  <span style="font-size:12px;color:#9898b0">Terminated</span>
+                </div>
+              </div>
+            </div>
+
             <!-- Transactions -->
             <div>
               <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
@@ -576,17 +636,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
                 <span style="font-size:11px;color:#5563e8;cursor:pointer">See all</span>
               </div>
               <div style="background:#363758;border-radius:6px;display:grid;grid-template-columns:1fr 1fr 1fr;padding:12px 16px">
-                <div style="font-size:13px;color:#c8c8e0">Active</div>
-                <div style="display:flex;flex-direction:column;align-items:center">
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <span style="font-size:15px;font-weight:700;color:#fff">0</span>
+                  <span style="font-size:12px;color:#9898b0">Active</span>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
                   <span style="font-size:15px;font-weight:700;color:#fff">0</span>
                   <span style="font-size:12px;color:#9898b0">Closed</span>
                 </div>
-                <div style="display:flex;flex-direction:column;align-items:flex-end">
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
                   <span style="font-size:15px;font-weight:700;color:#fff">0</span>
                   <span style="font-size:12px;color:#9898b0">Terminated</span>
                 </div>
               </div>
             </div>
+
           </div>
 
         </div>
@@ -597,36 +661,66 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
           <!-- Left: Sold Properties + Open Properties (stretches to match right column) -->
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
             <!-- Sold Properties -->
-            <div class="dark-card" style="min-height:300px">
+            <div class="dark-card" style="min-height:300px;display:flex;flex-direction:column">
               <div class="card-header-row">
                 <div class="dark-card-title" style="margin-bottom:0">Sold Properties</div>
                 <div class="search-wrap"><input class="search-input" placeholder="Search here..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
               </div>
+              <table style="width:100%;border-collapse:collapse;margin-top:4px">
+                <thead>
+                  <tr style="border-bottom:2px solid #363758">
+                    <th style="text-align:left;font-size:11px;font-weight:600;color:#6b6c8a;padding:8px 10px;text-transform:uppercase;letter-spacing:.04em">Home Address</th>
+                    <th style="text-align:left;font-size:11px;font-weight:600;color:#6b6c8a;padding:8px 10px;text-transform:uppercase;letter-spacing:.04em">Sales Price</th>
+                    <th style="text-align:left;font-size:11px;font-weight:600;color:#6b6c8a;padding:8px 10px;text-transform:uppercase;letter-spacing:.04em">Agent Name</th>
+                    <th style="text-align:left;font-size:11px;font-weight:600;color:#6b6c8a;padding:8px 10px;text-transform:uppercase;letter-spacing:.04em">City</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom:1px solid #363758">
+                    <td style="padding:10px 10px;font-size:12px;color:#9898b0;font-style:italic" colspan="3">No sold properties yet.</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             <!-- Open Properties -->
-            <div class="dark-card" style="min-height:300px">
+            <div class="dark-card" style="min-height:300px;display:flex;flex-direction:column">
               <div class="card-header-row">
                 <div class="dark-card-title" style="margin-bottom:0">Open Properties</div>
                 <div class="search-wrap"><input class="search-input" placeholder="Search here..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
               </div>
+              <table style="width:100%;border-collapse:collapse;margin-top:4px">
+                <thead>
+                  <tr style="border-bottom:2px solid #363758">
+                    <th style="text-align:left;font-size:11px;font-weight:600;color:#6b6c8a;padding:8px 10px;text-transform:uppercase;letter-spacing:.04em">Home Address</th>
+                    <th style="text-align:left;font-size:11px;font-weight:600;color:#6b6c8a;padding:8px 10px;text-transform:uppercase;letter-spacing:.04em">Sales Price</th>
+                    <th style="text-align:left;font-size:11px;font-weight:600;color:#6b6c8a;padding:8px 10px;text-transform:uppercase;letter-spacing:.04em">Agent Name</th>
+                    <th style="text-align:left;font-size:11px;font-weight:600;color:#6b6c8a;padding:8px 10px;text-transform:uppercase;letter-spacing:.04em">City</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom:1px solid #363758">
+                    <td style="padding:10px 10px;font-size:12px;color:#9898b0;font-style:italic" colspan="3">No open properties yet.</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
-          <!-- Right: Commission / Offices / Licenses / Leads stacked -->
-          <div style="display:flex;flex-direction:column;gap:10px">
+          <!-- Right: Commission / Offices / Licenses stacked (equal flex) -->
+          <div style="display:flex;flex-direction:column;gap:10px;align-self:stretch">
             <!-- Commission -->
-            <div class="dark-card" style="padding:14px">
+            <div class="dark-card" style="padding:14px;flex:1">
               <div class="card-header-row" style="margin-bottom:8px">
                 <div class="dark-card-title" style="margin-bottom:0">Commission</div>
                 <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:130px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
               </div>
               <table class="data-table" style="width:100%">
-                <thead><tr><th>Name</th><th>Comission</th></tr></thead>
+                <thead><tr><th>Name</th><th>Commission</th></tr></thead>
                 <tbody><tr><td colspan="2" class="no-data" style="padding:12px">No records found</td></tr></tbody>
               </table>
             </div>
             <!-- Offices -->
-            <div class="dark-card" style="padding:14px">
+            <div class="dark-card" style="padding:14px;flex:1">
               <div class="card-header-row" style="margin-bottom:8px">
                 <div class="dark-card-title" style="margin-bottom:0">Offices</div>
                 <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:130px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
@@ -634,18 +728,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
               <div class="no-data" style="padding:12px 0">No data at the moment</div>
             </div>
             <!-- Licenses -->
-            <div class="dark-card" style="padding:14px">
+            <div class="dark-card" style="padding:14px;flex:1">
               <div class="card-header-row" style="margin-bottom:8px">
                 <div class="dark-card-title" style="margin-bottom:0">Licenses</div>
                 <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:130px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
-              </div>
-              <div class="no-data" style="padding:12px 0">No data at the moment</div>
-            </div>
-            <!-- Leads -->
-            <div class="dark-card" style="padding:14px">
-              <div class="card-header-row" style="margin-bottom:8px">
-                <div class="dark-card-title" style="margin-bottom:0">Leads</div>
-                <button class="btn-add" style="padding:6px 14px"><i class="fa-solid fa-plus"></i> Add</button>
               </div>
               <div class="no-data" style="padding:12px 0">No data at the moment</div>
             </div>
@@ -685,7 +771,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
               </tr></thead>
               <tbody><tr><td colspan="4" class="no-data">No records found</td></tr></tbody>
             </table>
-            <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
           </div>
         </div>
 
@@ -711,35 +796,52 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
               <thead><tr><th>Filename</th><th>Agent</th></tr></thead>
               <tbody><tr><td colspan="2" class="no-data">No records found</td></tr></tbody>
             </table>
-            <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
           </div>
 
           <!-- Tax Forms -->
-          <div class="dark-card">
+          <div class="dark-card" style="display:flex;flex-direction:column;gap:12px">
             <div class="card-header-row">
               <div class="dark-card-title" style="margin-bottom:0">Tax Forms</div>
-              <div class="search-wrap"><input class="search-input" placeholder="Search here..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+              <label style="cursor:pointer;background:#5563e8;color:#fff;border:none;border-radius:6px;padding:5px 13px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px">
+                <i class="fa-solid fa-plus"></i> Upload
+                <input type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple style="display:none" onchange="docUpload('taxForms',this)">
+              </label>
             </div>
-            <button class="btn-add" style="margin-bottom:10px"><i class="fa-solid fa-plus"></i> Add</button>
-            <table class="data-table" style="width:100%">
-              <thead><tr><th>Filename</th><th>Agent</th></tr></thead>
-              <tbody><tr><td colspan="2" class="no-data">No records found</td></tr></tbody>
-            </table>
-            <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
+            <!-- Drop Zone -->
+            <div id="taxForms-drop" onclick="document.querySelector('#taxForms-drop input').click()"
+              ondragover="event.preventDefault();this.style.borderColor='#5563e8';this.style.background='#3a3b5a'"
+              ondragleave="this.style.borderColor='#4a4b68';this.style.background='#363758'"
+              ondrop="event.preventDefault();this.style.borderColor='#4a4b68';this.style.background='#363758';docDropHandle('taxForms',event.dataTransfer.files)"
+              style="border:2px dashed #4a4b68;border-radius:8px;background:#363758;padding:10px 12px;text-align:center;cursor:pointer;transition:all .2s;min-height:48px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:8px">
+              <input type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple style="display:none" onchange="docUpload('taxForms',this)">
+              <i class="fa-solid fa-cloud-arrow-up" style="font-size:16px;color:#5563e8"></i>
+              <div style="font-size:12px;color:#9898b0">Drag &amp; drop or click to browse</div>
+            </div>
+            <!-- Thumbnails -->
+            <div id="taxForms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"></div>
           </div>
 
           <!-- Contract -->
-          <div class="dark-card">
+          <div class="dark-card" style="display:flex;flex-direction:column;gap:12px">
             <div class="card-header-row">
               <div class="dark-card-title" style="margin-bottom:0">Contract</div>
-              <div class="search-wrap"><input class="search-input" placeholder="Search here..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+              <label style="cursor:pointer;background:#5563e8;color:#fff;border:none;border-radius:6px;padding:5px 13px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px">
+                <i class="fa-solid fa-plus"></i> Upload
+                <input type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple style="display:none" onchange="docUpload('contracts',this)">
+              </label>
             </div>
-            <button class="btn-add" style="margin-bottom:10px"><i class="fa-solid fa-plus"></i> Add</button>
-            <table class="data-table" style="width:100%">
-              <thead><tr><th>Filename</th><th>Agent</th></tr></thead>
-              <tbody><tr><td colspan="2" class="no-data">No records found</td></tr></tbody>
-            </table>
-            <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
+            <!-- Drop Zone -->
+            <div id="contracts-drop" onclick="document.querySelector('#contracts-drop input').click()"
+              ondragover="event.preventDefault();this.style.borderColor='#5563e8';this.style.background='#3a3b5a'"
+              ondragleave="this.style.borderColor='#4a4b68';this.style.background='#363758'"
+              ondrop="event.preventDefault();this.style.borderColor='#4a4b68';this.style.background='#363758';docDropHandle('contracts',event.dataTransfer.files)"
+              style="border:2px dashed #4a4b68;border-radius:8px;background:#363758;padding:10px 12px;text-align:center;cursor:pointer;transition:all .2s;min-height:48px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:8px">
+              <input type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple style="display:none" onchange="docUpload('contracts',this)">
+              <i class="fa-solid fa-cloud-arrow-up" style="font-size:16px;color:#5563e8"></i>
+              <div style="font-size:12px;color:#9898b0">Drag &amp; drop or click to browse</div>
+            </div>
+            <!-- Thumbnails -->
+            <div id="contracts-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"></div>
           </div>
         </div>
       </div>
@@ -771,10 +873,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
               </tr></thead>
               <tbody><tr><td colspan="7" class="no-data light">No active listings found.</td></tr></tbody>
             </table>
-            <div class="pag-row" style="margin-top:12px">
-              <button class="btn-prev-next">Prev</button>
-              <button class="btn-prev-next">Next</button>
-            </div>
           </div>
         </div>
       </div>
@@ -909,39 +1007,113 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
     <!-- ═══════════════════════════
          NEWS FEED
     ═══════════════════════════ -->
-    <div id="page-news-feed" class="page light-page">
-      <div style="display:grid;grid-template-columns:160px 1fr 220px;gap:0;height:100%">
-        <!-- Categories -->
-        <div style="padding:16px;border-right:1px solid #e5e7ef;display:flex;flex-direction:column;gap:6px">
-          <div class="news-cat active" onclick="setNewscat(this)">General <span class="check-circle"><i class="fa-solid fa-check"></i></span></div>
-          <div class="news-cat" onclick="setNewscat(this)">Open House</div>
-          <div class="news-cat" onclick="setNewscat(this)">New Listing</div>
-          <div class="news-cat" onclick="setNewscat(this)">Referral</div>
+    <div id="page-news-feed" class="page light-page" style="overflow-y:auto;background:#f0f2f5">
+
+      <!-- BANNER -->
+      <div style="position:relative;width:100%;height:320px;background:linear-gradient(135deg,#3b4fd8,#8b5cf6);overflow:hidden;cursor:pointer" onclick="document.getElementById('nf-banner-input').click()" title="Click to change banner">
+        <img id="nf-banner-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none">
+        <div id="nf-banner-placeholder" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+          <i class="fa-solid fa-camera" style="font-size:28px;color:rgba(255,255,255,.5)"></i>
+          <span style="font-size:13px;color:rgba(255,255,255,.6)">Click to add cover photo</span>
         </div>
-        <!-- Post area -->
-        <div style="padding:20px;overflow-y:auto">
-          <div class="post-box">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
-              <span style="font-size:15px;font-weight:700;color:#1a1a2e">Create Post</span>
-              <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
-                <select class="post-type-sel"><option>General</option><option>Open House</option><option>New Listing</option><option>Referral</option></select>
-                <button class="btn-add-media"><i class="fa-solid fa-plus"></i> Add Photo/Video</button>
+        <div style="position:absolute;bottom:10px;right:14px;background:rgba(0,0,0,.45);color:#fff;font-size:12px;padding:5px 12px;border-radius:6px;display:flex;align-items:center;gap:6px">
+          <i class="fa-solid fa-camera"></i> Edit Cover Photo
+        </div>
+        <input type="file" id="nf-banner-input" accept="image/*" style="display:none" onchange="nfChangeBanner(this)">
+      </div>
+
+      <!-- PROFILE ROW -->
+      <div style="background:#fff;border-bottom:1px solid #e5e7ef;padding:0 24px 14px;display:flex;align-items:flex-end;gap:18px;position:relative">
+        <!-- Avatar overlapping banner -->
+        <div style="position:relative;margin-top:-50px;flex-shrink:0">
+          <div style="width:110px;height:110px;border-radius:50%;border:4px solid #fff;background:#c8d0e0;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
+            <img id="nf-avatar-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none">
+            <svg id="nf-avatar-svg" viewBox="0 0 80 80" style="width:70px;height:70px;fill:#9ca3af"><circle cx="40" cy="28" r="18"/><ellipse cx="40" cy="70" rx="30" ry="18"/></svg>
+          </div>
+          <!-- Pencil badge on avatar -->
+          <button onclick="document.getElementById('nf-avatar-input').click()" title="Change photo"
+            style="position:absolute;bottom:4px;right:4px;width:28px;height:28px;border-radius:50%;background:#5563e8;border:2px solid #fff;color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.2)">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <input type="file" id="nf-avatar-input" accept="image/*" style="display:none" onchange="nfChangeAvatar(this)">
+        </div>
+        <!-- Name + subtitle + edit pencils -->
+        <div style="padding-bottom:6px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span id="nf-profile-name" style="font-size:22px;font-weight:800;color:#1a1a2e">Your Name</span>
+            <button onclick="nfEditName()" style="width:20px;height:20px;border-radius:50%;background:none;border:none;cursor:pointer;color:#d1d5db;font-size:10px;display:flex;align-items:center;justify-content:center;opacity:.7" title="Edit name" onmouseover="this.style.color='#9ca3af'" onmouseout="this.style.color='#d1d5db'"><i class="fa-solid fa-pen"></i></button>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span id="nf-profile-sub" style="font-size:13px;color:#6b7280">HU3ZE Real Estate</span>
+            <button onclick="nfEditSub()" style="width:18px;height:18px;border-radius:50%;background:none;border:none;cursor:pointer;color:#d1d5db;font-size:9px;display:flex;align-items:center;justify-content:center;opacity:.7" title="Edit subtitle" onmouseover="this.style.color='#9ca3af'" onmouseout="this.style.color='#d1d5db'"><i class="fa-solid fa-pen"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN 3-COLUMN LAYOUT -->
+      <div style="display:grid;grid-template-columns:220px 1fr 240px;gap:16px;padding:18px 18px;max-width:1200px;margin:0 auto">
+
+        <!-- LEFT SIDEBAR: Nav Buttons -->
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="background:#fff;border-radius:10px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)">
+            <div style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:10px">Categories</div>
+            <div id="nf-btn-list" style="display:flex;flex-direction:column;gap:6px"></div>
+            <button onclick="nfAddBtn()" style="margin-top:10px;width:100%;background:#f3f4f6;border:1px dashed #d1d5db;border-radius:8px;color:#5563e8;font-size:12px;font-weight:600;padding:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px">
+              <i class="fa-solid fa-plus"></i> Add Button
+            </button>
+          </div>
+        </div>
+
+        <!-- CENTER: Create Post + Feed -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+
+          <!-- Create Post Box -->
+          <div style="background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.08)">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+              <div style="font-size:14px;font-weight:700;color:#1a1a2e" id="nf-post-title">Create Post</div>
+              <div id="nf-post-cat-badge" style="background:#5563e8;color:#fff;font-size:11px;font-weight:600;padding:2px 10px;border-radius:20px;display:none"></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <div style="width:38px;height:38px;border-radius:50%;background:#c8d0e0;flex-shrink:0;overflow:hidden">
+                <img id="nf-post-avatar" src="" style="width:100%;height:100%;object-fit:cover;display:none">
+                <svg id="nf-post-avatar-svg" viewBox="0 0 80 80" style="width:100%;height:100%;fill:#9ca3af"><circle cx="40" cy="28" r="18"/><ellipse cx="40" cy="70" rx="30" ry="18"/></svg>
               </div>
+              <textarea id="nf-post-text" placeholder="What's on your mind..." style="flex:1;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;font-size:13px;color:#1a1a2e;resize:none;height:72px;outline:none;font-family:inherit;background:#f9fafb"></textarea>
             </div>
-            <textarea class="post-textarea" placeholder="What's on your mind..."></textarea>
-            <div style="display:flex;justify-content:flex-end">
-              <button class="btn-post" onclick="showToast('Post published!')">Post</button>
+            <!-- Photo preview -->
+            <div id="nf-post-img-preview" style="margin-top:10px;display:none;position:relative;width:fit-content">
+              <img id="nf-post-img-el" src="" style="max-height:180px;border-radius:8px;display:block">
+              <button onclick="nfClearPostImg()" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.55);border:none;color:#fff;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;border-top:1px solid #f3f4f6;padding-top:10px">
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:#4b5563;font-size:13px;font-weight:500;padding:6px 12px;border-radius:7px;background:#f3f4f6;border:none">
+                <i class="fa-solid fa-image" style="color:#10b981"></i> Photo/Video
+                <input type="file" accept="image/*,video/*" style="display:none" onchange="nfPickPostImg(this)">
+              </label>
+              <button onclick="nfSubmitPost()" style="background:linear-gradient(135deg,#5563e8,#7c3aed);color:#fff;border:none;border-radius:7px;padding:7px 22px;font-size:13px;font-weight:600;cursor:pointer">Post</button>
+            </div>
+          </div>
+
+          <!-- Posts Feed -->
+          <div id="nf-feed" style="display:flex;flex-direction:column;gap:14px">
+            <div id="nf-empty" style="background:#fff;border-radius:10px;padding:30px;text-align:center;color:#9ca3af;font-size:13px;box-shadow:0 1px 3px rgba(0,0,0,.08)">
+              No posts yet. Be the first to post!
             </div>
           </div>
         </div>
-        <!-- Agents sidebar -->
-        <div style="padding:16px;border-left:1px solid #e5e7ef">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-            <span style="font-size:14px;font-weight:700;color:#1a1a2e">Agents</span>
-            <div class="search-wrap"><input class="search-input light" placeholder="Search here..." style="width:110px"/><i class="fa-solid fa-magnifying-glass search-icon light"></i></div>
+
+        <!-- RIGHT SIDEBAR -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="background:#fff;border-radius:10px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)">
+            <div style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:8px">About</div>
+            <div style="font-size:12px;color:#6b7280;line-height:1.6">Your real estate hub. Share listings, updates, and connect with your team.</div>
           </div>
-          <div style="text-align:center;color:#9ca3af;font-size:13px;padding:20px 0">No agents found</div>
+          <div style="background:#fff;border-radius:10px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)">
+            <div style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:8px">Community</div>
+            <div style="font-size:12px;color:#6b7280">Invite your colleagues to follow this page.</div>
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -1914,14 +2086,21 @@ const PAGE_TITLES = {
   'active-listing':'Active Listing','chat':'Chat','calendar':'Calendar','route-maps':'Street View','route-map':'Route Map'
 };
 
+// Pages that need display:flex instead of display:block
+const FLEX_PAGES = new Set(['route-maps','route-map','chat','email']);
+
 function navigate(page) {
   // Reset any open form views back to list state
   document.querySelectorAll('[id$="-add-view"],[id$="-form"]').forEach(el => el.style.display='none');
   document.querySelectorAll('[id$="-list-view"],[id$="-list"]').forEach(el => el.style.display='');
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // Explicitly hide ALL pages via inline style (overrides any inline display:flex)
+  document.querySelectorAll('.page').forEach(p => { p.style.display = 'none'; p.classList.remove('active'); });
   document.querySelectorAll('.nav-item[data-page]').forEach(n => n.classList.remove('active'));
   const el = document.getElementById('page-' + page);
-  if (el) el.classList.add('active');
+  if (el) {
+    el.style.display = FLEX_PAGES.has(page) ? 'flex' : 'block';
+    el.classList.add('active');
+  }
   const nav = document.querySelector('.nav-item[data-page="' + page + '"]');
   if (nav) nav.classList.add('active');
   const hdr = document.getElementById('light-header');
@@ -1936,6 +2115,7 @@ function navigate(page) {
   document.getElementById('hdr-route').textContent = '/' + page;
   if (page === 'calendar') renderCalendars();
   if (page === 'sales-board') initSalesBoardCharts();
+  if (page === 'news-feed') nfInit();
   if (page === 'dashboard') initDashboardCharts();
   if (page === 'route-maps') initStreetView();
   if (page === 'route-map')  initRouteMap();
@@ -1989,12 +2169,414 @@ function togglePropDrop(dropId, triggerBtn) {
 // TOAST
 // ═══════════════════════════════════════
 let toastT;
+// ═══════════════════════════════
+// NEWS FEED PAGE
+// ═══════════════════════════════
+const nfBtns = ['General','Open House','New Listing','Referral'];
+let nfActiveCat = 'General';
+let nfPosts = {}; // keyed by category name — each has its own post array
+let nfPostImgData = null;
+
+function nfInit() {
+  nfRenderBtns();
+  nfRenderFeed(); // Re-render posts so they persist when navigating back
+  // Set initial post title to active category
+  const title = document.getElementById('nf-post-title');
+  const badge = document.getElementById('nf-post-cat-badge');
+  if (title) title.textContent = nfActiveCat;
+  if (badge) { badge.textContent = nfActiveCat; badge.style.display = 'inline-block'; }
+}
+
+function nfRenderBtns() {
+  const list = document.getElementById('nf-btn-list');
+  if (!list) return;
+  list.innerHTML = nfBtns.map((b,i) => `
+    <div style="position:relative;display:flex;align-items:center;gap:6px">
+      <button onclick="nfSetCat(${i})" style="flex:1;text-align:left;background:${nfActiveCat===b?'#5563e8':'#f0f2f5'};color:${nfActiveCat===b?'#fff':'#374151'};border:none;border-radius:10px;padding:12px 16px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:space-between">
+        ${b}
+        ${nfActiveCat===b?'<i class="fa-solid fa-check" style="font-size:12px"></i>':''}
+      </button>
+      <button onclick="nfToggleMenu(${i},event)" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:16px;padding:6px 8px;border-radius:6px;line-height:1" title="Options">⋮</button>
+      <div id="nf-menu-${i}" style="display:none;position:absolute;right:0;top:100%;z-index:999;background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.12);min-width:140px;overflow:hidden">
+        <button onclick="nfRenameBtn(${i})" style="width:100%;text-align:left;background:none;border:none;padding:10px 14px;font-size:13px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:8px" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+          <i class="fa-solid fa-pen" style="color:#5563e8;width:14px"></i> Rename
+        </button>
+        <button onclick="nfDeleteBtn(${i})" style="width:100%;text-align:left;background:none;border:none;padding:10px 14px;font-size:13px;color:#ef4444;cursor:pointer;display:flex;align-items:center;gap:8px" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='none'">
+          <i class="fa-solid fa-xmark" style="width:14px"></i> Delete
+        </button>
+      </div>
+    </div>`).join('');
+}
+
+function nfToggleMenu(i, e) {
+  e.stopPropagation();
+  // Close all other menus first
+  document.querySelectorAll('[id^="nf-menu-"]').forEach(m => {
+    if (m.id !== 'nf-menu-' + i) m.style.display = 'none';
+  });
+  const menu = document.getElementById('nf-menu-' + i);
+  if (menu) menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+
+// Close menus when clicking outside
+document.addEventListener('click', () => {
+  document.querySelectorAll('[id^="nf-menu-"]').forEach(m => m.style.display = 'none');
+});
+
+function nfSetCat(i) {
+  nfActiveCat = nfBtns[i];
+  nfRenderBtns();
+  // Update Create Post header
+  const title = document.getElementById('nf-post-title');
+  const badge = document.getElementById('nf-post-cat-badge');
+  const textarea = document.getElementById('nf-post-text');
+  if (title) title.textContent = nfActiveCat;
+  if (badge) { badge.textContent = nfActiveCat; badge.style.display = 'inline-block'; }
+  if (textarea) {
+    const placeholders = {
+      'General': "What's on your mind...",
+      'Open House': 'Share open house details — address, date, time...',
+      'New Listing': 'Describe your new listing — price, beds, baths, features...',
+      'Referral': 'Share a referral or recommend a colleague...'
+    };
+    textarea.placeholder = placeholders[nfActiveCat] || `Post something about ${nfActiveCat}...`;
+  }
+}
+
+function nfAddBtn() {
+  const name = prompt('Button name:');
+  if (!name || !name.trim()) return;
+  nfBtns.push(name.trim());
+  nfRenderBtns();
+}
+
+function nfDeleteBtn(i) {
+  if (nfBtns.length <= 1) { showToast('Must keep at least one button.'); return; }
+  if (!confirm('Delete this button?')) return;
+  if (nfActiveCat === nfBtns[i]) nfActiveCat = nfBtns[0] || '';
+  nfBtns.splice(i, 1);
+  nfRenderBtns();
+}
+
+function nfRenameBtn(i) {
+  const oldName = nfBtns[i];
+  const newName = prompt('New name:', oldName);
+  if (!newName || !newName.trim()) return;
+  const trimmed = newName.trim();
+  // Move posts to new key
+  if (nfPosts[oldName]) { nfPosts[trimmed] = nfPosts[oldName]; delete nfPosts[oldName]; }
+  if (nfActiveCat === oldName) nfActiveCat = trimmed;
+  nfBtns[i] = trimmed;
+  nfRenderBtns();
+  nfRenderFeed();
+}
+
+function nfEditName() {
+  const el = document.getElementById('nf-profile-name');
+  if (!el) return;
+  const cur = el.textContent;
+  const input = document.createElement('input');
+  input.value = cur;
+  input.style.cssText = 'font-size:22px;font-weight:800;color:#1a1a2e;border:2px solid #5563e8;border-radius:6px;padding:2px 8px;outline:none;width:220px';
+  el.replaceWith(input);
+  input.focus();
+  input.select();
+  function save() {
+    const span = document.createElement('span');
+    span.id = 'nf-profile-name';
+    span.style.cssText = 'font-size:22px;font-weight:800;color:#1a1a2e';
+    span.textContent = input.value.trim() || cur;
+    input.replaceWith(span);
+  }
+  input.onblur = save;
+  input.onkeydown = e => { if (e.key === 'Enter') save(); };
+}
+
+function nfEditSub() {
+  const el = document.getElementById('nf-profile-sub');
+  if (!el) return;
+  const cur = el.textContent;
+  const input = document.createElement('input');
+  input.value = cur;
+  input.style.cssText = 'font-size:13px;color:#6b7280;border:2px solid #5563e8;border-radius:6px;padding:2px 8px;outline:none;width:200px;font-family:inherit';
+  el.replaceWith(input);
+  input.focus();
+  input.select();
+  function save() {
+    const span = document.createElement('span');
+    span.id = 'nf-profile-sub';
+    span.style.cssText = 'font-size:13px;color:#6b7280';
+    span.textContent = input.value.trim() || cur;
+    input.replaceWith(span);
+  }
+  input.onblur = save;
+  input.onkeydown = e => { if (e.key === 'Enter') save(); };
+}
+
+function nfChangeBanner(inp) {
+  if (!inp.files[0]) return;
+  const r = new FileReader();
+  r.onload = e => {
+    const img = document.getElementById('nf-banner-img');
+    const ph = document.getElementById('nf-banner-placeholder');
+    img.src = e.target.result;
+    img.style.display = 'block';
+    if (ph) ph.style.display = 'none';
+  };
+  r.readAsDataURL(inp.files[0]);
+  inp.value = '';
+}
+
+function nfChangeAvatar(inp) {
+  if (!inp.files[0]) return;
+  const r = new FileReader();
+  r.onload = e => {
+    ['nf-avatar-img','nf-post-avatar'].forEach(id => {
+      const img = document.getElementById(id);
+      if (img) { img.src = e.target.result; img.style.display = 'block'; }
+    });
+    ['nf-avatar-svg','nf-post-avatar-svg'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+  };
+  r.readAsDataURL(inp.files[0]);
+  inp.value = '';
+}
+
+function nfPickPostImg(inp) {
+  if (!inp.files[0]) return;
+  const r = new FileReader();
+  r.onload = e => {
+    nfPostImgData = e.target.result;
+    const prev = document.getElementById('nf-post-img-preview');
+    const imgEl = document.getElementById('nf-post-img-el');
+    imgEl.src = e.target.result;
+    prev.style.display = 'block';
+  };
+  r.readAsDataURL(inp.files[0]);
+  inp.value = '';
+}
+
+function nfClearPostImg() {
+  nfPostImgData = null;
+  const prev = document.getElementById('nf-post-img-preview');
+  prev.style.display = 'none';
+  document.getElementById('nf-post-img-el').src = '';
+}
+
+function nfSubmitPost() {
+  const txt = (document.getElementById('nf-post-text')?.value || '').trim();
+  if (!txt && !nfPostImgData) { showToast('Write something or add a photo.'); return; }
+  const avatarSrc = document.getElementById('nf-avatar-img')?.src || '';
+  const avatarVisible = document.getElementById('nf-avatar-img')?.style.display !== 'none';
+  const name = document.getElementById('nf-profile-name')?.textContent || 'You';
+  const now = new Date();
+  const timeStr = now.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+  if (!nfPosts[nfActiveCat]) nfPosts[nfActiveCat] = [];
+  nfPosts[nfActiveCat].unshift({ text: txt, img: nfPostImgData, cat: nfActiveCat, name, avatarSrc: avatarVisible ? avatarSrc : '', time: timeStr });
+  document.getElementById('nf-post-text').value = '';
+  nfClearPostImg();
+  nfRenderFeed();
+  showToast('Post published!');
+}
+
+function nfRenderFeed() {
+  const feed = document.getElementById('nf-feed');
+  const empty = document.getElementById('nf-empty');
+  if (!feed) return;
+  const posts = nfPosts[nfActiveCat] || [];
+  // Remove existing post cards
+  feed.querySelectorAll('.nf-post-card').forEach(e => e.remove());
+  if (!posts.length) {
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  posts.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'nf-post-card';
+    card.style.cssText = 'background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.08)';
+    const avatarHtml = p.avatarSrc
+      ? `<img src="${p.avatarSrc}" style="width:40px;height:40px;border-radius:50%;object-fit:cover">`
+      : `<div style="width:40px;height:40px;border-radius:50%;background:#c8d0e0;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 80 80" style="width:28px;height:28px;fill:#9ca3af"><circle cx="40" cy="28" r="18"/><ellipse cx="40" cy="70" rx="30" ry="18"/></svg></div>`;
+    card.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:10px">
+          ${avatarHtml}
+          <div>
+            <div style="font-size:14px;font-weight:700;color:#1a1a2e">${p.name}</div>
+            <div style="font-size:11px;color:#9ca3af">${p.time} · <span style="color:#5563e8">${p.cat}</span></div>
+          </div>
+        </div>
+        <button onclick="nfDeletePost(${i})" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:14px;padding:4px 8px;border-radius:6px" title="Delete post" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#9ca3af'"><i class="fa-solid fa-trash"></i></button>
+      </div>
+      ${p.text ? `<div style="font-size:14px;color:#374151;line-height:1.6;margin-bottom:${p.img?'12px':'0'}">${p.text}</div>` : ''}
+      ${p.img ? `<img src="${p.img}" style="width:100%;max-height:360px;object-fit:cover;border-radius:8px;display:block">` : ''}`;
+    feed.appendChild(card);
+  });
+}
+
+function nfDeletePost(i) {
+  if (!confirm('Delete this post?')) return;
+  if (nfPosts[nfActiveCat]) nfPosts[nfActiveCat].splice(i, 1);
+  nfRenderFeed();
+}
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
   clearTimeout(toastT);
   toastT = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ═══════════════════════════════════════
+// DOCUMENT UPLOAD (Tax Forms / Contracts)
+// ═══════════════════════════════════════
+const docStores = { taxForms: [], contracts: [] };
+
+function docUpload(store, input) {
+  if (!input.files || !input.files.length) return;
+  docAddFiles(store, input.files);
+  input.value = '';
+}
+
+function docDropHandle(store, files) {
+  if (!files || !files.length) return;
+  docAddFiles(store, files);
+}
+
+function docAddFiles(store, files) {
+  Array.from(files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const entry = { name: file.name, type: file.type, size: file.size, dataUrl: e.target.result };
+      docStores[store].push(entry);
+      docRenderGrid(store);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function docRenderGrid(store) {
+  const grid = document.getElementById(store + '-grid');
+  if (!grid) return;
+  grid.innerHTML = docStores[store].map((f, i) => {
+    const isImage = f.type.startsWith('image/');
+    const isPdf = f.type === 'application/pdf';
+    const thumb = isImage
+      ? `<img src="${f.dataUrl}" style="width:100%;height:70px;object-fit:cover;border-radius:6px 6px 0 0;display:block">`
+      : `<div style="height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#2c2d4a;border-radius:6px 6px 0 0;gap:4px">
+           <i class="fa-solid ${isPdf ? 'fa-file-pdf' : 'fa-file-word'}" style="font-size:28px;color:${isPdf ? '#ef4444' : '#3b82f6'}"></i>
+           <span style="font-size:10px;color:#9898b0;text-transform:uppercase">${isPdf ? 'PDF' : 'DOC'}</span>
+         </div>`;
+    const short = f.name.length > 14 ? f.name.substring(0,12)+'…' : f.name;
+    return `<div style="position:relative;background:#2c2d4a;border-radius:8px;overflow:hidden;border:1px solid #363758;transition:border-color .2s" onmouseover="this.style.borderColor='#5563e8';this.querySelector('.doc-del-btn').style.opacity='1'" onmouseout="this.style.borderColor='#363758';this.querySelector('.doc-del-btn').style.opacity='0'">
+      <div onclick="docView('${store}',${i})" style="cursor:pointer">
+        ${thumb}
+        <div style="padding:6px 8px">
+          <div style="font-size:11px;color:#c8c8e0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${f.name}">${short}</div>
+        </div>
+      </div>
+      <button class="doc-del-btn" onclick="event.stopPropagation();docConfirmDelete('${store}',${i})"
+        style="position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(239,68,68,.85);border:none;color:#fff;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;line-height:1">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function docConfirmDelete(store, idx) {
+  const f = docStores[store][idx];
+  if (!f) return;
+  // Remove any open lightbox first
+  const lb = document.getElementById('doc-lightbox');
+  if (lb) lb.remove();
+  // Remove existing confirm if any
+  const old = document.getElementById('doc-confirm-overlay');
+  if (old) old.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'doc-confirm-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99999;display:flex;align-items:center;justify-content:center';
+  overlay.innerHTML = `
+    <div style="background:#2c2d4a;border-radius:12px;padding:28px 32px;min-width:300px;text-align:center;border:1px solid #363758;box-shadow:0 12px 40px rgba(0,0,0,.5)">
+      <div style="width:48px;height:48px;border-radius:50%;background:rgba(239,68,68,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+        <i class="fa-solid fa-trash" style="color:#ef4444;font-size:20px"></i>
+      </div>
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">Delete File?</div>
+      <div style="font-size:13px;color:#9898b0;margin-bottom:22px;word-break:break-all">"${f.name}"</div>
+      <div style="display:flex;gap:10px;justify-content:center">
+        <button onclick="docDelete('${store}',${idx})"
+          style="background:#ef4444;color:#fff;border:none;border-radius:7px;padding:9px 26px;font-size:13px;font-weight:600;cursor:pointer">
+          Yes, Delete
+        </button>
+        <button onclick="document.getElementById('doc-confirm-overlay').remove()"
+          style="background:#363758;color:#c8c8e0;border:none;border-radius:7px;padding:9px 26px;font-size:13px;font-weight:600;cursor:pointer">
+          Cancel
+        </button>
+      </div>
+    </div>`;
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+
+function docDelete(store, idx) {
+  docStores[store].splice(idx, 1);
+  const overlay = document.getElementById('doc-confirm-overlay');
+  if (overlay) overlay.remove();
+  docRenderGrid(store);
+  showToast('File deleted.');
+}
+
+function docView(store, idx) {
+  const f = docStores[store][idx];
+  if (!f) return;
+  // Remove any existing lightbox
+  const old = document.getElementById('doc-lightbox');
+  if (old) { old.remove(); return; }
+
+  const isImage = f.type.startsWith('image/');
+  const isPdf = f.type === 'application/pdf';
+
+  const lb = document.createElement('div');
+  lb.id = 'doc-lightbox';
+  lb.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px';
+
+  let preview = '';
+  if (isImage) {
+    preview = `<img src="${f.dataUrl}" style="max-width:80vw;max-height:72vh;border-radius:10px;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,.6)">`;
+  } else if (isPdf) {
+    preview = `<iframe src="${f.dataUrl}" style="width:80vw;height:72vh;border:none;border-radius:10px;background:#fff"></iframe>`;
+  } else {
+    preview = `<div style="background:#2c2d4a;border-radius:12px;padding:60px 80px;text-align:center">
+      <i class="fa-solid fa-file-word" style="font-size:64px;color:#3b82f6;margin-bottom:16px;display:block"></i>
+      <div style="color:#fff;font-size:16px;font-weight:600">${f.name}</div>
+      <div style="color:#9898b0;font-size:13px;margin-top:6px">${(f.size/1024).toFixed(1)} KB</div>
+    </div>`;
+  }
+
+  lb.innerHTML = `
+    <div style="position:relative;width:fit-content;max-width:80vw">
+      ${preview}
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <a href="${f.dataUrl}" download="${f.name}"
+        style="background:#5563e8;color:#fff;padding:9px 22px;border-radius:7px;font-size:13px;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:7px">
+        <i class="fa-solid fa-download"></i> Download
+      </a>
+      <button onclick="document.getElementById('doc-lightbox').remove()"
+        style="background:#363758;color:#c8c8e0;border:none;padding:9px 22px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer">
+        Close
+      </button>
+    </div>
+    <div style="font-size:12px;color:#6b6c8a">Click anywhere outside to close</div>`;
+
+  lb.addEventListener('click', function(e) {
+    if (e.target === lb) lb.remove();
+  });
+  document.body.appendChild(lb);
 }
 
 // ═══════════════════════════════════════
