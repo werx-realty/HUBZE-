@@ -2172,10 +2172,17 @@ let toastT;
 // ═══════════════════════════════
 // NEWS FEED PAGE
 // ═══════════════════════════════
-const nfBtns = ['General','Open House','New Listing','Referral'];
-let nfActiveCat = 'General';
-let nfPosts = {}; // keyed by category name — each has its own post array
+// Load persisted data from localStorage (survives refresh & navigation)
+const nfBtns = JSON.parse(localStorage.getItem('hu3ze_nfBtns') || '["General","Open House","New Listing","Referral"]');
+let nfActiveCat = localStorage.getItem('hu3ze_nfActiveCat') || 'General';
+let nfPosts = JSON.parse(localStorage.getItem('hu3ze_nfPosts') || '{}');
 let nfPostImgData = null;
+
+function nfSave() {
+  localStorage.setItem('hu3ze_nfBtns', JSON.stringify(nfBtns));
+  localStorage.setItem('hu3ze_nfActiveCat', nfActiveCat);
+  localStorage.setItem('hu3ze_nfPosts', JSON.stringify(nfPosts));
+}
 
 function nfInit() {
   nfRenderBtns();
@@ -2225,7 +2232,9 @@ document.addEventListener('click', () => {
 
 function nfSetCat(i) {
   nfActiveCat = nfBtns[i];
+  nfSave();
   nfRenderBtns();
+  nfRenderFeed();
   // Update Create Post header
   const title = document.getElementById('nf-post-title');
   const badge = document.getElementById('nf-post-cat-badge');
@@ -2247,6 +2256,7 @@ function nfAddBtn() {
   const name = prompt('Button name:');
   if (!name || !name.trim()) return;
   nfBtns.push(name.trim());
+  nfSave();
   nfRenderBtns();
 }
 
@@ -2255,7 +2265,9 @@ function nfDeleteBtn(i) {
   if (!confirm('Delete this button?')) return;
   if (nfActiveCat === nfBtns[i]) nfActiveCat = nfBtns[0] || '';
   nfBtns.splice(i, 1);
+  nfSave();
   nfRenderBtns();
+  nfRenderFeed();
 }
 
 function nfRenameBtn(i) {
@@ -2263,10 +2275,10 @@ function nfRenameBtn(i) {
   const newName = prompt('New name:', oldName);
   if (!newName || !newName.trim()) return;
   const trimmed = newName.trim();
-  // Move posts to new key
   if (nfPosts[oldName]) { nfPosts[trimmed] = nfPosts[oldName]; delete nfPosts[oldName]; }
   if (nfActiveCat === oldName) nfActiveCat = trimmed;
   nfBtns[i] = trimmed;
+  nfSave();
   nfRenderBtns();
   nfRenderFeed();
 }
@@ -2375,6 +2387,7 @@ function nfSubmitPost() {
   const timeStr = now.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
   if (!nfPosts[nfActiveCat]) nfPosts[nfActiveCat] = [];
   nfPosts[nfActiveCat].unshift({ text: txt, img: nfPostImgData, cat: nfActiveCat, name, avatarSrc: avatarVisible ? avatarSrc : '', time: timeStr });
+  nfSave();
   document.getElementById('nf-post-text').value = '';
   nfClearPostImg();
   nfRenderFeed();
@@ -2420,6 +2433,7 @@ function nfRenderFeed() {
 function nfDeletePost(i) {
   if (!confirm('Delete this post?')) return;
   if (nfPosts[nfActiveCat]) nfPosts[nfActiveCat].splice(i, 1);
+  nfSave();
   nfRenderFeed();
 }
 
