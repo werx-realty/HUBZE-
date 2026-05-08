@@ -2173,15 +2173,29 @@ let toastT;
 // NEWS FEED PAGE
 // ═══════════════════════════════
 // Load persisted data from localStorage (survives refresh & navigation)
-const nfBtns = JSON.parse(localStorage.getItem('hu3ze_nfBtns') || '["General","Open House","New Listing","Referral"]');
+// ── Safely load from localStorage ──
+function nfLoadLS(key, fallback) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch(e) { return fallback; }
+}
+const nfBtns = nfLoadLS('hu3ze_nfBtns', ['General','Open House','New Listing','Referral']);
 let nfActiveCat = localStorage.getItem('hu3ze_nfActiveCat') || 'General';
-let nfPosts = JSON.parse(localStorage.getItem('hu3ze_nfPosts') || '{}');
+// nfPosts stores all posts; img field is kept in memory only (not saved, to avoid quota limits)
+let nfPosts = nfLoadLS('hu3ze_nfPosts', {});
 let nfPostImgData = null;
 
 function nfSave() {
-  localStorage.setItem('hu3ze_nfBtns', JSON.stringify(nfBtns));
-  localStorage.setItem('hu3ze_nfActiveCat', nfActiveCat);
-  localStorage.setItem('hu3ze_nfPosts', JSON.stringify(nfPosts));
+  try {
+    // Strip image data before saving so we never exceed the 5MB localStorage limit
+    const postsToSave = {};
+    Object.keys(nfPosts).forEach(cat => {
+      postsToSave[cat] = nfPosts[cat].map(p => ({ ...p, img: null }));
+    });
+    localStorage.setItem('hu3ze_nfBtns', JSON.stringify(nfBtns));
+    localStorage.setItem('hu3ze_nfActiveCat', nfActiveCat);
+    localStorage.setItem('hu3ze_nfPosts', JSON.stringify(postsToSave));
+  } catch(e) {
+    console.warn('HU3ZE: localStorage save failed', e);
+  }
 }
 
 function nfInit() {
