@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>HU3ZE – Real Estate Platform</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:flex;height:100vh;overflow:hidden;background:#252640}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#3a3b5a;border-radius:2px}
+
+/* ── SIDEBAR ── */
+#sidebar{width:190px;min-width:190px;background:#1b1c30;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;z-index:20}
+.sidebar-logo{padding:16px 14px 12px;border-bottom:1px solid #2a2b40;display:flex;align-items:center;gap:8px}
+.sidebar-logo-icon{width:28px;height:28px;background:linear-gradient(135deg,#5563e8,#9c4de8);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff}
+.sidebar-logo-text{font-size:16px;font-weight:800;color:#fff;letter-spacing:1px}
+.nav-section-label{font-size:10px;font-weight:600;color:#5a5b78;text-transform:uppercase;letter-spacing:.08em;padding:12px 14px 4px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 14px;color:#9898b8;font-size:13px;font-weight:400;cursor:pointer;text-decoration:none;transition:all .15s;border-left:2px solid transparent}
+.nav-item:hover{background:#252640;color:#fff}
+.nav-item.active{background:#252640;color:#fff;border-left-color:#5563e8}
+.nav-item i{width:16px;font-size:14px;flex-shrink:0;opacity:.8}
+.nav-item.active i{opacity:1}
+
+/* ── MAIN ── */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── LIGHT HEADER ── */
+#light-header{background:#fff;border-bottom:1px solid #e5e7ef;padding:0 24px;height:52px;display:flex;align-items:center;gap:16px;flex-shrink:0}
+#light-header.hidden{display:none}
+.breadcrumb-area{flex:1}
+.breadcrumb-title{font-size:15px;font-weight:700;color:#1a1a2e}
+.breadcrumb-route{font-size:11px;color:#9898b0;margin-top:1px}
+.header-icons{display:flex;align-items:center;gap:14px}
+.header-icons i{font-size:15px;color:#6b7280;cursor:pointer;transition:color .15s}
+.header-icons i:hover{color:#1a1a2e}
+.header-user{display:flex;align-items:center;gap:10px;border-left:1px solid #e5e7ef;padding-left:14px}
+.header-username{font-size:13px;font-weight:600;color:#1a1a2e;line-height:1.2}
+.header-role{font-size:11px;color:#9898b0}
+.header-avatar{width:30px;height:30px;border-radius:50%;background:#e5e7ef;display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:13px}
+.lang-select{background:#f0f1f8;border:1px solid #e0e2ec;border-radius:6px;padding:4px 8px;font-size:12px;color:#1a1a2e;cursor:pointer;outline:none}
+
+/* ── PAGE CONTAINER ── */
+#page-container{flex:1;overflow:hidden;position:relative}
+.page{display:none;height:100%;overflow-y:auto;overflow-x:hidden}
+.page.active{display:block}
+
+/* ── DARK PAGES ── */
+.dark-page{background:#252640}
+.dark-card{background:#2c2d4a;border-radius:8px;padding:16px}
+.dark-card-title{font-size:14px;font-weight:600;color:#ffffff;margin-bottom:12px}
+.dark-card-subtitle{font-size:12px;color:#9898b0}
+.dark-inner{background:#363758;border-radius:6px;padding:12px}
+.dark-text{color:#fff}
+.dark-muted{color:#9898b0}
+
+/* ── LIGHT PAGES ── */
+.light-page{background:#f0f1f8}
+.light-card{background:#fff;border-radius:8px;padding:20px}
+.light-card-title{font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:16px}
+
+/* ── TABLES ── */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-size:12px;font-weight:600;color:#9898b0;padding:8px 12px;text-align:left;border-bottom:1px solid #3a3b55}
+.data-table td{font-size:13px;padding:10px 12px;color:#c8c8e0;border-bottom:1px solid #2e2f4a}
+.data-table.light th{color:#6b7280;border-bottom-color:#e5e7ef}
+.data-table.light td{color:#374151;border-bottom-color:#f3f4f6}
+.no-data{text-align:center;padding:24px;color:#9898b0;font-size:13px}
+.no-data.light{color:#9ca3af}
+
+/* ── SEARCH BAR ── */
+.search-wrap{position:relative;display:flex;align-items:center}
+.search-input{background:#363758;border:1px solid #3a3b55;border-radius:6px;padding:6px 32px 6px 10px;font-size:12px;color:#e0e0f0;outline:none;width:160px}
+.search-input::placeholder{color:#6868a0}
+.search-input.light{background:#f0f1f8;border-color:#e0e2ec;color:#374151;width:180px}
+.search-input.light::placeholder{color:#9ca3af}
+.search-icon{position:absolute;right:10px;color:#6868a0;font-size:12px;cursor:pointer}
+.search-icon.light{color:#9ca3af}
+
+/* ── BUTTONS ── */
+.btn-add{background:linear-gradient(135deg,#5563e8,#8b4de8);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:opacity .2s}
+.btn-add:hover{opacity:.88}
+.btn-import{background:linear-gradient(135deg,#5563e8,#8b4de8);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px}
+.btn-prev-next{background:#4a9af5;color:#fff;border:none;border-radius:5px;padding:5px 14px;font-size:12px;cursor:pointer}
+.btn-dark{background:#1a1b2e;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+.btn-green{background:#22c55e;color:#fff;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer}
+.btn-blue-grad{background:linear-gradient(135deg,#5563e8,#38bdf8);color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+
+/* ── CARD HEADER ROW ── */
+.card-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.card-header-left{display:flex;flex-direction:column;gap:2px}
+
+/* ── PAGINATION ROW ── */
+.pag-row{display:flex;justify-content:flex-end;gap:6px;margin-top:10px}
+
+/* ── FORM STYLES ── */
+.form-section{background:#fff;border-radius:8px;padding:20px 24px;margin-bottom:16px}
+.form-section-title{font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:16px}
+.form-row{display:grid;gap:14px;margin-bottom:14px}
+.form-row.cols-1{grid-template-columns:1fr}
+.form-row.cols-2{grid-template-columns:1fr 1fr}
+.form-row.cols-3{grid-template-columns:1fr 1fr 1fr}
+.form-label{font-size:13px;font-weight:500;color:#374151;margin-bottom:5px;display:flex;align-items:center;gap:3px}
+.form-label .req{color:#ef4444;font-size:12px}
+.form-input{width:100%;background:#f0f2f5;border:1px solid #e0e2ec;border-radius:6px;padding:9px 12px;font-size:13px;color:#1a1a2e;outline:none;transition:border .2s}
+.form-input:focus{border-color:#5563e8}
+.form-select{width:100%;background:#f0f2f5;border:1px solid #e0e2ec;border-radius:6px;padding:9px 12px;font-size:13px;color:#1a1a2e;outline:none;cursor:pointer}
+.form-group{display:flex;flex-direction:column}
+.upload-area{border:2px dashed #c8cad8;border-radius:8px;padding:30px;text-align:center;cursor:pointer;background:#f8f9fc;transition:border-color .2s}
+.upload-area:hover{border-color:#5563e8}
+.upload-area i{font-size:28px;color:#9ca3af;margin-bottom:8px;display:block}
+.upload-text{font-size:13px;color:#6b7280}
+.upload-text strong{color:#5563e8}
+.upload-sub{font-size:11px;color:#9ca3af;margin-top:4px}
+.page-header{background:#fff;border-bottom:1px solid #e5e7ef;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.page-header-title{font-size:16px;font-weight:700;color:#1a1a2e}
+.page-header-back{font-size:13px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px;text-decoration:none}
+.page-header-back:hover{color:#5563e8}
+.page-body{padding:20px 24px}
+
+/* ── SELLERS TAB FILTERS ── */
+.tab-filters{display:flex;gap:8px;flex-wrap:wrap}
+.tab-filter{border:1px solid #e0e2ec;border-radius:6px;padding:6px 16px;font-size:13px;color:#374151;cursor:pointer;background:#fff;display:flex;align-items:center;gap:6px;transition:all .15s}
+.tab-filter:hover{border-color:#5563e8;color:#5563e8}
+.tab-filter.active{border-color:#1a1a2e;background:#1a1a2e;color:#fff}
+.tab-filter .check{display:none}
+.tab-filter.active .check{display:inline;font-size:11px}
+
+/* ── AGENT PROFILE (Properties dark page) ── */
+.agent-profile-top{display:grid;grid-template-columns:420px 1fr;gap:0;background:#2c2d4a;margin-bottom:0}
+.agent-avatar-section{padding:28px;display:flex;flex-direction:column;align-items:flex-start;gap:16px;border-right:1px solid #363758}
+.agent-avatar{width:120px;height:120px;border-radius:50%;background:#4a4b68;display:flex;align-items:center;justify-content:center}
+.agent-avatar svg{width:80px;height:80px;fill:#6b6c8a}
+.agent-name{font-size:18px;font-weight:700;color:#fff}
+.hu3ze-logo-text{font-size:22px;font-weight:900;letter-spacing:2px}
+.hu3ze-logo-h{color:#e0e0ff}
+.hu3ze-logo-u3ze{background:linear-gradient(135deg,#5563e8,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.contact-info-panel{padding:20px;display:flex;flex-direction:column;gap:10px}
+.contact-info-box{background:#363758;border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:12px;flex:1}
+.contact-row{display:flex;align-items:center;gap:10px;color:#7878a0;font-size:13px}
+.contact-row i{width:16px;font-size:14px}
+.trans-listing-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.tl-box{background:#363758;border-radius:6px;padding:12px}
+.tl-label{font-size:12px;font-weight:600;color:#9898b0;margin-bottom:10px}
+.tl-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tl-stat{display:flex;flex-direction:column;gap:3px}
+.tl-stat-label{font-size:11px;color:#7878a0}
+.tl-stat-val{font-size:14px;font-weight:700;color:#fff}
+.see-all{font-size:11px;color:#5563e8;cursor:pointer;margin-left:6px}
+
+/* ── CALENDAR ── */
+.cal-mini{display:flex;flex-direction:column;gap:0}
+.cal-header{display:flex;align-items:center;justify-content:space-between;padding:0 0 14px}
+.cal-month-name{font-size:16px;font-weight:700;color:#1a1a2e}
+.cal-nav{background:none;border:none;cursor:pointer;color:#6b7280;font-size:14px;padding:4px 6px}
+.cal-grid-header{display:grid;grid-template-columns:repeat(7,1fr);gap:0;text-align:center;margin-bottom:6px}
+.cal-grid-header span{font-size:12px;color:#9ca3af;padding:4px 0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0}
+.cal-day{height:36px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#374151;cursor:pointer;border-radius:50%;width:36px;margin:0 auto;transition:background .15s}
+.cal-day:hover{background:#f0f1f8}
+.cal-day.today{background:#5563e8;color:#fff;font-weight:700;border-radius:50%}
+.cal-day.other-month{color:#d1d5db}
+.cal-day.has-event{position:relative}
+.cal-day.has-event::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:#5563e8}
+.cal-day.today.has-event::after{background:#fff}
+.schedule-section{margin-top:16px;padding-top:16px;border-top:1px solid #e5e7ef}
+.schedule-date{font-size:16px;font-weight:700;color:#1a1a2e}
+.schedule-sub{font-size:12px;color:#9ca3af;margin-top:2px}
+.no-meetings{text-align:center;color:#9ca3af;font-size:13px;padding:24px 0}
+.full-calendar-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.full-cal-nav{display:flex;align-items:center;gap:4px}
+.full-cal-btn{background:#1a1a2e;color:#fff;border:none;border-radius:5px;width:28px;height:28px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center}
+.today-btn{background:#e5e7ef;color:#374151;border:none;border-radius:5px;padding:4px 12px;font-size:13px;cursor:pointer}
+.full-cal-title{font-size:18px;font-weight:700;color:#1a1a2e;flex:1;text-align:center}
+.view-tabs{display:flex;background:#1a1a2e;border-radius:6px;overflow:hidden}
+.view-tab{padding:5px 12px;font-size:12px;color:#9898b0;cursor:pointer;transition:all .15s}
+.view-tab.active{background:#fff;color:#1a1a2e;font-weight:600}
+.full-cal-grid-header{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid #e5e7ef;border-bottom:none}
+.full-cal-grid-header div{padding:8px 12px;font-size:13px;font-weight:600;color:#374151;border-right:1px solid #e5e7ef;text-align:right}
+.full-cal-grid-header div:last-child{border-right:none}
+.full-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid #e5e7ef;min-height:400px}
+.full-cal-cell{min-height:100px;border-right:1px solid #e5e7ef;border-bottom:1px solid #e5e7ef;padding:6px 8px;font-size:12px;color:#6b7280}
+.full-cal-cell:nth-child(7n){border-right:none}
+.full-cal-cell.today-cell{background:#fffde7}
+.full-cal-cell.other-month-cell{color:#d1d5db}
+.timeline-toggle{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid #e5e7ef;border-bottom:1px solid #e5e7ef;margin-bottom:16px}
+.timeline-label{font-size:13px;font-weight:600;color:#374151;display:flex;align-items:center;gap:8px}
+.toggle-sw{appearance:none;width:38px;height:20px;background:#22c55e;border-radius:10px;cursor:pointer;position:relative}
+.toggle-sw::after{content:'';position:absolute;top:2px;left:20px;width:16px;height:16px;background:#fff;border-radius:50%;transition:left .2s}
+
+/* ── KANBAN ── */
+.kanban-board{display:flex;gap:14px;padding:20px;overflow-x:auto;height:100%}
+.kanban-col{min-width:220px;background:#2c2d4a;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.kanban-col-header{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.kanban-col-count{background:#363758;color:#9898b0;font-size:11px;padding:2px 8px;border-radius:10px}
+.kanban-card{background:#363758;border-radius:6px;padding:12px;cursor:pointer}
+.kanban-card-name{font-size:13px;font-weight:600;color:#e0e0f0;margin-bottom:4px}
+.kanban-card-meta{font-size:11px;color:#7878a0}
+
+/* ── NEWS FEED ── */
+.news-categories{display:flex;flex-direction:column;gap:6px}
+.news-cat{border:1px solid #e0e2ec;border-radius:6px;padding:10px 14px;font-size:13px;color:#374151;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:#fff}
+.news-cat.active{border-color:#1a1a2e;background:#fff}
+.news-cat .check-circle{width:20px;height:20px;border-radius:50%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px}
+.post-box{background:#fff;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.post-textarea{width:100%;border:1px solid #e0e2ec;border-radius:6px;padding:12px;font-size:13px;color:#374151;resize:vertical;min-height:110px;outline:none;font-family:inherit}
+.post-textarea::placeholder{color:#9ca3af}
+.post-actions{display:flex;align-items:center;justify-content:space-between}
+.post-type-sel{background:#f0f1f8;border:1px solid #e0e2ec;border-radius:6px;padding:6px 10px;font-size:13px;color:#374151;outline:none;cursor:pointer}
+.btn-add-media{background:none;border:1px solid #e0e2ec;border-radius:6px;padding:6px 12px;font-size:13px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px}
+.btn-post{background:#1a1a2e;color:#fff;border:none;border-radius:6px;padding:8px 24px;font-size:13px;font-weight:600;cursor:pointer}
+
+/* ── CHAT ── */
+.chat-layout{display:grid;grid-template-columns:260px 1fr;height:100%;overflow:hidden}
+.chat-sidebar{background:#2c2d4a;border-right:1px solid #363758;display:flex;flex-direction:column}
+.chat-search{padding:12px;border-bottom:1px solid #363758}
+.chat-item{padding:12px 14px;cursor:pointer;transition:background .15s;display:flex;gap:10px;align-items:flex-start}
+.chat-item:hover,.chat-item.active{background:#363758}
+.chat-avatar-sm{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#5563e8,#a855f7);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex-shrink:0}
+.chat-name{font-size:13px;font-weight:600;color:#e0e0f0}
+.chat-preview{font-size:12px;color:#7878a0;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:170px}
+.chat-time{font-size:11px;color:#5a5b78;margin-left:auto;flex-shrink:0}
+.chat-main{display:flex;flex-direction:column;overflow:hidden}
+.chat-header{padding:14px 18px;border-bottom:1px solid #363758;display:flex;align-items:center;gap:12px}
+.chat-messages{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+.msg-bubble{max-width:65%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.5}
+.msg-bubble.mine{background:#5563e8;color:#fff;align-self:flex-end;border-radius:12px 12px 4px 12px}
+.msg-bubble.theirs{background:#363758;color:#e0e0f0;align-self:flex-start;border-radius:12px 12px 12px 4px}
+.chat-input-row{padding:12px 16px;border-top:1px solid #363758;display:flex;gap:8px}
+.chat-input{flex:1;background:#363758;border:1px solid #3a3b55;border-radius:20px;padding:8px 14px;font-size:13px;color:#e0e0f0;outline:none}
+.chat-send-btn{background:#5563e8;color:#fff;border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:13px}
+
+/* ── EMAIL ── */
+.email-layout{display:grid;grid-template-columns:220px 1fr;height:100%;overflow:hidden}
+.email-sidebar{background:#2c2d4a;padding:16px;display:flex;flex-direction:column;gap:6px;border-right:1px solid #363758}
+.email-folder{padding:8px 12px;border-radius:6px;cursor:pointer;font-size:13px;color:#9898b0;display:flex;align-items:center;gap:10px;transition:all .15s}
+.email-folder:hover,.email-folder.active{background:#363758;color:#fff}
+.email-folder .count{margin-left:auto;background:#5563e8;color:#fff;font-size:11px;padding:1px 7px;border-radius:10px}
+.email-list{overflow-y:auto;border-right:1px solid #363758}
+.email-item{padding:14px 16px;cursor:pointer;border-bottom:1px solid #2e2f4a;transition:background .15s}
+.email-item:hover,.email-item.active{background:#363758}
+.email-item-sender{font-size:13px;font-weight:600;color:#e0e0f0}
+.email-item-subject{font-size:12px;color:#9898b0;margin-top:2px}
+.email-item-time{font-size:11px;color:#5a5b78;margin-top:3px}
+.email-view{padding:24px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+.email-grid{display:grid;grid-template-columns:280px 1fr;height:100%;overflow:hidden}
+
+/* ── DASHBOARD dark panels layout ── */
+.dash-grid{display:grid;gap:16px;padding:16px}
+.dash-3col{grid-template-columns:1fr 1fr 1fr}
+.dash-2col{grid-template-columns:1fr 1fr}
+.dash-top-row{grid-template-columns:300px 1fr 280px}
+
+/* ── SWAG ── */
+.swag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;padding:20px}
+.swag-card{background:#2c2d4a;border-radius:8px;overflow:hidden;cursor:pointer;transition:transform .2s}
+.swag-card:hover{transform:translateY(-2px)}
+.swag-img{height:140px;background:linear-gradient(135deg,#363758,#2c2d4a);display:flex;align-items:center;justify-content:center;font-size:40px}
+.swag-info{padding:12px}
+.swag-name{font-size:13px;font-weight:600;color:#e0e0f0}
+.swag-price{font-size:12px;color:#9898b0;margin-top:3px}
+
+/* ── ROUTE MAPS ── */
+#routeMap{height:calc(100% - 52px);width:100%}
+.map-header{padding:14px 16px;background:#2c2d4a;display:flex;align-items:center;justify-content:space-between}
+.map-title{font-size:15px;font-weight:600;color:#fff}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:20px;right:20px;background:#1a1a2e;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:9999;transform:translateY(60px);opacity:0;transition:all .3s;pointer-events:none}
+#toast.show{transform:translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<!-- ═══════ SIDEBAR ═══════ -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">H</div>
+    <div class="sidebar-logo-text">HU3ZE</div>
+  </div>
+
+  <a class="nav-item active" data-page="dashboard" href="javascript:void(0)">
+    <i class="fa-regular fa-circle-dot"></i> Dashboard
+  </a>
+  <a class="nav-item" data-page="sales-board" href="javascript:void(0)">
+    <i class="fa-solid fa-dollar-sign"></i> Sales Board
+  </a>
+
+  <div class="nav-section-label">User</div>
+  <a class="nav-item" data-page="email" href="javascript:void(0)">
+    <i class="fa-regular fa-envelope"></i> Email
+  </a>
+  <a class="nav-item" data-page="transactions" href="javascript:void(0)">
+    <i class="fa-solid fa-right-left"></i> Transactions
+  </a>
+  <a class="nav-item" data-page="news-feed" href="javascript:void(0)">
+    <i class="fa-regular fa-newspaper"></i> News Feed
+  </a>
+  <a class="nav-item" data-page="office" href="javascript:void(0)">
+    <i class="fa-regular fa-building"></i> Office
+  </a>
+  <a class="nav-item" data-page="swag" href="javascript:void(0)">
+    <i class="fa-solid fa-chart-bar"></i> SWAG
+  </a>
+  <a class="nav-item" data-page="events" href="javascript:void(0)">
+    <i class="fa-regular fa-calendar-days"></i> Events
+  </a>
+  <a class="nav-item" data-page="agents" href="javascript:void(0)">
+    <i class="fa-regular fa-user"></i> Agents
+  </a>
+  <a class="nav-item" data-page="properties" href="javascript:void(0)">
+    <i class="fa-solid fa-city"></i> Properties
+  </a>
+
+  <div class="nav-section-label">Agent Assists</div>
+  <a class="nav-item" data-page="workspace" href="javascript:void(0)">
+    <i class="fa-solid fa-briefcase"></i> Workspace
+  </a>
+  <a class="nav-item" data-page="buyers" href="javascript:void(0)">
+    <i class="fa-solid fa-user-group"></i> Buyers
+  </a>
+  <a class="nav-item" data-page="sellers" href="javascript:void(0)">
+    <i class="fa-solid fa-receipt"></i> Sellers
+  </a>
+  <a class="nav-item" data-page="kanban" href="javascript:void(0)">
+    <i class="fa-solid fa-table-columns"></i> Kanban
+  </a>
+  <a class="nav-item" data-page="active-listing" href="javascript:void(0)">
+    <i class="fa-solid fa-house"></i> Active Listing
+  </a>
+  <a class="nav-item" data-page="chat" href="javascript:void(0)">
+    <i class="fa-regular fa-comment-dots"></i> Chat
+  </a>
+  <a class="nav-item" data-page="calendar" href="javascript:void(0)">
+    <i class="fa-regular fa-calendar"></i> Calendar
+  </a>
+  <a class="nav-item" data-page="route-maps" href="javascript:void(0)">
+    <i class="fa-solid fa-route"></i> Route Maps
+  </a>
+</nav>
+
+<!-- ═══════ MAIN ═══════ -->
+<div id="main">
+
+  <!-- Light Header (hidden on dark pages) -->
+  <div id="light-header" class="hidden">
+    <div class="breadcrumb-area">
+      <div class="breadcrumb-title" id="hdr-title">Dashboard</div>
+      <div class="breadcrumb-route" id="hdr-route">/dashboard</div>
+    </div>
+    <div class="header-icons">
+      <i class="fa-solid fa-moon" title="Dark mode"></i>
+      <i class="fa-solid fa-bell" title="Notifications"></i>
+      <i class="fa-regular fa-calendar" title="Calendar"></i>
+      <i class="fa-solid fa-gear" title="Settings"></i>
+    </div>
+    <div class="header-user">
+      <div>
+        <div class="header-username">fhfg hfgh</div>
+        <div class="header-role">admin</div>
+      </div>
+      <div class="header-avatar"><i class="fa-regular fa-user"></i></div>
+      <select class="lang-select"><option>EN</option><option>ES</option></select>
+    </div>
+  </div>
+
+  <!-- Pages -->
+  <div id="page-container">
+
+    <!-- ═══════════════════════════
+         DASHBOARD
+    ═══════════════════════════ -->
+    <div id="page-dashboard" class="page dark-page active">
+      <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+
+        <!-- Row 1: Top Agents | Months Chart | Agent Ranking -->
+        <div style="display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:14px">
+
+          <!-- Top Agents -->
+          <div class="dark-card" style="display:flex;flex-direction:column">
+            <div class="dark-card-title">Top Agents</div>
+            <div class="dark-inner" style="flex:1">
+              <div style="font-size:12px;font-weight:700;color:#e0e0f0;margin-bottom:8px">Active</div>
+              <table class="data-table" style="width:100%">
+                <thead><tr>
+                  <th>Property</th><th>Address</th><th>Sales</th><th>Closing</th><th>Agent</th>
+                </tr></thead>
+                <tbody><tr><td colspan="5" class="no-data">No data available</td></tr></tbody>
+              </table>
+              <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
+            </div>
+          </div>
+
+          <!-- Months Chart -->
+          <div class="dark-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <div class="dark-card-title" style="margin-bottom:0">Months</div>
+              <div style="font-size:13px;font-weight:700;color:#9898b0">2026</div>
+            </div>
+            <div style="height:200px;position:relative"><canvas id="monthsChart"></canvas></div>
+
+            <!-- Pending below chart -->
+            <div style="margin-top:16px">
+              <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:8px">Pending</div>
+              <table class="data-table" style="width:100%">
+                <thead><tr>
+                  <th>Property</th><th>Address</th><th>Sales</th><th>Closing</th><th>Agent</th>
+                </tr></thead>
+                <tbody><tr><td colspan="5" class="no-data">No data available</td></tr></tbody>
+              </table>
+              <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
+            </div>
+          </div>
+
+          <!-- Agent Ranking -->
+          <div class="dark-card">
+            <div class="dark-card-title">Agent Ranking</div>
+            <table class="data-table" style="width:100%">
+              <thead><tr>
+                <th>Name</th><th>Closed</th><th>Volume</th><th>Profile</th>
+              </tr></thead>
+              <tbody><tr><td colspan="4" class="no-data">No data at the moment.</td></tr></tbody>
+            </table>
+            <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         SALES BOARD
+    ═══════════════════════════ -->
+    <div id="page-sales-board" class="page dark-page">
+      <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+
+        <!-- Row 1: Paid Cap | Closed CDA -->
+        <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:14px">
+          <!-- Paid Cap -->
+          <div class="dark-card">
+            <div class="card-header-row">
+              <div class="dark-card-title" style="margin-bottom:0">Paid Cap</div>
+              <div class="search-wrap"><input class="search-input" placeholder="Search here..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+            </div>
+            <div style="position:relative;height:160px;display:flex;align-items:center;justify-content:center">
+              <canvas id="paidCapChart" style="max-height:160px"></canvas>
+            </div>
+            <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
+              <div style="width:12px;height:12px;background:#5563e8;border-radius:2px;flex-shrink:0"></div>
+              <span style="font-size:12px;color:#9898b0;flex:1">Team Christabelle</span>
+              <span style="font-size:13px;font-weight:700;color:#fff">$1,750,000</span>
+            </div>
+          </div>
+
+          <!-- Closed CDA -->
+          <div class="dark-card">
+            <div class="card-header-row">
+              <div class="dark-card-title" style="margin-bottom:0">Closed CDA</div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <button class="btn-import"><i class="fa-solid fa-plus"></i> Import CDA</button>
+                <div class="search-wrap"><input class="search-input" placeholder="Search here..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+              </div>
+            </div>
+            <table class="data-table" style="width:100%;margin-top:6px">
+              <thead><tr>
+                <th>Thumbnail</th><th>Agent</th><th>Agent ID</th><th>Date Created</th>
+              </tr></thead>
+              <tbody><tr><td colspan="4" class="no-data">No records found</td></tr></tbody>
+            </table>
+            <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
+          </div>
+        </div>
+
+        <!-- Client Map -->
+        <div class="dark-card">
+          <div class="card-header-row">
+            <div class="dark-card-title" style="margin-bottom:0">Client Map</div>
+            <div class="search-wrap"><input class="search-input" placeholder="Search here..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+          </div>
+          <div id="clientMap" style="height:280px;border-radius:6px;overflow:hidden;margin-top:6px"></div>
+        </div>
+
+        <!-- MLS Board | Tax Forms | Contract -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+          <!-- MLS Board -->
+          <div class="dark-card">
+            <div class="card-header-row">
+              <div class="dark-card-title" style="margin-bottom:0">MLS Board</div>
+              <div class="search-wrap"><input class="search-input" placeholder="Search here..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+            </div>
+            <button class="btn-add" style="margin-bottom:10px"><i class="fa-solid fa-plus"></i> Add</button>
+            <table class="data-table" style="width:100%">
+              <thead><tr><th>Filename</th><th>Agent</th></tr></thead>
+              <tbody><tr><td colspan="2" class="no-data">No records found</td></tr></tbody>
+            </table>
+            <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
+          </div>
+
+          <!-- Tax Forms -->
+          <div class="dark-card">
+            <div class="card-header-row">
+              <div class="dark-card-title" style="margin-bottom:0">Tax Forms</div>
+              <div class="search-wrap"><input class="search-input" placeholder="Search here..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+            </div>
+            <button class="btn-add" style="margin-bottom:10px"><i class="fa-solid fa-plus"></i> Add</button>
+            <table class="data-table" style="width:100%">
+              <thead><tr><th>Filename</th><th>Agent</th></tr></thead>
+              <tbody><tr><td colspan="2" class="no-data">No records found</td></tr></tbody>
+            </table>
+            <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
+          </div>
+
+          <!-- Contract -->
+          <div class="dark-card">
+            <div class="card-header-row">
+              <div class="dark-card-title" style="margin-bottom:0">Contract</div>
+              <div class="search-wrap"><input class="search-input" placeholder="Search here..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+            </div>
+            <button class="btn-add" style="margin-bottom:10px"><i class="fa-solid fa-plus"></i> Add</button>
+            <table class="data-table" style="width:100%">
+              <thead><tr><th>Filename</th><th>Agent</th></tr></thead>
+              <tbody><tr><td colspan="2" class="no-data">No records found</td></tr></tbody>
+            </table>
+            <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         PROPERTIES (Agent Profile)
+    ═══════════════════════════ -->
+    <div id="page-properties" class="page dark-page">
+      <!-- Top profile section -->
+      <div style="display:grid;grid-template-columns:380px 1fr;background:#2c2d4a;border-bottom:1px solid #363758">
+        <!-- Avatar side -->
+        <div style="padding:28px 24px;border-right:1px solid #363758;display:flex;flex-direction:column;align-items:flex-start;gap:14px">
+          <div style="width:120px;height:120px;border-radius:50%;background:#4a4b68;display:flex;align-items:center;justify-content:center;overflow:hidden">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:90px;height:90px;fill:#6b7080">
+              <circle cx="50" cy="38" r="20"/><ellipse cx="50" cy="80" rx="32" ry="22"/>
+            </svg>
+          </div>
+          <div style="font-size:20px;font-weight:700;color:#fff">Agent</div>
+          <div style="font-size:22px;font-weight:900;letter-spacing:2px;margin-top:4px">
+            <span style="color:#e0e0ff">&#x1F916;</span><span style="background:linear-gradient(135deg,#8888ff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">HU</span><span style="background:linear-gradient(135deg,#5563e8,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">3ZE</span>
+          </div>
+        </div>
+
+        <!-- Contact / Transactions / Listings -->
+        <div style="padding:20px 24px;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:15px;font-weight:700;color:#fff">Contact information</div>
+          <div style="background:#363758;border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:10px;color:#5a5b78"><i class="fa-solid fa-phone" style="width:16px"></i></div>
+            <div style="display:flex;align-items:center;gap:10px;color:#5a5b78"><i class="fa-regular fa-id-card" style="width:16px"></i></div>
+            <div style="display:flex;align-items:center;gap:10px;color:#5a5b78"><i class="fa-regular fa-envelope" style="width:16px"></i></div>
+            <div style="display:flex;align-items:center;gap:10px;color:#5a5b78"><i class="fa-solid fa-location-dot" style="width:16px"></i></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:14px;font-weight:700;color:#fff">Transactions</span>
+            <span class="see-all">See all</span>
+          </div>
+          <div style="background:#363758;border-radius:6px;padding:12px;display:grid;grid-template-columns:1fr 1fr 1fr">
+            <div style="font-size:13px;color:#e0e0f0">Active</div>
+            <div style="text-align:center"><div style="font-size:13px;color:#fff;font-weight:700">0</div><div style="font-size:11px;color:#7878a0">Closed</div></div>
+            <div style="text-align:right"><div style="font-size:13px;color:#fff;font-weight:700">0</div><div style="font-size:11px;color:#7878a0">Terminated</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:14px;font-weight:700;color:#fff">Listing</span>
+            <span class="see-all">See all</span>
+          </div>
+          <div style="background:#363758;border-radius:6px;padding:12px;display:grid;grid-template-columns:1fr 1fr 1fr">
+            <div style="font-size:13px;color:#e0e0f0">Active</div>
+            <div style="text-align:center;font-size:13px;color:#7878a0">Closed</div>
+            <div style="text-align:right;font-size:13px;color:#7878a0">Terminated</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom section -->
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:0;min-height:400px">
+        <!-- Sold / Open Properties -->
+        <div style="padding:20px 24px;border-right:1px solid #363758">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <span style="font-size:14px;font-weight:700;color:#fff">Sold Properties</span>
+                <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:140px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+              </div>
+              <div style="min-height:120px"></div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <span style="font-size:14px;font-weight:700;color:#fff">Open Properties</span>
+                <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:140px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+              </div>
+              <div style="min-height:120px"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Commission / Offices / Licenses / Leads -->
+        <div style="padding:16px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;max-height:400px">
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:13px;font-weight:700;color:#fff">Commission</span>
+              <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:130px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+            </div>
+            <table class="data-table"><thead><tr><th>Name</th><th>Comission</th></tr></thead><tbody><tr><td colspan="2" class="no-data">No records found</td></tr></tbody></table>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:13px;font-weight:700;color:#fff">Offices</span>
+              <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:130px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+            </div>
+            <div class="no-data">No data at the moment</div>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:13px;font-weight:700;color:#fff">Licenses</span>
+              <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:130px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+            </div>
+            <div class="no-data">No data at the moment</div>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:13px;font-weight:700;color:#fff">Leads</span>
+              <button class="btn-add"><i class="fa-solid fa-plus"></i> Add</button>
+            </div>
+            <div class="no-data">No data at the moment</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         NEWS FEED
+    ═══════════════════════════ -->
+    <div id="page-news-feed" class="page light-page">
+      <div style="display:grid;grid-template-columns:160px 1fr 220px;gap:0;height:100%">
+        <!-- Categories -->
+        <div style="padding:16px;border-right:1px solid #e5e7ef;display:flex;flex-direction:column;gap:6px">
+          <div class="news-cat active" onclick="setNewscat(this)">General <span class="check-circle"><i class="fa-solid fa-check"></i></span></div>
+          <div class="news-cat" onclick="setNewscat(this)">Open House</div>
+          <div class="news-cat" onclick="setNewscat(this)">New Listing</div>
+          <div class="news-cat" onclick="setNewscat(this)">Referral</div>
+        </div>
+        <!-- Post area -->
+        <div style="padding:20px;overflow-y:auto">
+          <div class="post-box">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+              <span style="font-size:15px;font-weight:700;color:#1a1a2e">Create Post</span>
+              <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+                <select class="post-type-sel"><option>General</option><option>Open House</option><option>New Listing</option><option>Referral</option></select>
+                <button class="btn-add-media"><i class="fa-solid fa-plus"></i> Add Photo/Video</button>
+              </div>
+            </div>
+            <textarea class="post-textarea" placeholder="What's on your mind..."></textarea>
+            <div style="display:flex;justify-content:flex-end">
+              <button class="btn-post" onclick="showToast('Post published!')">Post</button>
+            </div>
+          </div>
+        </div>
+        <!-- Agents sidebar -->
+        <div style="padding:16px;border-left:1px solid #e5e7ef">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <span style="font-size:14px;font-weight:700;color:#1a1a2e">Agents</span>
+            <div class="search-wrap"><input class="search-input light" placeholder="Search here..." style="width:110px"/><i class="fa-solid fa-magnifying-glass search-icon light"></i></div>
+          </div>
+          <div style="text-align:center;color:#9ca3af;font-size:13px;padding:20px 0">No agents found</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         AGENTS
+    ═══════════════════════════ -->
+    <div id="page-agents" class="page light-page">
+      <div id="agents-list-view">
+        <div class="page-header">
+          <div>
+            <div class="page-header-title">Agents</div>
+            <div style="font-size:12px;color:#9ca3af">/agents</div>
+          </div>
+          <button class="btn-add" style="background:linear-gradient(135deg,#5563e8,#38bdf8);font-size:13px;padding:8px 16px" onclick="showView('agents-add-view')">
+            <i class="fa-solid fa-plus"></i> Add Agent
+          </button>
+        </div>
+        <div class="page-body">
+          <div style="background:#fff;border-radius:8px;padding:20px;min-height:300px">
+            <div style="text-align:center;color:#9ca3af;font-size:13px;padding:40px 0">
+              <i class="fa-regular fa-user" style="font-size:32px;margin-bottom:12px;display:block;color:#d1d5db"></i>
+              No agents found. Add your first agent.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="agents-add-view" style="display:none">
+        <div class="page-header">
+          <div class="page-header-title">Add Agent</div>
+          <a class="page-header-back" href="javascript:void(0)" onclick="showView('agents-list-view')"><i class="fa-solid fa-chevron-left"></i> Go Back</a>
+        </div>
+        <div class="page-body">
+          <div class="form-section">
+            <div style="display:grid;grid-template-columns:1fr 280px;gap:24px">
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div class="form-group">
+                  <label class="form-label">First Name <span class="req">*</span></label>
+                  <input class="form-input" type="text"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name <span class="req">*</span></label>
+                  <input class="form-input" type="text"/>
+                </div>
+                <div class="form-row cols-2">
+                  <div class="form-group">
+                    <label class="form-label">YTD Units <span class="req">*</span></label>
+                    <input class="form-input" type="number"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">YTD Volume <span class="req">*</span></label>
+                    <input class="form-input" type="number"/>
+                  </div>
+                </div>
+                <div class="form-row cols-2">
+                  <div class="form-group">
+                    <label class="form-label">Email Address <span class="req">*</span></label>
+                    <input class="form-input" type="email" value="Christabellebadiola59@gmail.com"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Password <span class="req">*</span></label>
+                    <input class="form-input" type="password" value="password123456"/>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Profile Picture</label>
+                <div class="upload-area" style="height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                  <i class="fa-solid fa-cloud-arrow-up" style="font-size:30px;color:#9ca3af;margin-bottom:8px"></i>
+                  <div class="upload-text">Select or Drag and Drop</div>
+                  <div class="upload-sub">Supported Files: jpg, jpeg, png</div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:20px">
+              <button class="btn-green" onclick="showToast('Agent added successfully!')">Add Agent</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         BUYERS
+    ═══════════════════════════ -->
+    <div id="page-buyers" class="page light-page">
+      <div id="buyers-list-view">
+        <div class="page-header">
+          <div>
+            <div class="page-header-title">Buyers</div>
+            <div style="font-size:12px;color:#9ca3af">/buyers</div>
+          </div>
+          <button class="btn-add" style="background:linear-gradient(135deg,#5563e8,#38bdf8);font-size:13px;padding:8px 16px" onclick="showView('buyers-add-view')">
+            <i class="fa-solid fa-plus"></i> Add Buyer
+          </button>
+        </div>
+        <div class="page-body">
+          <div style="background:#fff;border-radius:8px;padding:40px;text-align:center;color:#9ca3af;font-size:13px">No buyers found.</div>
+        </div>
+      </div>
+      <div id="buyers-add-view" style="display:none">
+        <div class="page-header">
+          <div class="page-header-title">Add buyer</div>
+          <a class="page-header-back" href="javascript:void(0)" onclick="showView('buyers-list-view')"><i class="fa-solid fa-chevron-left"></i> Go Back</a>
+        </div>
+        <div class="page-body">
+          <div class="form-section">
+            <div class="form-row cols-2">
+              <div class="form-group"><label class="form-label">First Name <span class="req">*</span></label><input class="form-input"/></div>
+              <div class="form-group"><label class="form-label">Last Name <span class="req">*</span></label><input class="form-input"/></div>
+            </div>
+            <div class="form-row cols-1">
+              <div class="form-group"><label class="form-label">Company Name <span class="req">*</span></label><input class="form-input"/></div>
+            </div>
+            <div class="form-row cols-1">
+              <div class="form-group">
+                <label class="form-label">Status <span class="req">*</span></label>
+                <select class="form-select"><option>Choose one</option><option>Active</option><option>Inactive</option></select>
+              </div>
+            </div>
+            <div class="form-row cols-2">
+              <div class="form-group"><label class="form-label">Phone Number <span class="req">*</span></label><input class="form-input" type="tel"/></div>
+              <div class="form-group"><label class="form-label">Company Street Address <span class="req">*</span></label><input class="form-input"/></div>
+            </div>
+            <div class="form-row cols-3">
+              <div class="form-group"><label class="form-label">City <span class="req">*</span></label><input class="form-input"/></div>
+              <div class="form-group">
+                <label class="form-label">State <span class="req">*</span></label>
+                <select class="form-select" id="buyer-state-sel"><option value="">Select a state</option></select>
+              </div>
+              <div class="form-group"><label class="form-label">Zip Code <span class="req">*</span></label><input class="form-input"/></div>
+            </div>
+            <div class="form-row cols-2">
+              <div class="form-group"><label class="form-label">Email Address <span class="req">*</span></label><input class="form-input" type="email" value="Christabellebadiola59@gmail.com"/></div>
+              <div class="form-group"><label class="form-label">Password <span class="req">*</span></label><input class="form-input" type="password" value="password123456"/></div>
+            </div>
+            <div class="form-group" style="margin-top:4px">
+              <label class="form-label">Upload Company Logo <span class="req">*</span></label>
+              <div class="upload-area">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <div class="upload-text"><strong>Click to upload</strong> or drag and drop</div>
+                <div class="upload-sub">Only image/jpg, image/jpeg and image/png file type are supported at the moment.</div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:20px">
+              <button class="btn-green" onclick="showToast('Buyer added!')">Add Agent</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         SELLERS
+    ═══════════════════════════ -->
+    <div id="page-sellers" class="page light-page">
+      <div id="sellers-list-view">
+        <div class="page-header" style="flex-wrap:wrap;gap:10px">
+          <div>
+            <div class="page-header-title">Sellers</div>
+            <div style="font-size:12px;color:#9ca3af">/sellers</div>
+          </div>
+          <div class="tab-filters">
+            <div class="tab-filter active" onclick="setSellerTab(this)"><span class="check"><i class="fa-solid fa-check"></i></span> Lead</div>
+            <div class="tab-filter" onclick="setSellerTab(this)">Hot</div>
+            <div class="tab-filter" onclick="setSellerTab(this)">Cold</div>
+            <div class="tab-filter" onclick="setSellerTab(this)">Nurture</div>
+            <div class="tab-filter" onclick="setSellerTab(this)">Referral</div>
+            <div class="tab-filter" onclick="setSellerTab(this)">Archive</div>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+            <button class="btn-dark" onclick="showView('sellers-add-view')"><i class="fa-solid fa-plus"></i> Current Seller</button>
+            <select class="lang-select" style="background:#fff">
+              <option>Newest</option><option>Oldest</option>
+            </select>
+          </div>
+        </div>
+        <div class="page-body">
+          <div style="background:#fff;border-radius:8px;padding:60px;text-align:center">
+            <div style="font-size:15px;font-weight:700;color:#374151;margin-bottom:6px">No Users Available</div>
+            <div style="font-size:13px;color:#9ca3af">There are no users available</div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:10px">
+            <button style="background:none;border:1px solid #e0e2ec;border-radius:5px;width:28px;height:28px;cursor:pointer;color:#6b7280;font-size:12px"><i class="fa-solid fa-chevron-left"></i></button>
+            <button style="background:none;border:1px solid #e0e2ec;border-radius:5px;width:28px;height:28px;cursor:pointer;color:#6b7280;font-size:12px"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+      <div id="sellers-add-view" style="display:none">
+        <div class="page-header">
+          <div class="page-header-title">Add seller</div>
+          <a class="page-header-back" href="javascript:void(0)" onclick="showView('sellers-list-view')"><i class="fa-solid fa-chevron-left"></i> Go Back</a>
+        </div>
+        <div class="page-body">
+          <div class="form-section">
+            <div class="form-row cols-2">
+              <div class="form-group"><label class="form-label">First Name <span class="req">*</span></label><input class="form-input"/></div>
+              <div class="form-group"><label class="form-label">Last Name <span class="req">*</span></label><input class="form-input"/></div>
+            </div>
+            <div class="form-row cols-1">
+              <div class="form-group"><label class="form-label">Company Name <span class="req">*</span></label><input class="form-input"/></div>
+            </div>
+            <div class="form-row cols-1">
+              <div class="form-group">
+                <label class="form-label">Status <span class="req">*</span></label>
+                <select class="form-select"><option>Choose one</option><option>Active</option><option>Inactive</option></select>
+              </div>
+            </div>
+            <div class="form-row cols-2">
+              <div class="form-group"><label class="form-label">Phone Number <span class="req">*</span></label><input class="form-input" type="tel"/></div>
+              <div class="form-group"><label class="form-label">Company Street Address <span class="req">*</span></label><input class="form-input"/></div>
+            </div>
+            <div class="form-row cols-3">
+              <div class="form-group"><label class="form-label">City <span class="req">*</span></label><input class="form-input"/></div>
+              <div class="form-group">
+                <label class="form-label">State <span class="req">*</span></label>
+                <select class="form-select" id="seller-state-sel"><option value="">Select a state</option></select>
+              </div>
+              <div class="form-group"><label class="form-label">Zip Code <span class="req">*</span></label><input class="form-input"/></div>
+            </div>
+            <div class="form-row cols-2">
+              <div class="form-group"><label class="form-label">Email Address <span class="req">*</span></label><input class="form-input" type="email"/></div>
+              <div class="form-group"><label class="form-label">Password <span class="req">*</span></label><input class="form-input" type="password"/></div>
+            </div>
+            <div class="form-group" style="margin-top:4px">
+              <label class="form-label">Upload Company Logo <span class="req">*</span></label>
+              <div class="upload-area">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <div class="upload-text"><strong>Click to upload</strong> or drag and drop</div>
+                <div class="upload-sub">Only image/jpg, image/jpeg and image/png file type are supported at the moment.</div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:20px">
+              <button class="btn-green" onclick="showToast('Seller added!')">Add Seller</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         ACTIVE LISTING
+    ═══════════════════════════ -->
+    <div id="page-active-listing" class="page light-page">
+      <div id="active-listing-list">
+        <div class="page-header">
+          <div>
+            <div class="page-header-title">Active Listing</div>
+            <div style="font-size:12px;color:#9ca3af">/active-listing</div>
+          </div>
+          <button class="btn-blue-grad" onclick="showView('active-listing-form')">
+            <i class="fa-solid fa-plus"></i> Add New Property
+          </button>
+        </div>
+        <div class="page-body">
+          <div style="background:#fff;border-radius:8px;padding:40px;text-align:center;color:#9ca3af;font-size:13px">No listings found.</div>
+        </div>
+      </div>
+      <div id="active-listing-form" style="display:none">
+        <div class="page-header">
+          <div class="page-header-title">Add New Property</div>
+          <a class="page-header-back" href="javascript:void(0)" onclick="showView('active-listing-list')"><i class="fa-solid fa-chevron-left"></i> Back To Property list</a>
+        </div>
+        <div class="page-body" style="overflow-y:auto;max-height:calc(100vh - 120px)">
+          <!-- Property Information -->
+          <div class="form-section">
+            <div class="form-section-title">Property Information</div>
+            <div class="form-row cols-1">
+              <div class="form-group"><label class="form-label">MLS Number <span class="req">*</span></label><input class="form-input"/></div>
+            </div>
+            <div class="form-row cols-3">
+              <div class="form-group">
+                <label class="form-label">Transaction Type <span class="req">*</span></label>
+                <select class="form-select"><option>Listing</option><option>Buyer</option><option>Lease</option></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Property Type <span class="req">*</span></label>
+                <select class="form-select"><option>Residential</option><option>Commercial</option><option>Land</option></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Property Status <span class="req">*</span></label>
+                <select class="form-select"><option>None</option><option>Active</option><option>Pending</option><option>Closed</option></select>
+              </div>
+            </div>
+          </div>
+          <!-- Address Information -->
+          <div class="form-section">
+            <div class="form-section-title">Address Information</div>
+            <div class="form-row cols-1">
+              <div class="form-group"><label class="form-label">Street <span class="req">*</span></label><input class="form-input"/></div>
+            </div>
+            <div class="form-row cols-3">
+              <div class="form-group">
+                <label class="form-label">State <span class="req">*</span></label>
+                <select class="form-select" id="prop-state" onchange="updateCities('prop-city',this.value)">
+                  <option value="Alabama">Alabama</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">City <span class="req">*</span></label>
+                <select class="form-select" id="prop-city"><option>Abbeville</option></select>
+              </div>
+              <div class="form-group"><label class="form-label">Postal Code <span class="req">*</span></label><input class="form-input"/></div>
+            </div>
+          </div>
+          <!-- Price Information -->
+          <div class="form-section">
+            <div class="form-section-title">Price Information</div>
+            <div class="form-row cols-3">
+              <div class="form-group"><label class="form-label">Sales Price <span class="req">*</span></label><input class="form-input" type="number"/></div>
+              <div class="form-group"><label class="form-label">Units <span class="req">*</span></label><input class="form-input" type="number"/></div>
+              <div class="form-group"><label class="form-label">Commission <span class="req">*</span></label><input class="form-input" type="number"/></div>
+            </div>
+            <div class="form-row cols-3">
+              <div class="form-group"><label class="form-label">Bonus <span class="req">*</span></label><input class="form-input" type="number"/></div>
+              <div class="form-group"><label class="form-label">Source <span class="req">*</span></label><input class="form-input"/></div>
+              <div class="form-group"><label class="form-label">Transaction Coordinator Fee <span class="req">*</span></label><input class="form-input" type="number"/></div>
+            </div>
+            <div class="form-row cols-3">
+              <div class="form-group"><label class="form-label">Split Paid <span class="req">*</span></label><input class="form-input" type="number"/></div>
+              <div class="form-group"><label class="form-label">Office Fees <span class="req">*</span></label><input class="form-input" type="number"/></div>
+              <div class="form-group">
+                <label class="form-label">Agent <span class="req">*</span></label>
+                <select class="form-select"><option>Select Agent</option></select>
+              </div>
+            </div>
+            <div class="form-row cols-2">
+              <div class="form-group"><label class="form-label">Escrow Company <span class="req">*</span></label><input class="form-input"/></div>
+              <div class="form-group"><label class="form-label">Mortgage Company <span class="req">*</span></label><input class="form-input"/></div>
+            </div>
+          </div>
+          <!-- Dates -->
+          <div class="form-section">
+            <div class="form-section-title">Price Information</div>
+            <div class="form-row cols-2">
+              <div class="form-group"><label class="form-label">Contract Start Date <span class="req">*</span></label><input class="form-input" type="date"/></div>
+              <div class="form-group"><label class="form-label">Contract Expiration Date <span class="req">*</span></label><input class="form-input" type="date"/></div>
+            </div>
+            <div class="form-row cols-2">
+              <div class="form-group"><label class="form-label">Open Escrow Date <span class="req">*</span></label><input class="form-input" type="date"/></div>
+              <div class="form-group"><label class="form-label">Closing Date <span class="req">*</span></label><input class="form-input" type="date"/></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Upload Property Image <span class="req">*</span></label>
+              <div class="upload-area">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <div class="upload-text"><strong>Click to upload</strong> or drag and drop</div>
+                <div class="upload-sub">Only image/jpg, image/jpeg and image/png file type are supported at the moment.</div>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top:14px">
+              <label class="form-label" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af">EST. PROPERTY VALUE ($)</label>
+              <input class="form-input" value="320000" type="number"/>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:20px">
+              <button class="btn-green" onclick="showToast('Property added!')">Save Property</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         CALENDAR
+    ═══════════════════════════ -->
+    <div id="page-calendar" class="page light-page">
+      <div style="padding:20px;display:flex;flex-direction:column;gap:0">
+        <!-- Mini calendar + schedule -->
+        <div style="display:grid;grid-template-columns:520px 1fr;gap:0;border-bottom:1px solid #e5e7ef;padding-bottom:20px;margin-bottom:0">
+          <div style="border-right:1px solid #e5e7ef;padding-right:24px">
+            <!-- Mini calendar header -->
+            <div class="cal-header">
+              <div class="cal-month-name" id="miniCalMonthLabel">May 2026</div>
+              <div style="display:flex;gap:4px">
+                <button class="cal-nav" onclick="miniCalPrev()"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="cal-nav" onclick="miniCalNext()"><i class="fa-solid fa-chevron-right"></i></button>
+              </div>
+            </div>
+            <div class="cal-grid-header">
+              <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+            </div>
+            <div class="cal-grid" id="miniCalGrid"></div>
+            <div style="text-align:center;color:#9ca3af;font-size:13px;margin-top:12px">No meetings for today</div>
+            <div style="text-align:right;margin-top:6px"><a href="javascript:void(0)" style="color:#5563e8;font-size:13px">See all</a></div>
+          </div>
+          <!-- Schedule panel -->
+          <div style="padding-left:24px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <div>
+                <div style="font-size:18px;font-weight:700;color:#1a1a2e" id="schedDateLabel">May 07, 2026</div>
+                <div style="font-size:12px;color:#9ca3af" id="schedSubLabel">Today is Wednesday, May 6th, 2026</div>
+              </div>
+              <button class="btn-blue-grad"><i class="fa-solid fa-plus"></i> Create New Schedule</button>
+            </div>
+            <div class="no-meetings">No meetings for today</div>
+          </div>
+        </div>
+
+        <!-- Transaction Timeline Calendar toggle -->
+        <div class="timeline-toggle" style="margin:0;padding:12px 0">
+          <div style="display:flex;align-items:center;gap:8px">
+            <i class="fa-regular fa-calendar" style="font-size:16px;color:#374151"></i>
+            <span style="font-size:14px;font-weight:600;color:#374151">Transaction Timeline Calendar</span>
+          </div>
+          <input type="checkbox" class="toggle-sw" checked style="margin-left:auto"/>
+        </div>
+
+        <!-- Full calendar -->
+        <div>
+          <div class="full-calendar-header">
+            <div class="full-cal-nav">
+              <button class="full-cal-btn" onclick="fullCalPrev()"><i class="fa-solid fa-chevron-left"></i></button>
+              <button class="full-cal-btn" onclick="fullCalNext()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <button class="today-btn" onclick="fullCalToday()">today</button>
+            <div class="full-cal-title" id="fullCalMonthLabel">May 2026</div>
+            <div class="view-tabs">
+              <div class="view-tab active" onclick="setCalView(this,'month')">month</div>
+              <div class="view-tab" onclick="setCalView(this,'week')">week</div>
+              <div class="view-tab" onclick="setCalView(this,'day')">day</div>
+              <div class="view-tab" onclick="setCalView(this,'list')">List</div>
+            </div>
+          </div>
+          <div class="full-cal-grid-header">
+            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+          </div>
+          <div class="full-cal-grid" id="fullCalGrid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         EMAIL
+    ═══════════════════════════ -->
+    <div id="page-email" class="page dark-page">
+      <div class="email-layout">
+        <div class="email-sidebar">
+          <button class="btn-add" style="width:100%;justify-content:center;margin-bottom:12px">Compose</button>
+          <div class="email-folder active"><i class="fa-solid fa-inbox"></i> Inbox <span class="count">3</span></div>
+          <div class="email-folder"><i class="fa-solid fa-paper-plane"></i> Sent</div>
+          <div class="email-folder"><i class="fa-regular fa-file"></i> Drafts</div>
+          <div class="email-folder"><i class="fa-solid fa-star"></i> Starred</div>
+          <div class="email-folder"><i class="fa-solid fa-trash"></i> Trash</div>
+        </div>
+        <div class="email-grid">
+          <div class="email-list">
+            <div class="email-item active">
+              <div class="email-item-sender">Team Christabelle</div>
+              <div class="email-item-subject">Monthly Cap Update – May 2026</div>
+              <div class="email-item-time">10:32 AM</div>
+            </div>
+            <div class="email-item">
+              <div class="email-item-sender">System</div>
+              <div class="email-item-subject">New lead assigned to your account</div>
+              <div class="email-item-time">Yesterday</div>
+            </div>
+            <div class="email-item">
+              <div class="email-item-sender">Admin</div>
+              <div class="email-item-subject">Platform update: New features</div>
+              <div class="email-item-time">Mon</div>
+            </div>
+          </div>
+          <div class="email-view">
+            <div style="font-size:18px;font-weight:700;color:#fff">Monthly Cap Update – May 2026</div>
+            <div style="font-size:13px;color:#9898b0">From: Team Christabelle &lt;team@hu3ze.com&gt;</div>
+            <div style="border-top:1px solid #363758;padding-top:14px;font-size:13px;color:#c0c0d8;line-height:1.7">
+              Hi there,<br/><br/>
+              Your current cap status has been updated for May 2026. Team Christabelle has reached $1,750,000 in volume.<br/><br/>
+              Please log in to your dashboard to review the latest performance metrics.<br/><br/>
+              Best regards,<br/>
+              The HU3ZE Team
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         TRANSACTIONS
+    ═══════════════════════════ -->
+    <div id="page-transactions" class="page dark-page">
+      <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:16px;font-weight:700;color:#fff">Transactions</div>
+          <div style="display:flex;gap:8px">
+            <div class="search-wrap"><input class="search-input" placeholder="Search transactions..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+            <button class="btn-add"><i class="fa-solid fa-plus"></i> New Transaction</button>
+          </div>
+        </div>
+        <div class="dark-card">
+          <div style="display:flex;gap:8px;margin-bottom:12px">
+            <div style="background:#363758;border-radius:6px;padding:6px 14px;font-size:12px;font-weight:600;color:#fff;cursor:pointer">All</div>
+            <div style="background:none;border-radius:6px;padding:6px 14px;font-size:12px;color:#9898b0;cursor:pointer">Active</div>
+            <div style="background:none;border-radius:6px;padding:6px 14px;font-size:12px;color:#9898b0;cursor:pointer">Pending</div>
+            <div style="background:none;border-radius:6px;padding:6px 14px;font-size:12px;color:#9898b0;cursor:pointer">Closed</div>
+          </div>
+          <table class="data-table" style="width:100%">
+            <thead><tr><th>Property</th><th>Address</th><th>Type</th><th>Status</th><th>Agent</th><th>Closing Date</th><th>Commission</th></tr></thead>
+            <tbody><tr><td colspan="7" class="no-data">No transactions found</td></tr></tbody>
+          </table>
+          <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         OFFICE
+    ═══════════════════════════ -->
+    <div id="page-office" class="page light-page">
+      <div class="page-header">
+        <div><div class="page-header-title">Office</div><div style="font-size:12px;color:#9ca3af">/office</div></div>
+        <button class="btn-add" style="background:linear-gradient(135deg,#5563e8,#38bdf8);font-size:13px;padding:8px 16px" onclick="showToast('Add office form opened')"><i class="fa-solid fa-plus"></i> Add Office</button>
+      </div>
+      <div class="page-body">
+        <div style="background:#fff;border-radius:8px;padding:40px;text-align:center;color:#9ca3af;font-size:13px">No offices found.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         SWAG
+    ═══════════════════════════ -->
+    <div id="page-swag" class="page dark-page">
+      <div style="padding:16px">
+        <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:14px">SWAG Store</div>
+        <div class="swag-grid">
+          <div class="swag-card"><div class="swag-img">👕</div><div class="swag-info"><div class="swag-name">HU3ZE T-Shirt</div><div class="swag-price">$24.99</div></div></div>
+          <div class="swag-card"><div class="swag-img">🧢</div><div class="swag-info"><div class="swag-name">Branded Cap</div><div class="swag-price">$19.99</div></div></div>
+          <div class="swag-card"><div class="swag-img">📓</div><div class="swag-info"><div class="swag-name">Agent Notebook</div><div class="swag-price">$12.99</div></div></div>
+          <div class="swag-card"><div class="swag-img">💼</div><div class="swag-info"><div class="swag-name">Business Card Set</div><div class="swag-price">$34.99</div></div></div>
+          <div class="swag-card"><div class="swag-img">🖊️</div><div class="swag-info"><div class="swag-name">Branded Pen Set</div><div class="swag-price">$9.99</div></div></div>
+          <div class="swag-card"><div class="swag-img">🏠</div><div class="swag-info"><div class="swag-name">Property Signage</div><div class="swag-price">$49.99</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         EVENTS
+    ═══════════════════════════ -->
+    <div id="page-events" class="page light-page">
+      <div class="page-header">
+        <div><div class="page-header-title">Events</div><div style="font-size:12px;color:#9ca3af">/events</div></div>
+        <button class="btn-blue-grad" onclick="showToast('New event form opened')"><i class="fa-solid fa-plus"></i> Create Event</button>
+      </div>
+      <div class="page-body">
+        <div style="background:#fff;border-radius:8px;padding:40px;text-align:center;color:#9ca3af;font-size:13px">No events scheduled.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         WORKSPACE
+    ═══════════════════════════ -->
+    <div id="page-workspace" class="page dark-page">
+      <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:16px;font-weight:700;color:#fff">Workspace</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="dark-card">
+            <div class="card-header-row">
+              <div class="dark-card-title" style="margin-bottom:0">Documents</div>
+              <button class="btn-add"><i class="fa-solid fa-plus"></i> Upload</button>
+            </div>
+            <table class="data-table" style="width:100%;margin-top:8px">
+              <thead><tr><th>Name</th><th>Type</th><th>Date</th></tr></thead>
+              <tbody><tr><td colspan="3" class="no-data">No documents</td></tr></tbody>
+            </table>
+          </div>
+          <div class="dark-card">
+            <div class="card-header-row">
+              <div class="dark-card-title" style="margin-bottom:0">Tasks</div>
+              <button class="btn-add"><i class="fa-solid fa-plus"></i> Add Task</button>
+            </div>
+            <table class="data-table" style="width:100%;margin-top:8px">
+              <thead><tr><th>Task</th><th>Due</th><th>Status</th></tr></thead>
+              <tbody><tr><td colspan="3" class="no-data">No tasks</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         KANBAN
+    ═══════════════════════════ -->
+    <div id="page-kanban" class="page dark-page" style="overflow:hidden">
+      <div class="kanban-board">
+        <div class="kanban-col">
+          <div class="kanban-col-header">New Leads <span class="kanban-col-count">0</span></div>
+          <div style="text-align:center;color:#7878a0;font-size:12px;padding:16px">Drop leads here</div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-header">Contacted <span class="kanban-col-count">0</span></div>
+          <div style="text-align:center;color:#7878a0;font-size:12px;padding:16px">Drop leads here</div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-header">Qualified <span class="kanban-col-count">0</span></div>
+          <div style="text-align:center;color:#7878a0;font-size:12px;padding:16px">Drop leads here</div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-header">Showing <span class="kanban-col-count">0</span></div>
+          <div style="text-align:center;color:#7878a0;font-size:12px;padding:16px">Drop leads here</div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-header">Offer Made <span class="kanban-col-count">0</span></div>
+          <div style="text-align:center;color:#7878a0;font-size:12px;padding:16px">Drop leads here</div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-header">Closed <span class="kanban-col-count">0</span></div>
+          <div style="text-align:center;color:#7878a0;font-size:12px;padding:16px">Drop leads here</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         CHAT
+    ═══════════════════════════ -->
+    <div id="page-chat" class="page dark-page" style="overflow:hidden">
+      <div class="chat-layout">
+        <div class="chat-sidebar">
+          <div class="chat-search">
+            <input class="search-input" placeholder="Search conversations..." style="width:100%"/>
+          </div>
+          <div style="overflow-y:auto;flex:1">
+            <div class="chat-item active" onclick="openChat(this,'Team Christabelle','TC')">
+              <div class="chat-avatar-sm">TC</div>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;justify-content:space-between"><span class="chat-name">Team Christabelle</span><span class="chat-time">10:32</span></div>
+                <div class="chat-preview">Great work on the cap update!</div>
+              </div>
+            </div>
+            <div class="chat-item" onclick="openChat(this,'Admin','AD')">
+              <div class="chat-avatar-sm" style="background:linear-gradient(135deg,#22c55e,#16a34a)">AD</div>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;justify-content:space-between"><span class="chat-name">Admin</span><span class="chat-time">9:15</span></div>
+                <div class="chat-preview">New agent onboarding scheduled</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-main">
+          <div class="chat-header">
+            <div class="chat-avatar-sm" id="chat-hdr-avatar">TC</div>
+            <div>
+              <div id="chat-hdr-name" style="font-size:14px;font-weight:700;color:#fff">Team Christabelle</div>
+              <div style="font-size:12px;color:#4ade80">● Online</div>
+            </div>
+          </div>
+          <div class="chat-messages" id="chat-messages">
+            <div style="display:flex;justify-content:flex-start">
+              <div class="msg-bubble theirs">Hey! Just checking in on the cap status for May.</div>
+            </div>
+            <div style="display:flex;justify-content:flex-end">
+              <div class="msg-bubble mine">All updated! We're at $1.75M for Team Christabelle.</div>
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendChat()"/>
+            <button class="chat-send-btn" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════
+         ROUTE MAPS
+    ═══════════════════════════ -->
+    <div id="page-route-maps" class="page dark-page" style="overflow:hidden">
+      <div class="map-header">
+        <div class="map-title">Route Maps</div>
+        <button class="btn-add"><i class="fa-solid fa-plus"></i> Add Route</button>
+      </div>
+      <div id="routeMap" style="height:calc(100% - 52px)"></div>
+    </div>
+
+  </div><!-- end page-container -->
+</div><!-- end main -->
+
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// US STATES DATA
+// ═══════════════════════════════════════
+const US_STATES = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
+
+const STATE_CITIES = {
+  "Alabama": ["Abbeville","Anniston","Auburn","Birmingham","Decatur","Dothan","Florence","Gadsden","Huntsville","Mobile","Montgomery","Tuscaloosa"],
+  "California": ["Los Angeles","San Francisco","San Diego","San Jose","Sacramento","Fresno","Long Beach","Oakland","Bakersfield","Anaheim"],
+  "Florida": ["Miami","Orlando","Tampa","Jacksonville","Fort Lauderdale","Tallahassee","Naples","Sarasota","Clearwater","Gainesville"],
+  "Texas": ["Houston","Dallas","Austin","San Antonio","Fort Worth","El Paso","Arlington","Plano","Lubbock","Irving"],
+  "New York": ["New York City","Buffalo","Rochester","Yonkers","Syracuse","Albany","New Rochelle","Mount Vernon","Schenectady","Utica"]
+};
+
+function populateStates(selId) {
+  const sel = document.getElementById(selId);
+  if (!sel) return;
+  sel.innerHTML = '<option value="">Select a state</option>' + US_STATES.map(s => `<option value="${s}">${s}</option>`).join('');
+}
+
+function updateCities(citySelId, state) {
+  const sel = document.getElementById(citySelId);
+  if (!sel) return;
+  const cities = STATE_CITIES[state] || ["(No cities listed)"];
+  sel.innerHTML = cities.map(c => `<option>${c}</option>`).join('');
+}
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+const DARK_PAGES = new Set(['dashboard','sales-board','properties','email','transactions','swag','workspace','kanban','chat','route-maps']);
+const LIGHT_PAGES = new Set(['news-feed','agents','buyers','sellers','active-listing','calendar','office','events']);
+
+const PAGE_TITLES = {
+  'dashboard':'Dashboard','sales-board':'Sales Board','properties':'Properties',
+  'email':'Email','transactions':'Transactions','news-feed':'News Feed',
+  'office':'Office','swag':'SWAG','events':'Events','agents':'Agents',
+  'workspace':'Workspace','buyers':'Buyers','sellers':'Sellers','kanban':'Kanban',
+  'active-listing':'Active Listing','chat':'Chat','calendar':'Calendar','route-maps':'Route Maps'
+};
+
+function navigate(page) {
+  // Reset any open form views back to list state
+  document.querySelectorAll('[id$="-add-view"],[id$="-form"]').forEach(el => el.style.display='none');
+  document.querySelectorAll('[id$="-list-view"],[id$="-list"]').forEach(el => el.style.display='');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item[data-page]').forEach(n => n.classList.remove('active'));
+  const el = document.getElementById('page-' + page);
+  if (el) el.classList.add('active');
+  const nav = document.querySelector('.nav-item[data-page="' + page + '"]');
+  if (nav) nav.classList.add('active');
+  const hdr = document.getElementById('light-header');
+  if (DARK_PAGES.has(page)) {
+    hdr.classList.add('hidden');
+    document.getElementById('main').style.background = '#252640';
+  } else {
+    hdr.classList.remove('hidden');
+    document.getElementById('main').style.background = '#f0f1f8';
+  }
+  document.getElementById('hdr-title').textContent = PAGE_TITLES[page] || page;
+  document.getElementById('hdr-route').textContent = '/' + page;
+  if (page === 'calendar') renderCalendars();
+  if (page === 'sales-board') initSalesBoardCharts();
+  if (page === 'dashboard') initDashboardCharts();
+  if (page === 'route-maps') initRouteMap();
+}
+
+document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+  item.addEventListener('click', () => navigate(item.dataset.page));
+});
+
+// ═══════════════════════════════════════
+// VIEW TOGGLE (list / add-form)
+// ═══════════════════════════════════════
+function showView(viewId) {
+  const target = document.getElementById(viewId);
+  if (!target) return;
+  const page = target.closest('.page');
+  // Hide all direct-child view divs, then show the target
+  page.querySelectorAll(':scope > div[id]').forEach(el => { el.style.display = 'none'; });
+  target.style.display = 'block';
+  // Scroll view to top
+  page.scrollTop = 0;
+}
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+let toastT;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ═══════════════════════════════════════
+// NEWS FEED
+// ═══════════════════════════════════════
+function setNewscat(el) {
+  document.querySelectorAll('.news-cat').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ═══════════════════════════════════════
+// SELLER TABS
+// ═══════════════════════════════════════
+function setSellerTab(el) {
+  document.querySelectorAll('.tab-filter').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ═══════════════════════════════════════
+// CHARTS — DASHBOARD
+// ═══════════════════════════════════════
+let dashCharts = {};
+function initDashboardCharts() {
+  if (dashCharts.months) return;
+  const ctx = document.getElementById('monthsChart');
+  if (!ctx) return;
+  dashCharts.months = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+      datasets: [{
+        data: [0,0,0,0,0,0,0,0,0,0,0,0],
+        borderColor: '#5563e8',
+        backgroundColor: 'rgba(85,99,232,.1)',
+        tension: .4, fill: true, pointRadius: 3, pointBackgroundColor: '#5563e8'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { backgroundColor: '#2c2d4a', borderColor: '#363758', borderWidth: 1, titleColor: '#fff', bodyColor: '#9898b0' }},
+      scales: {
+        x: { grid: { color: '#363758' }, ticks: { color: '#9898b0', font: { size: 11 }}},
+        y: { min: 0, max: 10, grid: { color: '#363758' }, ticks: { color: '#9898b0', font: { size: 11 }, stepSize: 2 }}
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════════
+// CHARTS — SALES BOARD
+// ═══════════════════════════════════════
+let sbCharts = {};
+let clientMapInited = false;
+
+function initSalesBoardCharts() {
+  if (!sbCharts.paidCap) {
+    const ctx = document.getElementById('paidCapChart');
+    if (ctx) {
+      sbCharts.paidCap = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Team Christabelle','Remaining'],
+          datasets: [{ data: [100, 0], backgroundColor: ['#5563e8','#363758'], borderWidth: 0, hoverOffset: 4 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '72%',
+          plugins: {
+            legend: { display: false },
+            tooltip: { backgroundColor: '#2c2d4a', borderColor: '#363758', borderWidth: 1, titleColor: '#fff', bodyColor: '#9898b0' }
+          }
+        },
+        plugins: [{
+          id: 'centerText',
+          beforeDraw(chart) {
+            const { ctx, width, height } = chart;
+            ctx.save();
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillStyle = '#fff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('100.0%', width / 2, height / 2);
+            ctx.restore();
+          }
+        }]
+      });
+    }
+  }
+  if (!clientMapInited) {
+    const mapEl = document.getElementById('clientMap');
+    if (mapEl) {
+      try {
+        const map = L.map('clientMap', { zoomControl: false }).setView([37.77,-122.41], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap'
+        }).addTo(map);
+        L.marker([37.77,-122.41]).addTo(map).bindPopup('San Francisco Office').openPopup();
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+        clientMapInited = true;
+      } catch(e) { mapEl.innerHTML = '<div style="background:#363758;height:100%;display:flex;align-items:center;justify-content:center;color:#9898b0;font-size:13px">Map unavailable</div>'; }
+    }
+  }
+}
+
+// ═══════════════════════════════════════
+// ROUTE MAP
+// ═══════════════════════════════════════
+let routeMapInited = false;
+function initRouteMap() {
+  if (routeMapInited) return;
+  const el = document.getElementById('routeMap');
+  if (!el) return;
+  try {
+    const map = L.map('routeMap').setView([34.05,-118.24], 10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+    routeMapInited = true;
+  } catch(e) {}
+}
+
+// ═══════════════════════════════════════
+// CALENDAR
+// ═══════════════════════════════════════
+let miniCalMonth = 4, miniCalYear = 2026;
+let fullCalMonth = 4, fullCalYear = 2026;
+
+function renderCalendars() {
+  renderMiniCal();
+  renderFullCal();
+}
+
+function renderMiniCal() {
+  const label = document.getElementById('miniCalMonthLabel');
+  const grid = document.getElementById('miniCalGrid');
+  if (!label || !grid) return;
+  const d = new Date(miniCalYear, miniCalMonth, 1);
+  label.textContent = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const firstDay = d.getDay();
+  const daysInMonth = new Date(miniCalYear, miniCalMonth + 1, 0).getDate();
+  const today = new Date();
+  const isThis = today.getMonth() === miniCalMonth && today.getFullYear() === miniCalYear;
+  let html = '';
+  for (let i = 0; i < firstDay; i++) {
+    const prev = new Date(miniCalYear, miniCalMonth, -firstDay + 1 + i);
+    html += `<div class="cal-day other-month">${prev.getDate()}</div>`;
+  }
+  for (let day = 1; day <= daysInMonth; day++) {
+    const isToday = isThis && day === today.getDate();
+    html += `<div class="cal-day${isToday ? ' today' : ''}" onclick="selectDay(${day})">${day}</div>`;
+  }
+  grid.innerHTML = html;
+  updateSchedLabel();
+}
+
+function updateSchedLabel() {
+  const today = new Date();
+  const sl = document.getElementById('schedDateLabel');
+  const ss = document.getElementById('schedSubLabel');
+  if (sl) sl.textContent = today.toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' });
+  if (ss) ss.textContent = 'Today is ' + today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+function selectDay(day) { showToast('Selected: ' + day + ' ' + new Date(miniCalYear, miniCalMonth, day).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })); }
+function miniCalPrev() { miniCalMonth--; if (miniCalMonth < 0) { miniCalMonth = 11; miniCalYear--; } renderMiniCal(); }
+function miniCalNext() { miniCalMonth++; if (miniCalMonth > 11) { miniCalMonth = 0; miniCalYear++; } renderMiniCal(); }
+
+function renderFullCal() {
+  const label = document.getElementById('fullCalMonthLabel');
+  const grid = document.getElementById('fullCalGrid');
+  if (!label || !grid) return;
+  const d = new Date(fullCalYear, fullCalMonth, 1);
+  label.textContent = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const firstDay = d.getDay();
+  const daysInMonth = new Date(fullCalYear, fullCalMonth + 1, 0).getDate();
+  const today = new Date();
+  const isThis = today.getMonth() === fullCalMonth && today.getFullYear() === fullCalYear;
+  let html = '';
+  for (let i = 0; i < firstDay; i++) {
+    const prev = new Date(fullCalYear, fullCalMonth, -firstDay + 1 + i);
+    html += `<div class="full-cal-cell other-month-cell">${prev.getDate()}</div>`;
+  }
+  for (let day = 1; day <= daysInMonth; day++) {
+    const isToday = isThis && day === today.getDate();
+    html += `<div class="full-cal-cell${isToday ? ' today-cell' : ''}">${day}</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function fullCalPrev() { fullCalMonth--; if (fullCalMonth < 0) { fullCalMonth = 11; fullCalYear--; } renderFullCal(); }
+function fullCalNext() { fullCalMonth++; if (fullCalMonth > 11) { fullCalMonth = 0; fullCalYear++; } renderFullCal(); }
+function fullCalToday() { const t = new Date(); fullCalMonth = t.getMonth(); fullCalYear = t.getFullYear(); renderFullCal(); }
+function setCalView(el, view) {
+  document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  showToast('View: ' + view);
+}
+
+// ═══════════════════════════════════════
+// CHAT
+// ═══════════════════════════════════════
+function openChat(el, name, initials) {
+  document.querySelectorAll('.chat-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('chat-hdr-name').textContent = name;
+  document.getElementById('chat-hdr-avatar').textContent = initials;
+}
+
+function sendChat() {
+  const inp = document.getElementById('chat-input');
+  const txt = inp.value.trim();
+  if (!txt) return;
+  const msgs = document.getElementById('chat-messages');
+  msgs.innerHTML += `<div style="display:flex;justify-content:flex-end"><div class="msg-bubble mine">${txt}</div></div>`;
+  inp.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  populateStates('buyer-state-sel');
+  populateStates('seller-state-sel');
+  populateStates('prop-state');
+  initDashboardCharts();
+});
+</script>
+</body>
+</html>
