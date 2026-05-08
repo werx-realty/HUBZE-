@@ -270,6 +270,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
 .map-header{padding:14px 16px;background:#2c2d4a;display:flex;align-items:center;justify-content:space-between}
 .map-title{font-size:15px;font-weight:600;color:#fff}
 
+/* ── TRANSACTION TABS ── */
+.txn-tab{padding:14px 16px;font-size:13px;color:#6b7280;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;font-weight:500}
+.txn-tab:hover{color:#1a1a2e}
+.txn-tab.active{color:#1a5c38;border-bottom-color:#1a5c38;font-weight:700}
+
 /* ── TOAST ── */
 #toast{position:fixed;bottom:20px;right:20px;background:#1a1a2e;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:9999;transform:translateY(60px);opacity:0;transition:all .3s;pointer-events:none}
 #toast.show{transform:translateY(0);opacity:1}
@@ -378,6 +383,87 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
     <div id="page-dashboard" class="page dark-page active">
       <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
 
+        <!-- Row 0: 5 Gauge Charts -->
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;padding:0 20px;margin-top:8px">
+
+          <!-- Gauge 1: Deals By Stage -->
+          <div style="background:#1a1b2e;border-radius:12px;padding:20px 16px 18px;display:flex;flex-direction:column;align-items:center;gap:16px">
+            <div style="font-size:13px;font-weight:700;color:#e0e0f0;align-self:flex-start">Deals By Stage</div>
+            <div style="position:relative;width:160px;height:160px;flex-shrink:0">
+              <canvas id="gauge1" width="160" height="160"></canvas>
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none">
+                <div style="font-size:13px;font-weight:800;color:#fff;white-space:nowrap">$5,760,000</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;width:100%">
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:11px;height:11px;background:#38bdf8;border-radius:2px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:12px;color:#c8c8e0;font-weight:600">Closed Won</div><div style="font-size:11px;color:#9898b0">$3,645,000</div></div></div>
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:11px;height:11px;background:#8b4de8;border-radius:2px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:12px;color:#c8c8e0;font-weight:600">Needs Analysis</div><div style="font-size:11px;color:#9898b0">$675,000</div></div></div>
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:11px;height:11px;background:#4a4b68;border-radius:2px;flex-shrink:0"></div><div style="font-size:11px;color:#9898b0">9 more</div></div>
+            </div>
+          </div>
+
+          <!-- Gauge 2: Top Sales Reps -->
+          <div style="background:#1a1b2e;border-radius:12px;padding:20px 16px 18px;display:flex;flex-direction:column;align-items:center;gap:16px">
+            <div style="font-size:13px;font-weight:700;color:#e0e0f0;align-self:flex-start">Top Sales Reps</div>
+            <div style="position:relative;width:160px;height:160px;flex-shrink:0">
+              <canvas id="gauge2" width="160" height="160"></canvas>
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none">
+                <div style="font-size:14px;font-weight:800;color:#fff;white-space:nowrap">$85,793</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;width:100%">
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:11px;height:11px;background:#38bdf8;border-radius:2px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:12px;color:#c8c8e0;font-weight:600">Jane Smith</div><div style="font-size:11px;color:#9898b0">$52,467</div></div></div>
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:11px;height:11px;background:#8b4de8;border-radius:2px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:12px;color:#c8c8e0;font-weight:600">Frank Hobbs</div><div style="font-size:11px;color:#9898b0">$33,326</div></div></div>
+            </div>
+          </div>
+
+          <!-- Gauge 3: Total Revenue -->
+          <div style="background:#1a1b2e;border-radius:12px;padding:20px 16px 18px;display:flex;flex-direction:column;align-items:center;gap:16px">
+            <div style="font-size:13px;font-weight:700;color:#e0e0f0;align-self:flex-start">Total Revenue</div>
+            <div style="position:relative;width:160px;height:160px;flex-shrink:0">
+              <canvas id="gauge3" width="160" height="160"></canvas>
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none">
+                <div style="font-size:13px;font-weight:800;color:#fff;white-space:nowrap">$2,340,000</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;width:100%">
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:11px;height:11px;background:#38bdf8;border-radius:2px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:12px;color:#c8c8e0;font-weight:600">Residential</div><div style="font-size:11px;color:#9898b0">$1,580,000</div></div></div>
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:11px;height:11px;background:#8b4de8;border-radius:2px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:12px;color:#c8c8e0;font-weight:600">Commercial</div><div style="font-size:11px;color:#9898b0">$760,000</div></div></div>
+            </div>
+          </div>
+
+          <!-- Gauge 4: Active Listings -->
+          <div style="background:#1a1b2e;border-radius:12px;padding:20px 16px 18px;display:flex;flex-direction:column;align-items:center;gap:16px">
+            <div style="font-size:13px;font-weight:700;color:#e0e0f0;align-self:flex-start">Active Listings</div>
+            <div style="position:relative;width:160px;height:160px;flex-shrink:0">
+              <canvas id="gauge4" width="160" height="160"></canvas>
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none">
+                <div style="font-size:13px;font-weight:800;color:#fff;white-space:nowrap">$1,245,000</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;width:100%">
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:11px;height:11px;background:#38bdf8;border-radius:2px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:12px;color:#c8c8e0;font-weight:600">For Sale</div><div style="font-size:11px;color:#9898b0">$890,000</div></div></div>
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:11px;height:11px;background:#8b4de8;border-radius:2px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:12px;color:#c8c8e0;font-weight:600">For Rent</div><div style="font-size:11px;color:#9898b0">$355,000</div></div></div>
+            </div>
+          </div>
+
+          <!-- Gauge 5: Pending Closings -->
+          <div style="background:#1a1b2e;border-radius:12px;padding:20px 16px 18px;display:flex;flex-direction:column;align-items:center;gap:16px">
+            <div style="font-size:13px;font-weight:700;color:#e0e0f0;align-self:flex-start">Pending Closings</div>
+            <div style="position:relative;width:160px;height:160px;flex-shrink:0">
+              <canvas id="gauge5" width="160" height="160"></canvas>
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none">
+                <div style="font-size:13px;font-weight:800;color:#fff;white-space:nowrap">$890,500</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;width:100%">
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:11px;height:11px;background:#38bdf8;border-radius:2px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:12px;color:#c8c8e0;font-weight:600">This Month</div><div style="font-size:11px;color:#9898b0">$612,000</div></div></div>
+              <div style="display:flex;align-items:center;gap:7px"><div style="width:11px;height:11px;background:#8b4de8;border-radius:2px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:12px;color:#c8c8e0;font-weight:600">Next Month</div><div style="font-size:11px;color:#9898b0">$278,500</div></div></div>
+            </div>
+          </div>
+
+        </div>
+
         <!-- Row 1: Top Agents | Months Chart | Agent Ranking -->
         <div style="display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:14px">
 
@@ -437,6 +523,131 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
     ═══════════════════════════ -->
     <div id="page-sales-board" class="page dark-page">
       <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+
+        <!-- Row -1: Agent Profile Panel (3 columns) -->
+        <div style="display:grid;grid-template-columns:300px 1fr 1fr;gap:0;background:#2c2d4a;border-radius:8px;overflow:hidden">
+
+          <!-- Col 1: Avatar + name + HU3ZE logo -->
+          <div style="padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid #363758;min-height:220px">
+            <div style="display:flex;align-items:center;gap:18px">
+              <div style="width:100px;height:100px;border-radius:50%;background:#4a4b68;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden">
+                <svg viewBox="0 0 80 80" style="width:70px;height:70px;fill:#6b6c8a"><circle cx="40" cy="28" r="18"/><ellipse cx="40" cy="70" rx="30" ry="18"/></svg>
+              </div>
+              <div style="font-size:20px;font-weight:700;color:#fff">Agent</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:20px">
+              <span style="font-size:22px">🤖</span>
+              <span style="font-size:20px;font-weight:900;letter-spacing:2px"><span style="color:#e0e0ff">&#72;</span><span style="background:linear-gradient(135deg,#5563e8,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">U3ZE</span></span>
+            </div>
+          </div>
+
+          <!-- Col 2 (MIDDLE): Listing -->
+          <div style="padding:20px 24px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid #363758">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+              <span style="font-size:13px;font-weight:600;color:#e0e0f0">Listing</span>
+              <span style="font-size:11px;color:#5563e8;cursor:pointer">See all</span>
+            </div>
+            <div style="background:#363758;border-radius:6px;display:grid;grid-template-columns:1fr 1fr 1fr;padding:14px 16px">
+              <div style="font-size:13px;color:#c8c8e0">Active</div>
+              <div style="font-size:13px;color:#c8c8e0;text-align:center">Closed</div>
+              <div style="font-size:13px;color:#c8c8e0;text-align:right">Terminated</div>
+            </div>
+          </div>
+
+          <!-- Col 3 (RIGHT): Contact Info + Transactions -->
+          <div style="padding:20px 24px;display:flex;flex-direction:column;gap:14px">
+            <!-- Contact Information -->
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#e0e0f0;margin-bottom:8px">Contact information</div>
+              <div style="background:#363758;border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;align-items:center;gap:12px;color:#6b6c8a;font-size:13px"><i class="fa-solid fa-phone" style="width:14px"></i><span></span></div>
+                <div style="display:flex;align-items:center;gap:12px;color:#6b6c8a;font-size:13px"><i class="fa-regular fa-id-card" style="width:14px"></i><span></span></div>
+                <div style="display:flex;align-items:center;gap:12px;color:#6b6c8a;font-size:13px"><i class="fa-regular fa-envelope" style="width:14px"></i><span></span></div>
+                <div style="display:flex;align-items:center;gap:12px;color:#6b6c8a;font-size:13px"><i class="fa-solid fa-location-dot" style="width:14px"></i><span></span></div>
+              </div>
+            </div>
+            <!-- Transactions -->
+            <div>
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+                <span style="font-size:13px;font-weight:600;color:#e0e0f0">Transactions</span>
+                <span style="font-size:11px;color:#5563e8;cursor:pointer">See all</span>
+              </div>
+              <div style="background:#363758;border-radius:6px;display:grid;grid-template-columns:1fr 1fr 1fr;padding:12px 16px">
+                <div style="font-size:13px;color:#c8c8e0">Active</div>
+                <div style="display:flex;flex-direction:column;align-items:center">
+                  <span style="font-size:15px;font-weight:700;color:#fff">0</span>
+                  <span style="font-size:12px;color:#9898b0">Closed</span>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end">
+                  <span style="font-size:15px;font-weight:700;color:#fff">0</span>
+                  <span style="font-size:12px;color:#9898b0">Terminated</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Row 0: Sold/Open Properties | Commission/Offices/Licenses/Leads -->
+        <div style="display:grid;grid-template-columns:1.9fr 1fr;gap:14px;align-items:stretch">
+
+          <!-- Left: Sold Properties + Open Properties (stretches to match right column) -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <!-- Sold Properties -->
+            <div class="dark-card" style="min-height:300px">
+              <div class="card-header-row">
+                <div class="dark-card-title" style="margin-bottom:0">Sold Properties</div>
+                <div class="search-wrap"><input class="search-input" placeholder="Search here..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+              </div>
+            </div>
+            <!-- Open Properties -->
+            <div class="dark-card" style="min-height:300px">
+              <div class="card-header-row">
+                <div class="dark-card-title" style="margin-bottom:0">Open Properties</div>
+                <div class="search-wrap"><input class="search-input" placeholder="Search here..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Commission / Offices / Licenses / Leads stacked -->
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <!-- Commission -->
+            <div class="dark-card" style="padding:14px">
+              <div class="card-header-row" style="margin-bottom:8px">
+                <div class="dark-card-title" style="margin-bottom:0">Commission</div>
+                <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:130px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+              </div>
+              <table class="data-table" style="width:100%">
+                <thead><tr><th>Name</th><th>Comission</th></tr></thead>
+                <tbody><tr><td colspan="2" class="no-data" style="padding:12px">No records found</td></tr></tbody>
+              </table>
+            </div>
+            <!-- Offices -->
+            <div class="dark-card" style="padding:14px">
+              <div class="card-header-row" style="margin-bottom:8px">
+                <div class="dark-card-title" style="margin-bottom:0">Offices</div>
+                <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:130px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+              </div>
+              <div class="no-data" style="padding:12px 0">No data at the moment</div>
+            </div>
+            <!-- Licenses -->
+            <div class="dark-card" style="padding:14px">
+              <div class="card-header-row" style="margin-bottom:8px">
+                <div class="dark-card-title" style="margin-bottom:0">Licenses</div>
+                <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:130px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+              </div>
+              <div class="no-data" style="padding:12px 0">No data at the moment</div>
+            </div>
+            <!-- Leads -->
+            <div class="dark-card" style="padding:14px">
+              <div class="card-header-row" style="margin-bottom:8px">
+                <div class="dark-card-title" style="margin-bottom:0">Leads</div>
+                <button class="btn-add" style="padding:6px 14px"><i class="fa-solid fa-plus"></i> Add</button>
+              </div>
+              <div class="no-data" style="padding:12px 0">No data at the moment</div>
+            </div>
+          </div>
+        </div>
 
         <!-- Row 1: Paid Cap | Closed CDA -->
         <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:14px">
@@ -534,104 +745,160 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
     <!-- ═══════════════════════════
          PROPERTIES (Agent Profile)
     ═══════════════════════════ -->
-    <div id="page-properties" class="page dark-page">
-      <!-- Top profile section -->
-      <div style="display:grid;grid-template-columns:380px 1fr;background:#2c2d4a;border-bottom:1px solid #363758">
-        <!-- Avatar side -->
-        <div style="padding:28px 24px;border-right:1px solid #363758;display:flex;flex-direction:column;align-items:flex-start;gap:14px">
-          <div style="width:120px;height:120px;border-radius:50%;background:#4a4b68;display:flex;align-items:center;justify-content:center;overflow:hidden">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:90px;height:90px;fill:#6b7080">
-              <circle cx="50" cy="38" r="20"/><ellipse cx="50" cy="80" rx="32" ry="22"/>
-            </svg>
-          </div>
-          <div style="font-size:20px;font-weight:700;color:#fff">Agent</div>
-          <div style="font-size:22px;font-weight:900;letter-spacing:2px;margin-top:4px">
-            <span style="color:#e0e0ff">&#x1F916;</span><span style="background:linear-gradient(135deg,#8888ff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">HU</span><span style="background:linear-gradient(135deg,#5563e8,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">3ZE</span>
-          </div>
-        </div>
+    <div id="page-properties" class="page dark-page" style="background:#f0f1f8">
 
-        <!-- Contact / Transactions / Listings -->
-        <div style="padding:20px 24px;display:flex;flex-direction:column;gap:12px">
-          <div style="font-size:15px;font-weight:700;color:#fff">Contact information</div>
-          <div style="background:#363758;border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:12px">
-            <div style="display:flex;align-items:center;gap:10px;color:#5a5b78"><i class="fa-solid fa-phone" style="width:16px"></i></div>
-            <div style="display:flex;align-items:center;gap:10px;color:#5a5b78"><i class="fa-regular fa-id-card" style="width:16px"></i></div>
-            <div style="display:flex;align-items:center;gap:10px;color:#5a5b78"><i class="fa-regular fa-envelope" style="width:16px"></i></div>
-            <div style="display:flex;align-items:center;gap:10px;color:#5a5b78"><i class="fa-solid fa-location-dot" style="width:16px"></i></div>
+      <!-- LIST VIEW -->
+      <div id="properties-list">
+        <!-- Header -->
+        <div class="page-header" style="background:#fff">
+          <div>
+            <div class="page-header-title">Properties</div>
+            <div style="font-size:12px;color:#9ca3af">/properties</div>
           </div>
-          <div style="display:flex;align-items:center;gap:6px">
-            <span style="font-size:14px;font-weight:700;color:#fff">Transactions</span>
-            <span class="see-all">See all</span>
-          </div>
-          <div style="background:#363758;border-radius:6px;padding:12px;display:grid;grid-template-columns:1fr 1fr 1fr">
-            <div style="font-size:13px;color:#e0e0f0">Active</div>
-            <div style="text-align:center"><div style="font-size:13px;color:#fff;font-weight:700">0</div><div style="font-size:11px;color:#7878a0">Closed</div></div>
-            <div style="text-align:right"><div style="font-size:13px;color:#fff;font-weight:700">0</div><div style="font-size:11px;color:#7878a0">Terminated</div></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px">
-            <span style="font-size:14px;font-weight:700;color:#fff">Listing</span>
-            <span class="see-all">See all</span>
-          </div>
-          <div style="background:#363758;border-radius:6px;padding:12px;display:grid;grid-template-columns:1fr 1fr 1fr">
-            <div style="font-size:13px;color:#e0e0f0">Active</div>
-            <div style="text-align:center;font-size:13px;color:#7878a0">Closed</div>
-            <div style="text-align:right;font-size:13px;color:#7878a0">Terminated</div>
+          <button class="btn-blue-grad" onclick="showView('properties-form')">
+            <i class="fa-solid fa-plus"></i> Add New Property
+          </button>
+        </div>
+        <!-- Table -->
+        <div class="page-body">
+          <div class="light-card">
+            <table class="data-table light" style="width:100%">
+              <thead><tr>
+                <th>Property</th><th>Address</th><th>Type</th><th>Price</th><th>Status</th><th>Agent</th><th>Date</th>
+              </tr></thead>
+              <tbody><tr><td colspan="7" class="no-data light">No active listings found.</td></tr></tbody>
+            </table>
+            <div class="pag-row" style="margin-top:12px">
+              <button class="btn-prev-next">Prev</button>
+              <button class="btn-prev-next">Next</button>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Bottom section -->
-      <div style="display:grid;grid-template-columns:1fr 340px;gap:0;min-height:400px">
-        <!-- Sold / Open Properties -->
-        <div style="padding:20px 24px;border-right:1px solid #363758">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-            <div>
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-                <span style="font-size:14px;font-weight:700;color:#fff">Sold Properties</span>
-                <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:140px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
-              </div>
-              <div style="min-height:120px"></div>
-            </div>
-            <div>
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-                <span style="font-size:14px;font-weight:700;color:#fff">Open Properties</span>
-                <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:140px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
-              </div>
-              <div style="min-height:120px"></div>
-            </div>
-          </div>
+      <!-- FORM VIEW -->
+      <div id="properties-form" style="display:none">
+        <!-- Header -->
+        <div class="page-header" style="background:#fff">
+          <div class="page-header-title">Add New Property</div>
+          <a class="page-header-back" href="javascript:void(0)" onclick="showView('properties-list')">
+            <i class="fa-solid fa-chevron-left"></i> Back To Property list
+          </a>
         </div>
+        <!-- Form body -->
+        <div class="page-body">
 
-        <!-- Commission / Offices / Licenses / Leads -->
-        <div style="padding:16px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;max-height:400px">
-          <div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-              <span style="font-size:13px;font-weight:700;color:#fff">Commission</span>
-              <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:130px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+          <!-- Property Information -->
+          <div class="form-section">
+            <div class="form-section-title">Property Information</div>
+            <div class="form-row cols-1">
+              <div class="form-group">
+                <label class="form-label">MLS Number <span class="req">*</span></label>
+                <input class="form-input"/>
+              </div>
             </div>
-            <table class="data-table"><thead><tr><th>Name</th><th>Comission</th></tr></thead><tbody><tr><td colspan="2" class="no-data">No records found</td></tr></tbody></table>
-          </div>
-          <div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-              <span style="font-size:13px;font-weight:700;color:#fff">Offices</span>
-              <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:130px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+            <div class="form-row cols-3">
+              <div class="form-group">
+                <label class="form-label">Transaction Type <span class="req">*</span></label>
+                <select class="form-select">
+                  <option>Listing</option><option>Buyer</option><option>Lease</option><option>Referral</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Property Type <span class="req">*</span></label>
+                <select class="form-select">
+                  <option>Residential</option><option>Commercial</option><option>Land</option><option>Multi-Family</option><option>Condo</option><option>Townhouse</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Property Status <span class="req">*</span></label>
+                <select class="form-select">
+                  <option>None</option><option>Active</option><option>Pending</option><option>Closed</option><option>Withdrawn</option><option>Expired</option>
+                </select>
+              </div>
             </div>
-            <div class="no-data">No data at the moment</div>
           </div>
-          <div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-              <span style="font-size:13px;font-weight:700;color:#fff">Licenses</span>
-              <div class="search-wrap"><input class="search-input" placeholder="Search here..." style="width:130px"/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
+
+          <!-- Address Information -->
+          <div class="form-section">
+            <div class="form-section-title">Address Information</div>
+            <div class="form-row cols-1">
+              <div class="form-group">
+                <label class="form-label">Street <span class="req">*</span></label>
+                <input class="form-input"/>
+              </div>
             </div>
-            <div class="no-data">No data at the moment</div>
-          </div>
-          <div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-              <span style="font-size:13px;font-weight:700;color:#fff">Leads</span>
-              <button class="btn-add"><i class="fa-solid fa-plus"></i> Add</button>
+            <div class="form-row cols-3">
+              <div class="form-group">
+                <label class="form-label">State <span class="req">*</span></label>
+                <select class="form-select" id="prop-page-state" onchange="updateCities('prop-page-city',this.value)">
+                  <option value="Alabama">Alabama</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">City <span class="req">*</span></label>
+                <select class="form-select" id="prop-page-city"><option>Abbeville</option></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Postal Code <span class="req">*</span></label>
+                <input class="form-input"/>
+              </div>
             </div>
-            <div class="no-data">No data at the moment</div>
           </div>
+
+          <!-- Price Information -->
+          <div class="form-section">
+            <div class="form-section-title">Price Information</div>
+            <div class="form-row cols-3">
+              <div class="form-group"><label class="form-label">Sales Price <span class="req">*</span></label><input class="form-input" type="number"/></div>
+              <div class="form-group"><label class="form-label">Units <span class="req">*</span></label><input class="form-input" type="number"/></div>
+              <div class="form-group"><label class="form-label">Commission <span class="req">*</span></label><input class="form-input" type="number"/></div>
+            </div>
+            <div class="form-row cols-3">
+              <div class="form-group"><label class="form-label">Bonus <span class="req">*</span></label><input class="form-input" type="number"/></div>
+              <div class="form-group"><label class="form-label">Source <span class="req">*</span></label><input class="form-input"/></div>
+              <div class="form-group"><label class="form-label">Transaction Coordinator Fee <span class="req">*</span></label><input class="form-input" type="number"/></div>
+            </div>
+            <div class="form-row cols-3">
+              <div class="form-group"><label class="form-label">Split Paid <span class="req">*</span></label><input class="form-input" type="number"/></div>
+              <div class="form-group"><label class="form-label">Office Fees <span class="req">*</span></label><input class="form-input" type="number"/></div>
+              <div class="form-group">
+                <label class="form-label">Agent <span class="req">*</span></label>
+                <select class="form-select"><option>Select Agent</option></select>
+              </div>
+            </div>
+            <div class="form-row cols-2">
+              <div class="form-group"><label class="form-label">Escrow Company <span class="req">*</span></label><input class="form-input"/></div>
+              <div class="form-group"><label class="form-label">Mortgage Company <span class="req">*</span></label><input class="form-input"/></div>
+            </div>
+          </div>
+
+          <!-- Contract Dates -->
+          <div class="form-section">
+            <div class="form-section-title">Price Information</div>
+            <div class="form-row cols-2">
+              <div class="form-group"><label class="form-label">Contract Start Date <span class="req">*</span></label><input class="form-input" type="date"/></div>
+              <div class="form-group"><label class="form-label">Contract Expiration Date <span class="req">*</span></label><input class="form-input" type="date"/></div>
+            </div>
+            <div class="form-row cols-2">
+              <div class="form-group"><label class="form-label">Open Escrow Date <span class="req">*</span></label><input class="form-input" type="date"/></div>
+              <div class="form-group"><label class="form-label">Closing Date <span class="req">*</span></label><input class="form-input" type="date"/></div>
+            </div>
+            <div class="form-row cols-1">
+              <div class="form-group">
+                <label class="form-label">Upload Property Image <span class="req">*</span></label>
+                <div class="upload-area">
+                  <i class="fa-solid fa-cloud-arrow-up"></i>
+                  <div class="upload-text"><strong>Click to upload</strong> or drag and drop</div>
+                  <div class="upload-sub">PNG, JPG, JPEG supported</div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:8px">
+              <button class="btn-green" onclick="showToast('Property saved!');showView('properties-list')">Save Property</button>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -1151,29 +1418,101 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
     <!-- ═══════════════════════════
          TRANSACTIONS
     ═══════════════════════════ -->
-    <div id="page-transactions" class="page dark-page">
-      <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:16px;font-weight:700;color:#fff">Transactions</div>
-          <div style="display:flex;gap:8px">
-            <div class="search-wrap"><input class="search-input" placeholder="Search transactions..."/><i class="fa-solid fa-magnifying-glass search-icon"></i></div>
-            <button class="btn-add"><i class="fa-solid fa-plus"></i> New Transaction</button>
-          </div>
+    <div id="page-transactions" class="page light-page">
+
+      <!-- ── Tab Filter Row ── -->
+      <div style="background:#fff;border-bottom:1px solid #e5e7ef;padding:0 24px;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:0">
+          <div class="txn-tab active" onclick="setTxnTab(this)">All Transactions</div>
+          <div class="txn-tab" onclick="setTxnTab(this)">Active</div>
+          <div class="txn-tab" onclick="setTxnTab(this)">Pending</div>
+          <div class="txn-tab" onclick="setTxnTab(this)">Submitted For Closing</div>
+          <div class="txn-tab" onclick="setTxnTab(this)">Closing</div>
+          <div class="txn-tab" onclick="setTxnTab(this)">Closed</div>
+          <div class="txn-tab" onclick="setTxnTab(this)">Cancelled</div>
         </div>
-        <div class="dark-card">
-          <div style="display:flex;gap:8px;margin-bottom:12px">
-            <div style="background:#363758;border-radius:6px;padding:6px 14px;font-size:12px;font-weight:600;color:#fff;cursor:pointer">All</div>
-            <div style="background:none;border-radius:6px;padding:6px 14px;font-size:12px;color:#9898b0;cursor:pointer">Active</div>
-            <div style="background:none;border-radius:6px;padding:6px 14px;font-size:12px;color:#9898b0;cursor:pointer">Pending</div>
-            <div style="background:none;border-radius:6px;padding:6px 14px;font-size:12px;color:#9898b0;cursor:pointer">Closed</div>
-          </div>
-          <table class="data-table" style="width:100%">
-            <thead><tr><th>Property</th><th>Address</th><th>Type</th><th>Status</th><th>Agent</th><th>Closing Date</th><th>Commission</th></tr></thead>
-            <tbody><tr><td colspan="7" class="no-data">No transactions found</td></tr></tbody>
-          </table>
-          <div class="pag-row"><button class="btn-prev-next">Prev</button><button class="btn-prev-next">Next</button></div>
+        <div style="display:flex;align-items:center;gap:8px;padding:10px 0">
+          <button style="background:#1a5c38;color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px">
+            <i class="fa-regular fa-calendar"></i> 1 May 2026 – 31 May 2026 <i class="fa-solid fa-chevron-down" style="font-size:10px"></i>
+          </button>
+          <select style="background:#fff;border:1px solid #e0e2ec;border-radius:6px;padding:7px 10px;font-size:12px;color:#374151;outline:none;cursor:pointer">
+            <option>Newest</option><option>Oldest</option>
+          </select>
         </div>
       </div>
+
+      <!-- ── Search + Create Row ── -->
+      <div style="background:#fff;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e5e7ef">
+        <div class="search-wrap">
+          <input class="search-input light" placeholder="Search here..." style="width:260px"/>
+          <i class="fa-solid fa-magnifying-glass search-icon light"></i>
+        </div>
+        <button style="background:#1a5c38;color:#fff;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px">
+          <i class="fa-solid fa-plus"></i> Create Transaction
+        </button>
+      </div>
+
+      <!-- ── Toggle + Status Pills Row ── -->
+      <div style="background:#fff;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f1f8">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;font-weight:500;color:#374151">
+          Submitted for Review
+          <input type="checkbox" id="txn-review-toggle" checked style="display:none" onchange="this.nextElementSibling.style.background=this.checked?'#22c55e':'#d1d5db'"/>
+          <div onclick="let c=document.getElementById('txn-review-toggle');c.checked=!c.checked;this.style.background=c.checked?'#22c55e':'#d1d5db';this.children[0].style.left=c.checked?'20px':'2px'"
+               style="width:40px;height:22px;background:#22c55e;border-radius:11px;position:relative;cursor:pointer;transition:background .2s">
+            <div style="position:absolute;top:3px;left:20px;width:16px;height:16px;background:#fff;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div>
+          </div>
+        </label>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0;border-radius:20px;padding:4px 14px;font-size:12px;font-weight:600">Verified</span>
+          <span style="background:#fef9c3;color:#ca8a04;border:1px solid #fde68a;border-radius:20px;padding:4px 14px;font-size:12px;font-weight:600">Unverified</span>
+          <span style="background:#fee2e2;color:#dc2626;border:1px solid #fecaca;border-radius:20px;padding:4px 14px;font-size:12px;font-weight:600">Declined</span>
+        </div>
+      </div>
+
+      <!-- ── Table ── -->
+      <div style="background:#fff;flex:1;overflow-y:auto">
+        <table class="data-table light" style="width:100%">
+          <thead>
+            <tr>
+              <th style="padding:12px 16px">Property Address</th>
+              <th style="padding:12px 16px">Client</th>
+              <th style="padding:12px 16px">TC</th>
+              <th style="padding:12px 16px">Transaction Type</th>
+              <th style="padding:12px 16px">Created Date</th>
+              <th style="padding:12px 16px">Acceptance Date</th>
+              <th style="padding:12px 16px">Closing Date</th>
+              <th style="padding:12px 16px">Closed Date</th>
+              <th style="padding:12px 16px">Documents</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="9" style="text-align:center;padding:48px 16px;color:#9ca3af;font-size:13px">No data at the moment.</td></tr>
+            <tr><td colspan="9" style="text-align:center;padding:80px 16px 48px;color:#9ca3af;font-size:13px">No records found</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Pagination ── -->
+      <div style="background:#fff;border-top:1px solid #e5e7ef;padding:14px 24px;display:flex;justify-content:flex-end;gap:8px">
+        <button style="background:#fff;border:1px solid #d1d5db;border-radius:6px;padding:6px 18px;font-size:13px;color:#374151;cursor:pointer">Prev</button>
+        <button style="background:#fff;border:1px solid #d1d5db;border-radius:6px;padding:6px 18px;font-size:13px;color:#374151;cursor:pointer">Next</button>
+      </div>
+
+      <!-- ── Transaction Timeline Calendar ── -->
+      <div style="background:#fff;border-top:1px solid #e5e7ef;padding:14px 24px;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#374151">
+          <i class="fa-regular fa-calendar-days" style="font-size:16px;color:#6b7280"></i>
+          Transaction Timeline Calendar
+        </div>
+        <label style="cursor:pointer">
+          <input type="checkbox" id="txn-cal-toggle" style="display:none"/>
+          <div onclick="let c=document.getElementById('txn-cal-toggle');c.checked=!c.checked;this.style.background=c.checked?'#22c55e':'#1a1a2e';this.children[0].style.left=c.checked?'20px':'2px'"
+               style="width:40px;height:22px;background:#1a1a2e;border-radius:11px;position:relative;transition:background .2s">
+            <div style="position:absolute;top:3px;left:2px;width:16px;height:16px;background:#fff;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div>
+          </div>
+        </label>
+      </div>
+
     </div>
 
     <!-- ═══════════════════════════
@@ -1335,12 +1674,115 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:
     <!-- ═══════════════════════════
          ROUTE MAPS
     ═══════════════════════════ -->
-    <div id="page-route-maps" class="page dark-page" style="overflow:hidden">
-      <div class="map-header">
-        <div class="map-title">Route Maps</div>
-        <button class="btn-add"><i class="fa-solid fa-plus"></i> Add Route</button>
+    <div id="page-route-maps" class="page dark-page" style="overflow:hidden;display:flex;flex-direction:column">
+
+      <!-- Top Header Bar -->
+      <div style="background:#1e1f35;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid #2a2b40">
+        <div style="font-size:20px;font-weight:800;color:#fff;letter-spacing:.5px">
+          Route <span style="color:#5563e8">Map</span>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button onclick="showRoutePanel('addresses')" id="rm-btn-addr" style="background:#1e1f35;border:1px solid #4a4b68;color:#fff;border-radius:7px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .15s">
+            📍 Addresses
+          </button>
+          <button onclick="showRoutePanel('saved')" id="rm-btn-saved" style="background:#1e1f35;border:1px solid #4a4b68;color:#9898b0;border-radius:7px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .15s">
+            🗺️ Saved Routes
+          </button>
+        </div>
       </div>
-      <div id="routeMap" style="height:calc(100% - 52px)"></div>
+
+      <!-- Body: left panel + map -->
+      <div style="display:grid;grid-template-columns:350px 1fr;flex:1;overflow:hidden">
+
+        <!-- LEFT PANEL -->
+        <div style="background:#252640;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px">
+
+          <!-- Addresses Panel -->
+          <div id="rm-panel-addresses">
+
+            <!-- Start Address -->
+            <div style="background:#2c2d4a;border:1px solid #363758;border-radius:8px;padding:14px 16px;margin-bottom:12px">
+              <div style="font-size:11px;font-weight:700;color:#5563e8;letter-spacing:.1em;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+                START ADDRESS <div style="flex:1;height:1px;background:#363758"></div>
+              </div>
+              <input id="rm-start" class="form-input" style="background:#363758;border-color:#3a3b55;color:#e0e0f0;width:100%" placeholder="Your starting location..."/>
+            </div>
+
+            <!-- Stops -->
+            <div style="background:#2c2d4a;border:1px solid #363758;border-radius:8px;padding:14px 16px;margin-bottom:12px">
+              <div style="font-size:11px;font-weight:700;color:#5563e8;letter-spacing:.1em;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+                STOPS <div style="flex:1;height:1px;background:#363758"></div>
+              </div>
+              <div id="rm-stops-list" style="display:flex;flex-direction:column;gap:8px">
+                <div class="rm-stop-row" style="display:flex;align-items:center;gap:8px">
+                  <div style="width:22px;height:22px;background:#363758;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#9898b0;flex-shrink:0">1</div>
+                  <input class="rm-stop-input form-input" style="flex:1;background:#363758;border-color:#3a3b55;color:#e0e0f0" placeholder="Address stop 1..."/>
+                  <button onclick="removeStop(this)" style="background:none;border:none;color:#6b6c8a;font-size:16px;cursor:pointer;padding:2px 4px;line-height:1">&times;</button>
+                </div>
+              </div>
+              <button onclick="addStop()" style="width:100%;margin-top:10px;background:#363758;border:1px solid #3a3b55;border-radius:6px;padding:8px;color:#9898b0;font-size:13px;cursor:pointer;text-align:center">+ Add Stop</button>
+            </div>
+
+            <!-- Lead Addresses -->
+            <div style="background:#2c2d4a;border:1px solid #363758;border-radius:8px;padding:14px 16px;margin-bottom:12px">
+              <div style="font-size:11px;font-weight:700;color:#5563e8;letter-spacing:.1em;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+                LEAD ADDRESSES <div style="flex:1;height:1px;background:#363758"></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:2px;max-height:200px;overflow-y:auto" id="rm-leads">
+                <div class="rm-lead-item" onclick="addLeadAsStop(this)" data-addr="1428 Oak St" style="background:#363758;border-radius:6px;padding:10px 12px;cursor:pointer;transition:background .15s;border:1px solid transparent">
+                  <div style="font-size:13px;font-weight:600;color:#e0e0f0">Maria Garcia</div>
+                  <div style="font-size:11px;color:#9898b0;margin-top:2px">1428 Oak St</div>
+                </div>
+                <div class="rm-lead-item" onclick="addLeadAsStop(this)" data-addr="3311 Rosedale Hwy" style="background:#363758;border-radius:6px;padding:10px 12px;cursor:pointer;transition:background .15s;border:1px solid transparent">
+                  <div style="font-size:13px;font-weight:600;color:#e0e0f0">James Turner</div>
+                  <div style="font-size:11px;color:#9898b0;margin-top:2px">3311 Rosedale Hwy</div>
+                </div>
+                <div class="rm-lead-item" onclick="addLeadAsStop(this)" data-addr="815 Niles St" style="background:#363758;border-radius:6px;padding:10px 12px;cursor:pointer;transition:background .15s;border:1px solid transparent">
+                  <div style="font-size:13px;font-weight:600;color:#e0e0f0">Sandra Lopez</div>
+                  <div style="font-size:11px;color:#9898b0;margin-top:2px">815 Niles St</div>
+                </div>
+                <div class="rm-lead-item" onclick="addLeadAsStop(this)" data-addr="2240 Ming Ave" style="background:#363758;border-radius:6px;padding:10px 12px;cursor:pointer;transition:background .15s;border:1px solid transparent">
+                  <div style="font-size:13px;font-weight:600;color:#e0e0f0">Derek Morrison</div>
+                  <div style="font-size:11px;color:#9898b0;margin-top:2px">2240 Ming Ave</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <button onclick="generateRoute()" style="width:100%;background:linear-gradient(135deg,#4a6cf7,#5563e8);color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px">
+              🗺️ Generate Best Route
+            </button>
+            <button onclick="saveRoute()" style="width:100%;background:#2c2d4a;color:#c8c8e0;border:1px solid #363758;border-radius:8px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:7px">
+              💾 Save This Route
+            </button>
+            <button onclick="clearRoute()" style="width:100%;background:#2c2d4a;color:#9898b0;border:1px solid #363758;border-radius:8px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px">
+              ✕ Clear All
+            </button>
+          </div>
+
+          <!-- Saved Routes Panel (hidden by default) -->
+          <div id="rm-panel-saved" style="display:none">
+            <div style="background:#2c2d4a;border:1px solid #363758;border-radius:8px;padding:20px;text-align:center;color:#9898b0;font-size:13px">
+              <div style="font-size:28px;margin-bottom:10px">🗺️</div>
+              No saved routes yet.<br/>Generate and save a route to see it here.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: Map -->
+        <div style="position:relative;background:#2c2d4a;overflow:hidden">
+          <!-- Placeholder shown before route is generated -->
+          <div id="rm-map-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:1;background:#2c2d4a;pointer-events:none">
+            <div style="font-size:52px">🛣️</div>
+            <div style="font-size:16px;font-weight:700;color:#e0e0f0">Route Map</div>
+            <div style="font-size:13px;color:#9898b0;text-align:center;line-height:1.6;max-width:260px">Enter a start address and stops, then hit<br/>Generate Best Route.</div>
+          </div>
+          <!-- Google Maps iframe (hidden until route generated) -->
+          <iframe id="rm-gmap" src="" style="width:100%;height:100%;border:none;display:none" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+      </div>
     </div>
 
   </div><!-- end page-container -->
@@ -1378,8 +1820,8 @@ function updateCities(citySelId, state) {
 // ═══════════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════════
-const DARK_PAGES = new Set(['dashboard','sales-board','properties','email','transactions','swag','workspace','kanban','chat','route-maps']);
-const LIGHT_PAGES = new Set(['news-feed','agents','buyers','sellers','active-listing','calendar','office','events']);
+const DARK_PAGES = new Set(['dashboard','sales-board','properties','email','swag','workspace','kanban','chat','route-maps']);
+const LIGHT_PAGES = new Set(['news-feed','agents','buyers','sellers','active-listing','calendar','office','events','transactions']);
 
 const PAGE_TITLES = {
   'dashboard':'Dashboard','sales-board':'Sales Board','properties':'Properties',
@@ -1434,6 +1876,32 @@ function showView(viewId) {
 }
 
 // ═══════════════════════════════════════
+// PROPERTY PAGE DROPDOWN TOGGLE
+// ═══════════════════════════════════════
+function togglePropDrop(dropId, triggerBtn) {
+  const drop = document.getElementById(dropId);
+  if (!drop) return;
+  const isOpen = drop.style.display === 'block';
+  // Close all property dropdowns first
+  ['prop-seller-drop','prop-listing-drop','prop-active-drop'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  if (!isOpen) {
+    drop.style.display = 'block';
+    // Close if clicking outside
+    setTimeout(() => {
+      document.addEventListener('click', function closeDrop(e) {
+        if (!drop.contains(e.target) && e.target !== triggerBtn && !triggerBtn.contains(e.target)) {
+          drop.style.display = 'none';
+          document.removeEventListener('click', closeDrop);
+        }
+      });
+    }, 10);
+  }
+}
+
+// ═══════════════════════════════════════
 // TOAST
 // ═══════════════════════════════════════
 let toastT;
@@ -1454,6 +1922,14 @@ function setNewscat(el) {
 }
 
 // ═══════════════════════════════════════
+// TRANSACTION TABS
+// ═══════════════════════════════════════
+function setTxnTab(el) {
+  document.querySelectorAll('.txn-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ═══════════════════════════════════════
 // SELLER TABS
 // ═══════════════════════════════════════
 function setSellerTab(el) {
@@ -1465,7 +1941,30 @@ function setSellerTab(el) {
 // CHARTS — DASHBOARD
 // ═══════════════════════════════════════
 let dashCharts = {};
+
+function makeGauge(id, data, colors) {
+  const ctx = document.getElementById(id);
+  if (!ctx || ctx._chartMade) return;
+  ctx._chartMade = true;
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: { datasets: [{ data, backgroundColor: colors, borderWidth: 0, hoverOffset: 3 }] },
+    options: {
+      responsive: true, maintainAspectRatio: true, cutout: '72%',
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      animation: { duration: 800 }
+    }
+  });
+}
+
 function initDashboardCharts() {
+  // Gauge charts
+  makeGauge('gauge1', [3645000, 675000, 1440000], ['#38bdf8','#8b4de8','#2a2b40']);
+  makeGauge('gauge2', [52467, 33326],              ['#38bdf8','#8b4de8']);
+  makeGauge('gauge3', [1580000, 760000],           ['#38bdf8','#8b4de8']);
+  makeGauge('gauge4', [890000, 355000],            ['#38bdf8','#8b4de8']);
+  makeGauge('gauge5', [612000, 278500],            ['#38bdf8','#8b4de8']);
+
   if (dashCharts.months) return;
   const ctx = document.getElementById('monthsChart');
   if (!ctx) return;
@@ -1659,12 +2158,191 @@ function sendChat() {
 }
 
 // ═══════════════════════════════════════
+// ROUTE MAPS FUNCTIONS
+// ═══════════════════════════════════════
+function showRoutePanel(panel) {
+  const addrPanel = document.getElementById('rm-panel-addresses');
+  const savedPanel = document.getElementById('rm-panel-saved');
+  const btnAddr = document.getElementById('rm-btn-addr');
+  const btnSaved = document.getElementById('rm-btn-saved');
+  if (!addrPanel) return;
+  if (panel === 'addresses') {
+    addrPanel.style.display = 'block';
+    savedPanel.style.display = 'none';
+    btnAddr.style.borderColor = '#4a6cf7';
+    btnAddr.style.color = '#fff';
+    btnSaved.style.borderColor = '#4a4b68';
+    btnSaved.style.color = '#9898b0';
+  } else {
+    addrPanel.style.display = 'none';
+    savedPanel.style.display = 'block';
+    btnAddr.style.borderColor = '#4a4b68';
+    btnAddr.style.color = '#9898b0';
+    btnSaved.style.borderColor = '#4a6cf7';
+    btnSaved.style.color = '#fff';
+  }
+}
+
+let rmStopCount = 1;
+function addStop() {
+  rmStopCount++;
+  const list = document.getElementById('rm-stops-list');
+  if (!list) return;
+  const row = document.createElement('div');
+  row.style.cssText = 'display:flex;align-items:center;gap:8px';
+  row.innerHTML = `
+    <span style="width:22px;height:22px;background:#363758;border:2px solid #4a6cf7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#4a6cf7;flex-shrink:0">${rmStopCount}</span>
+    <input class="rm-stop-input form-input" style="flex:1;background:#363758;border-color:#3a3b55;color:#e0e0f0" placeholder="Stop ${rmStopCount} address..."/>
+    <button onclick="removeStop(this)" style="background:none;border:none;color:#6b6c8a;font-size:16px;cursor:pointer;padding:2px 4px;line-height:1">&times;</button>
+  `;
+  list.appendChild(row);
+  renumberStops();
+}
+
+function removeStop(btn) {
+  const row = btn.closest('div');
+  if (!row) return;
+  const list = document.getElementById('rm-stops-list');
+  if (list && list.children.length <= 1) {
+    // keep at least one stop — just clear it
+    const inp = row.querySelector('input');
+    if (inp) inp.value = '';
+    return;
+  }
+  row.remove();
+  renumberStops();
+}
+
+function renumberStops() {
+  const list = document.getElementById('rm-stops-list');
+  if (!list) return;
+  const rows = list.querySelectorAll('div');
+  rows.forEach((row, i) => {
+    const badge = row.querySelector('span');
+    const inp   = row.querySelector('input');
+    if (badge) badge.textContent = i + 1;
+    if (inp)   inp.placeholder   = `Stop ${i + 1} address...`;
+  });
+  rmStopCount = rows.length;
+}
+
+function addLeadAsStop(el) {
+  const addr = el.getAttribute('data-addr');
+  if (!addr) return;
+  const list = document.getElementById('rm-stops-list');
+  if (!list) return;
+  // find first empty stop input
+  const inputs = list.querySelectorAll('input');
+  for (let inp of inputs) {
+    if (!inp.value.trim()) {
+      inp.value = addr;
+      inp.style.borderColor = '#4a6cf7';
+      return;
+    }
+  }
+  // all full — add a new stop
+  addStop();
+  const allInputs = list.querySelectorAll('input');
+  allInputs[allInputs.length - 1].value = addr;
+  // flash highlight
+  el.style.borderColor = '#4a6cf7';
+  el.style.background  = '#3d3e60';
+  setTimeout(() => { el.style.borderColor = 'transparent'; el.style.background = '#363758'; }, 1200);
+}
+
+function generateRoute() {
+  const start = (document.getElementById('rm-start')?.value || '').trim();
+  if (!start) {
+    alert('Please enter a starting address.');
+    return;
+  }
+  const stopInputs = document.querySelectorAll('#rm-stops-list input');
+  const stops = Array.from(stopInputs).map(i => i.value.trim()).filter(Boolean);
+
+  // Build Google Maps embed URL
+  // format: saddr=START&daddr=STOP1+to:STOP2+to:STOP3
+  let daddr = stops.join('+to:');
+  let url = `https://maps.google.com/maps?saddr=${encodeURIComponent(start)}`;
+  if (daddr) url += `&daddr=${encodeURIComponent(stops[0])}`;
+  if (stops.length > 1) {
+    const extra = stops.slice(1).map(s => `to:${encodeURIComponent(s)}`).join('+');
+    url += `+${extra}`;
+  }
+  url += '&output=embed';
+
+  const placeholder = document.getElementById('rm-map-placeholder');
+  const iframe      = document.getElementById('rm-gmap');
+  if (placeholder) placeholder.style.display = 'none';
+  if (iframe) {
+    iframe.src = url;
+    iframe.style.display = 'block';
+  }
+}
+
+function saveRoute() {
+  const start = (document.getElementById('rm-start')?.value || '').trim();
+  const stopInputs = document.querySelectorAll('#rm-stops-list input');
+  const stops = Array.from(stopInputs).map(i => i.value.trim()).filter(Boolean);
+  if (!start && !stops.length) {
+    alert('No route to save. Enter a start address first.');
+    return;
+  }
+  const name = prompt('Name this route:', `Route from ${start}`);
+  if (!name) return;
+
+  const savedList = document.getElementById('rm-saved-list');
+  if (savedList) {
+    const item = document.createElement('div');
+    item.style.cssText = 'background:#363758;border-radius:8px;padding:12px 14px;border:1px solid #3a3b55;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px';
+    item.innerHTML = `
+      <i class="fa-solid fa-route" style="color:#4a6cf7;font-size:14px"></i>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600;color:#e0e0f0">${name}</div>
+        <div style="font-size:11px;color:#9898b0;margin-top:2px">${stops.length + 1} stop${stops.length !== 0 ? 's' : ''}</div>
+      </div>
+      <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#6b6c8a;font-size:14px;cursor:pointer">&times;</button>
+    `;
+    savedList.prepend(item);
+  }
+
+  // Switch to saved panel
+  showRoutePanel('saved');
+
+  // toast
+  const toast = document.createElement('div');
+  toast.textContent = '✓ Route saved!';
+  toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1a5c38;color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.4)';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+
+function clearRoute() {
+  const startInp = document.getElementById('rm-start');
+  if (startInp) startInp.value = '';
+  const list = document.getElementById('rm-stops-list');
+  if (list) {
+    list.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="width:22px;height:22px;background:#363758;border:2px solid #4a6cf7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#4a6cf7;flex-shrink:0">1</span>
+        <input class="rm-stop-input form-input" style="flex:1;background:#363758;border-color:#3a3b55;color:#e0e0f0" placeholder="Stop 1 address..."/>
+        <button onclick="removeStop(this)" style="background:none;border:none;color:#6b6c8a;font-size:16px;cursor:pointer;padding:2px 4px;line-height:1">&times;</button>
+      </div>`;
+    rmStopCount = 1;
+  }
+  const placeholder = document.getElementById('rm-map-placeholder');
+  const iframe      = document.getElementById('rm-gmap');
+  if (placeholder) placeholder.style.display = 'flex';
+  if (iframe) { iframe.style.display = 'none'; iframe.src = ''; }
+}
+
+// ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
   populateStates('buyer-state-sel');
   populateStates('seller-state-sel');
   populateStates('prop-state');
+  populateStates('prop-page-state');
   initDashboardCharts();
 });
 </script>
